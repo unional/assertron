@@ -15,7 +15,7 @@
     "noImplicitAny": false,
     "removeComments": true,
     "sourceMap": true,
-    "sourceRoot": "/@unional/assert-order",
+    "sourceRoot": "/assert-order",
     "strictNullChecks": true,
     "target": "es5"
   }

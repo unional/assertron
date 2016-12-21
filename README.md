@@ -1,4 +1,4 @@
-# @unional/assert-order
+# assert-order
 
 [![Build Status](https://travis-ci.org/unional/assert-order.svg?branch=master)](https://travis-ci.org/unional/assert-order)
 
@@ -7,7 +7,7 @@
 This is the library for that.
 
 ```ts
-import AssertOrder form '@unional/assert-order'
+import AssertOrder form 'assert-order'
 
 let a = new AssertOrder()
 a.once(0)
@@ -21,7 +21,7 @@ a.once(4)
 
 ## Using global build
 
-To use this library in the global namespace environment, copy and reference the `dist/unional-assert-order.js` file in script tag.
+To use this library in the global namespace environment, copy and reference the `dist/assert-order.js` file in script tag.
 
 To aid development, you can add the typings to your project by:
 
@@ -31,11 +31,11 @@ Install this package:
 npm install -D @unional/assert-order
 ```
 
-Create `custom-typings/unional-assert-order.d.ts`:
+Create `custom-typings/assert-order.d.ts`:
 
 ```ts
-export * from '@unional/assert-order'
-export as namesapce UnionalAssertOrder
+export * from 'assert-order'
+export as namesapce AssertOrder
 
 ```
 
