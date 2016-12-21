@@ -1,10 +1,22 @@
+export interface Steps {
+  once?: number[]
+  some?: number[]
+  all?: number[]
+}
 
 export class AssertOrder {
-  private static fnMap = {
+  private static alias = {
     step: 'once',
-    any: 'some'
+    any: 'some',
+    plan: 'all'
   }
-  private possibleSteps: { [index: string]: number[] }
+  private static reverseAlias = {
+    once: ['step'],
+    some: ['any'],
+    all: ['plan']
+  }
+
+  private possibleSteps: Steps
   private planCounter = 0
   private targetCount: number | undefined
   constructor(initStep = 0) {
@@ -16,11 +28,7 @@ export class AssertOrder {
   }
 
   step(step: number) {
-    this.validate('step', step, 1, {
-      once: [step + 1],
-      some: [step + 1],
-      all: [step + 1]
-    })
+    this.validate('step', step, 1)
   }
 
   any(step: number) {
@@ -45,20 +53,26 @@ export class AssertOrder {
     })
   }
 
+  plan(step: number, plan: number) {
+    this.validate('plan', step, plan, {
+      all: [step]
+    })
+  }
+
   /**
    * Assert the specified step will run once.
    */
   once(step: number) {
-    this.validate('once', step, 1, {
-      once: [step + 1],
-      some: [step + 1],
-      all: [step + 1]
-    })
+    this.validate('once', step, 1)
   }
 
-  private validate(fnName: string, step: number, count: number | undefined, steps) {
+  private validate(fnName: string, step: number, count: number | undefined, steps: Steps = {
+    once: [step + 1],
+    some: [step, step + 1],
+    all: [step + 1]
+  }) {
     // console.log(step, count, steps, this.possibleSteps)
-    const id = AssertOrder.fnMap[fnName] || fnName
+    const id = AssertOrder.alias[fnName] || fnName
     if (this.possibleSteps[id] && this.possibleSteps[id].indexOf(step) !== -1) {
       if (count === undefined) {
         this.possibleSteps = steps
@@ -98,7 +112,9 @@ export class AssertOrder {
   private getErrorMessage(calledFn: string, calledStep: number) {
     const should: string[] = []
     for (let key in this.possibleSteps) {
-      should.push(`'${key}(${this.possibleSteps[key]})'`)
+      should.push(...([key, ...AssertOrder.reverseAlias[key]].map(name =>
+        `'${name}(${this.possibleSteps[key].join('|')})'`
+      )))
     }
 
     return `Expecting ${should.join(', ')}, but received '${calledFn}(${calledStep})'`
