@@ -11,7 +11,7 @@
     "build-commonjs": "tsc -p tsconfig.commonjs.json",
     "build-global": "webpack --config webpack.config.global.js",
     "clean": "rimraf dist",
-    "coverage": "npm test && nyc check-coverage --lines 85 --functions 85 --branches 85 | coveralls",
+    "coverage": "npm test | coveralls && nyc check-coverage --lines 85 --functions 85 --branches 85",
     "dependency-check": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
     "lint": "tslint \"src/**/*.ts\"",
     "postpublish": "git push",
