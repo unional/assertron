@@ -18,7 +18,7 @@
     "prepare": "typings install && npm run build",
     "preversion": "git pull && npm run verify",
     "test": "npm run clean && tsc && nyc ava",
-    "verify": "npm run lint && npm run coverage && npm run build && npm run dependency-check && nyc report --reporter-text-lcov | coveralls",
+    "verify": "npm run lint && npm run coverage && npm run build && npm run dependency-check && nyc report --reporter=text-lcov | coveralls",
     "watch": "npm run clean && node bin/watch.js"
   },
   "license": "MIT",
