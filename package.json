@@ -1,6 +1,6 @@
 {
   "name": "assert-order",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "dist/commonjs/index.js",
   "typings": "dist/commonjs/index.d.ts",
   "files": [
