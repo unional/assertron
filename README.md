@@ -2,6 +2,23 @@
 
 [![Build Status](https://travis-ci.org/unional/assert-order.svg?branch=master)](https://travis-ci.org/unional/assert-order)
 
+...sometimes we do need to assert code are executed in certain order.
+
+This is the library for that.
+
+```ts
+import AssertOrder form '@unional/assert-order'
+
+let a = new AssertOrder()
+a.once(0)
+a.once(1)
+a.some(2)
+a.some(2)
+a.all(3, 2)
+a.all(3, 2)
+a.once(4)
+```
+
 ## Using global build
 
 To use this library in the global namespace environment, copy and reference the `dist/unional-assert-order.js` file in script tag.
