@@ -8,7 +8,7 @@ const pjson = require('./package.json')
 const packageName = pjson.name
 const filename = packageName.slice(1).split('/').join('-')
 const version = pjson.version
-const ns = pascalCase(filename) // or specify manually
+const ns = pascalCase(filename)
 
 module.exports = {
   externals: {
@@ -17,7 +17,7 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   entry: {
-    [filename]: './src/index'
+    [filename]: './dist/commonjs/index'
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -25,22 +25,16 @@ module.exports = {
     library: ns,
     libraryTarget: 'var'
   },
-  resolve: {
-    extensions: ['', '.ts', '.tsx', '.js']
-  },
   module: {
-    loaders: [
+    preLoaders: [
       {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        include: [
-          path.join(__dirname, 'src')
-        ]
+        test: /\.js$/,
+        loader: "source-map-loader"
       }
     ]
   },
   plugins: [
-    new webpack.BannerPlugin(`${filename}.js version: ${version} generated on: ${new Date().toDateString()}`),
+    new webpack.BannerPlugin(`${filename}.js, version: ${version}, generated on: ${new Date().toDateString()}`),
     failPlugin
   ],
   ts: {
