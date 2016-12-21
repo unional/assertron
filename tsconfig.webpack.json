@@ -2,8 +2,7 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "declaration": false,
-    "outDir": "dist/webpack",
-    "sourceRoot": "/@unional/assert-order"
+    "outDir": "dist/webpack"
   },
   "files": [
     "src/index.ts"
