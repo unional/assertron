@@ -12,6 +12,7 @@
     "build-global": "webpack --config webpack.config.global.js",
     "clean": "rimraf dist",
     "coverage": "npm test && nyc check-coverage --lines 85 --functions 85 --branches 85",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "dependency-check": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
     "lint": "tslint \"src/**/*.ts\"",
     "postpublish": "git push",
@@ -19,7 +20,6 @@
     "preversion": "git pull && npm run verify",
     "test": "npm run clean && tsc && nyc ava",
     "verify": "npm run lint && npm run coverage && npm run build && npm run dependency-check",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "watch": "npm run clean && node bin/watch.js"
   },
   "license": "MIT",
