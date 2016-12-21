@@ -6,7 +6,7 @@ const failPlugin = require('webpack-fail-plugin')
 const pjson = require('./package.json')
 
 const packageName = pjson.name
-const filename = packageName.slice(1).split('/').join('-')
+const filename = (packageName.indexOf('@') === 0? packageName.slice(1): packageName).split('/').join('-')
 const version = pjson.version
 const ns = pascalCase(filename)
 
