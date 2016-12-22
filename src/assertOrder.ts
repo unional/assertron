@@ -31,30 +31,46 @@ export class AssertOrder {
     this.validate('step', step, 1)
   }
 
+  /**
+   * Assert the specified step will be reached at least once.
+   * @returns how many times this step has occured.
+   */
   any(step: number) {
-    this.validate('any', step, undefined, {
+    return this.validate('any', step, undefined, {
       once: [step + 1],
       some: [step, step + 1],
       all: [step + 1]
     })
   }
 
+  /**
+   * Assert the specified step will be reached at least once.
+   * @returns how many times this step has occured.
+   */
   some(step: number) {
-    this.validate('some', step, undefined, {
+    return this.validate('some', step, undefined, {
       once: [step + 1],
       some: [step, step + 1],
       all: [step + 1]
     })
   }
 
+  /**
+   * Assert the specified step will be reached x times.
+   * @returns how many times this step has occured.
+   */
   all(step: number, plan: number) {
-    this.validate('all', step, plan, {
+    return this.validate('all', step, plan, {
       all: [step]
     })
   }
 
+  /**
+   * Assert the specified step will be reached x times.
+   * @returns how many times this step has occured.
+   */
   plan(step: number, plan: number) {
-    this.validate('plan', step, plan, {
+    return this.validate('plan', step, plan, {
       all: [step]
     })
   }
@@ -68,12 +84,21 @@ export class AssertOrder {
 
   private validate(fnName: string, step: number, count: number | undefined, steps: Steps = {
     once: [step + 1],
-    some: [step, step + 1],
+    some: [step + 1],
     all: [step + 1]
   }) {
-    // console.log(step, count, steps, this.possibleSteps)
+    // console.log(fnName, step, count, this.possibleSteps)
     const id = AssertOrder.alias[fnName] || fnName
+
     if (this.possibleSteps[id] && this.possibleSteps[id].indexOf(step) !== -1) {
+      if (step === (this.possibleSteps.once && this.possibleSteps.once[0])) {
+        // It's advancing to the next step
+        this.planCounter = 1
+      }
+      else {
+        ++this.planCounter
+      }
+
       if (count === undefined) {
         this.possibleSteps = steps
       }
@@ -89,9 +114,8 @@ export class AssertOrder {
         }
 
         // console.log(this.planCounter, count)
-        if (++this.planCounter === count) {
+        if (this.planCounter === count) {
           // counter reached. Resetting
-          this.planCounter = 0
           this.targetCount = undefined
           this.possibleSteps = {
             once: [step + 1],
@@ -107,6 +131,8 @@ export class AssertOrder {
     else {
       throw new Error(this.getErrorMessage(fnName, step))
     }
+
+    return this.planCounter
   }
 
   private getErrorMessage(calledFn: string, calledStep: number) {

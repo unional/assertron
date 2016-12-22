@@ -51,12 +51,12 @@ test('any()', t => {
   t.throws(() => a.any(1), "Expecting 'once(2)', 'step(2)', 'some(2)', 'any(2)', 'all(2)', 'plan(2)', but received 'any(1)'")
 
   a = new AssertOrder()
-  a.any(0)
-  a.any(0)
-  a.any(1)
-  a.any(1)
-  a.any(2)
-  a.any(2)
+  t.is(a.any(0), 1)
+  t.is(a.any(0), 2)
+  t.is(a.any(1), 1)
+  t.is(a.any(1), 2)
+  t.is(a.any(2), 1)
+  t.is(a.any(2), 2)
 
   a = new AssertOrder()
   a.any(0)
@@ -87,12 +87,12 @@ test('some()', t => {
   t.throws(() => a.some(1), "Expecting 'once(2)', 'step(2)', 'some(2)', 'any(2)', 'all(2)', 'plan(2)', but received 'some(1)'")
 
   a = new AssertOrder()
-  a.some(0)
-  a.some(0)
-  a.some(1)
-  a.some(1)
-  a.some(2)
-  a.some(2)
+  t.is(a.some(0), 1)
+  t.is(a.some(0), 2)
+  t.is(a.some(1), 1)
+  t.is(a.some(1), 2)
+  t.is(a.some(2), 1)
+  t.is(a.some(2), 2)
 
   a = new AssertOrder()
   a.some(0)
@@ -141,8 +141,8 @@ test('once()', t => {
 
 test('all()', t => {
   let a = new AssertOrder()
-  a.all(0, 2)
-  a.all(0, 2)
+  t.is(a.all(0, 2), 1)
+  t.is(a.all(0, 2), 2)
   a.step(1)
 
   a = new AssertOrder()
@@ -169,10 +169,10 @@ test('all()', t => {
   t.throws(() => a.all(0, 3), 'The plan count (3) does not match with previous value (2).')
 
   a = new AssertOrder()
-  a.all(0, 1)
+  t.is(a.all(0, 1), 1)
   a.step(1)
-  a.all(2, 2)
-  a.all(2, 2)
+  t.is(a.all(2, 2), 1)
+  t.is(a.all(2, 2), 2)
   a.step(3)
 })
 
@@ -206,9 +206,9 @@ test('plan()', t => {
   t.throws(() => a.plan(0, 3), 'The plan count (3) does not match with previous value (2).')
 
   a = new AssertOrder()
-  a.plan(0, 1)
+  t.is(a.plan(0, 1), 1)
   a.step(1)
-  a.plan(2, 2)
-  a.plan(2, 2)
+  t.is(a.plan(2, 2), 1)
+  t.is(a.plan(2, 2), 2)
   a.step(3)
 })
