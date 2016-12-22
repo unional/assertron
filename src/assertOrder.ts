@@ -7,40 +7,69 @@ export interface Steps {
 export class AssertOrder {
   private static alias = {
     step: 'once',
-    any: 'some',
-    plan: 'all'
+    any: 'once'
   }
   private static reverseAlias = {
     once: ['step'],
-    some: ['any'],
-    all: ['plan']
+    some: [],
+    all: []
   }
 
-  private possibleSteps: Steps
-  private planCounter = 0
-  private targetCount: number | undefined
-  constructor(initStep = 0) {
-    this.possibleSteps = {
+  private currentStep: number
+  private possibleMoves: Steps
+  private miniSteps = 0
+  private targetMiniSteps: number | undefined
+  constructor(public plannedSteps?: number, initStep = 0) {
+    this.currentStep = initStep
+    this.possibleMoves = {
       once: [initStep],
       some: [initStep],
       all: [initStep]
     }
   }
 
+  end() {
+    if (this.plannedSteps !== undefined && this.currentStep !== this.plannedSteps) {
+      throw new Error(`Planned ${this.plannedSteps} steps but executed ${this.currentStep} steps`)
+    }
+  }
+
   step(step: number) {
-    this.validate('step', step, 1)
+    if (this.isValidStep('step', [step])) {
+      this.moveNext()
+      return this.currentStep++
+    }
+    else {
+      throw new Error(this.getErrorMessage('step', step))
+    }
   }
 
   /**
-   * Assert the specified step will be reached at least once.
-   * @returns how many times this step has occured.
+   * Assert the specified step will run once.
    */
-  any(step: number) {
-    return this.validate('any', step, undefined, {
-      once: [step + 1],
-      some: [step, step + 1],
-      all: [step + 1]
-    })
+  once(step: number) {
+    // this.validate('once', [step], 1)
+    if (this.isValidStep('once', [step])) {
+      this.moveNext()
+      return this.currentStep++
+    }
+    else {
+      throw new Error(this.getErrorMessage('once', step))
+    }
+  }
+
+  /**
+   * Assert this place will be called during any of the specified steps.
+   * @returns the step it is being called right now.
+   */
+  any(...anySteps: number[]) {
+    if (this.isValidStep('any', anySteps)) {
+      this.moveNext()
+      return this.currentStep++
+    }
+    else {
+      throw new Error(this.getErrorMessage('any', ...anySteps))
+    }
   }
 
   /**
@@ -48,11 +77,22 @@ export class AssertOrder {
    * @returns how many times this step has occured.
    */
   some(step: number) {
-    return this.validate('some', step, undefined, {
-      once: [step + 1],
-      some: [step, step + 1],
-      all: [step + 1]
-    })
+    if (this.isValidStep('some', [step])) {
+      if (step === this.currentStep) {
+        this.moveNext({
+          once: [step + 1],
+          some: [step, step + 1],
+          all: [step + 1]
+        })
+        this.miniSteps = 0
+        this.currentStep++
+      }
+
+      return ++this.miniSteps
+    }
+    else {
+      throw new Error(this.getErrorMessage('some', step))
+    }
   }
 
   /**
@@ -60,89 +100,57 @@ export class AssertOrder {
    * @returns how many times this step has occured.
    */
   all(step: number, plan: number) {
-    return this.validate('all', step, plan, {
-      all: [step]
-    })
-  }
+    if (plan <= 0) {
+      throw new Error(`${plan} is not a valid 'plan' value.`)
+    }
+    if (this.targetMiniSteps && this.targetMiniSteps !== plan) {
+      throw new Error(`The plan count (${plan}) does not match with previous value (${this.targetMiniSteps}).`)
+    }
 
-  /**
-   * Assert the specified step will be reached x times.
-   * @returns how many times this step has occured.
-   */
-  plan(step: number, plan: number) {
-    return this.validate('plan', step, plan, {
-      all: [step]
-    })
-  }
-
-  /**
-   * Assert the specified step will run once.
-   */
-  once(step: number) {
-    this.validate('once', step, 1)
-  }
-
-  private validate(fnName: string, step: number, count: number | undefined, steps: Steps = {
-    once: [step + 1],
-    some: [step + 1],
-    all: [step + 1]
-  }) {
-    // console.log(fnName, step, count, this.possibleSteps)
-    const id = AssertOrder.alias[fnName] || fnName
-
-    if (this.possibleSteps[id] && this.possibleSteps[id].indexOf(step) !== -1) {
-      if (step === (this.possibleSteps.once && this.possibleSteps.once[0])) {
-        // It's advancing to the next step
-        this.planCounter = 1
-      }
-      else {
-        ++this.planCounter
+    if (this.isValidStep('all', [step], plan)) {
+      if (this.targetMiniSteps === undefined) {
+        this.targetMiniSteps = plan
+        this.miniSteps = 0
+        this.moveNext({
+          all: [step]
+        })
       }
 
-      if (count === undefined) {
-        this.possibleSteps = steps
+      this.miniSteps++
+      if (plan === this.miniSteps) {
+        this.moveNext()
+        this.currentStep++
+        this.targetMiniSteps = undefined
       }
-      else if (count <= 0) {
-        throw new Error(`${count} is not a valid 'plan' value.`)
-      }
-      else {
-        if (this.targetCount === undefined) {
-          this.targetCount = count
-        }
-        else if (count !== this.targetCount) {
-          throw new Error(`The plan count (${count}) does not match with previous value (${this.targetCount}).`)
-        }
-
-        // console.log(this.planCounter, count)
-        if (this.planCounter === count) {
-          // counter reached. Resetting
-          this.targetCount = undefined
-          this.possibleSteps = {
-            once: [step + 1],
-            some: [step + 1],
-            all: [step + 1]
-          }
-        }
-        else {
-          this.possibleSteps = steps
-        }
-      }
+      return this.miniSteps
     }
     else {
-      throw new Error(this.getErrorMessage(fnName, step))
+      throw new Error(this.getErrorMessage('all', step))
     }
-
-    return this.planCounter
   }
 
-  private getErrorMessage(calledFn: string, calledStep: number) {
+  private isValidStep(fnName: string, steps: number[], count?: number) {
+    // console.log(`${fnName}(${steps}${count ? ',' + count : ''}), c: ${this.currentStep}, m: ${this.miniSteps}`, this.possibleMoves)
+    const id = AssertOrder.alias[fnName] || fnName
+    const step = steps.find(s => this.possibleMoves[id] && this.possibleMoves[id].some(x => x === s))
+    return (!count || this.miniSteps <= count) && step !== undefined
+  }
+  private moveNext(nextMoves: Steps = {
+    once: [this.currentStep + 1],
+    some: [this.currentStep + 1],
+    all: [this.currentStep + 1]
+  }) {
+    this.possibleMoves = nextMoves
+  }
+
+  private getErrorMessage(calledFn: string, ...calledSteps: number[]) {
     const should: string[] = []
-    for (let key in this.possibleSteps) {
+    for (let key in this.possibleMoves) {
       should.push(...([key, ...AssertOrder.reverseAlias[key]].map(name =>
-        `'${name}(${this.possibleSteps[key].join('|')})'`
+        `'${name}(${this.possibleMoves[key].join('|')})'`
       )))
     }
 
-    return `Expecting ${should.join(', ')}, but received '${calledFn}(${calledStep})'`
+    return `Expecting ${should.join(', ')}, but received '${calledFn}(${calledSteps.join(',')})'`
   }
 }
