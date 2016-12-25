@@ -19,9 +19,13 @@ test('different starting index', t => {
 test('once()', t => {
   let a = new AssertOrder()
   a.once(0)
+  t.is(a.next, 1)
   a.once(1)
+  t.is(a.next, 2)
   a.once(2)
+  t.is(a.next, 3)
   a.once(3)
+  t.is(a.next, 4)
 
   a = new AssertOrder()
   t.throws(() => a.once(1), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', but received 'once(1)'")
@@ -80,9 +84,13 @@ test('some()', t => {
   let a = new AssertOrder()
 
   a.step(0)
+  t.is(a.next, 1)
   a.some(1)
+  t.is(a.next, 2)
   a.some(1)
+  t.is(a.next, 2)
   a.step(2)
+  t.is(a.next, 3)
 
   a = new AssertOrder()
 
@@ -115,8 +123,11 @@ test('some()', t => {
 test('all()', t => {
   let a = new AssertOrder()
   t.is(a.all(0, 2), 1)
+  t.is(a.next, 0)
   t.is(a.all(0, 2), 2)
+  t.is(a.next, 1)
   a.step(1)
+  t.is(a.next, 2)
 
   a = new AssertOrder()
   t.throws(() => a.all(0, 0), "0 is not a valid 'plan' value.")

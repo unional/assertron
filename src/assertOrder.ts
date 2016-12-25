@@ -15,12 +15,17 @@ export class AssertOrder {
     all: []
   }
 
-  private currentStep: number
+  /**
+   * Gets what is the next expecting step.
+   * If the current step is `some(n)`, this reflects the step after `some(n)`
+   */
+  public get next() { return this.nextStep }
+  private nextStep: number
   private possibleMoves: Steps
   private miniSteps = 0
   private targetMiniSteps: number | undefined
   constructor(public plannedSteps?: number, initStep = 0) {
-    this.currentStep = initStep
+    this.nextStep = initStep
     this.possibleMoves = {
       once: [initStep],
       some: [initStep],
@@ -36,9 +41,9 @@ export class AssertOrder {
   end(): void
   end(timeout?: number) {
     const check = (() => {
-      return this.plannedSteps === undefined || this.currentStep === this.plannedSteps
+      return this.plannedSteps === undefined || this.nextStep === this.plannedSteps
     })
-    const getErrorMsg = () => `Planned ${this.plannedSteps} steps but executed ${this.currentStep} steps`
+    const getErrorMsg = () => `Planned ${this.plannedSteps} steps but executed ${this.nextStep} steps`
 
     if (timeout) {
       return new Promise((resolve, reject) => {
@@ -61,7 +66,7 @@ export class AssertOrder {
   step(step: number) {
     if (this.isValidStep('step', [step])) {
       this.moveNext()
-      return this.currentStep++
+      return this.nextStep++
     }
     else {
       throw new Error(this.getErrorMessage('step', step))
@@ -75,7 +80,7 @@ export class AssertOrder {
     // this.validate('once', [step], 1)
     if (this.isValidStep('once', [step])) {
       this.moveNext()
-      return this.currentStep++
+      return this.nextStep++
     }
     else {
       throw new Error(this.getErrorMessage('once', step))
@@ -89,7 +94,7 @@ export class AssertOrder {
   any(...anySteps: number[]) {
     if (this.isValidStep('any', anySteps)) {
       this.moveNext()
-      return this.currentStep++
+      return this.nextStep++
     }
     else {
       throw new Error(this.getErrorMessage('any', ...anySteps))
@@ -102,14 +107,14 @@ export class AssertOrder {
    */
   some(step: number) {
     if (this.isValidStep('some', [step])) {
-      if (step === this.currentStep) {
+      if (step === this.nextStep) {
         this.moveNext({
           once: [step + 1],
           some: [step, step + 1],
           all: [step + 1]
         })
         this.miniSteps = 0
-        this.currentStep++
+        this.nextStep++
       }
 
       return ++this.miniSteps
@@ -143,7 +148,7 @@ export class AssertOrder {
       this.miniSteps++
       if (plan === this.miniSteps) {
         this.moveNext()
-        this.currentStep++
+        this.nextStep++
         this.targetMiniSteps = undefined
       }
       return this.miniSteps
@@ -160,9 +165,9 @@ export class AssertOrder {
     return (!count || this.miniSteps <= count) && step !== undefined
   }
   private moveNext(nextMoves: Steps = {
-    once: [this.currentStep + 1],
-    some: [this.currentStep + 1],
-    all: [this.currentStep + 1]
+    once: [this.nextStep + 1],
+    some: [this.nextStep + 1],
+    all: [this.nextStep + 1]
   }) {
     this.possibleMoves = nextMoves
   }
