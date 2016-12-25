@@ -56,8 +56,8 @@ test('step()', t => {
 
 test('any()', t => {
   let a = new AssertOrder()
-  a.any(0, 1)
-  a.any(0, 1)
+  t.is(a.any(0, 1), 0)
+  t.is(a.any(0, 1), 1)
   a.step(2)
 
   a = new AssertOrder()
@@ -168,4 +168,18 @@ test('end()', t => {
   t.throws(() => a.end(), `Planned 3 steps but executed 2 steps`)
   t.is(a.all(2, 2), 2)
   a.end()
+
+  a = new AssertOrder(1)
+  setTimeout(() => {
+    a.once(0)
+  }, 10)
+  return a.end(50)
+})
+
+test(`end() reject`, t => {
+  const a = new AssertOrder(2)
+  setTimeout(() => {
+    a.once(0)
+  }, 50)
+  return a.end(1).then(() => t.fail('should fail'), () => t.pass('should fail'))
 })

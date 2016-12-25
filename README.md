@@ -11,6 +11,9 @@ This is the library for that.
 import AssertOrder form 'assert-order'
 
 let a = new AssertOrder()
+
+function doSomething() { a.any(5, 6) }
+
 a.once(0)
 a.once(1)
 a.some(2)
@@ -18,6 +21,15 @@ a.some(2)
 a.all(3, 2)
 a.all(3, 2)
 a.once(4)
+doSomething()
+doSomething()
+
+a = new AssertOrder(2)
+a.once(0)
+setTimeout(() => a.once(1), 10)
+
+// Wait for 50 millisecond before verifying.
+a.end(50)
 ```
 
 ## Using global build

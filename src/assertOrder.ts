@@ -28,9 +28,33 @@ export class AssertOrder {
     }
   }
 
-  end() {
-    if (this.plannedSteps !== undefined && this.currentStep !== this.plannedSteps) {
-      throw new Error(`Planned ${this.plannedSteps} steps but executed ${this.currentStep} steps`)
+  /**
+   * Verify all planned steps are executed.
+   * @param timeout If specified, will return a promise that resolve after the specified time (in milliseconds) or rejected if failed.
+   */
+  end(timeout: number): Promise<never>
+  end(): void
+  end(timeout?: number) {
+    const check = (() => {
+      return this.plannedSteps === undefined || this.currentStep === this.plannedSteps
+    })
+    const getErrorMsg = () => `Planned ${this.plannedSteps} steps but executed ${this.currentStep} steps`
+
+    if (timeout) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          if (check()) {
+            resolve()
+          }
+          else {
+            reject(new Error(getErrorMsg()))
+          }
+        }, timeout);
+      })
+    }
+
+    if (!check()) {
+      throw new Error(getErrorMsg())
     }
   }
 
