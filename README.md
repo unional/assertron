@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/unional/assert-order.svg?branch=master)](https://travis-ci.org/unional/assert-order)
 [![Coverage Status](https://coveralls.io/repos/github/unional/assert-order/badge.svg?branch=master)](https://coveralls.io/github/unional/assert-order?branch=master)
+![](http://img.badgesize.io/unional/assert-order/master/dist/assert-order.js)
 
 ...sometimes we do need to assert code are executed in certain order.
 
