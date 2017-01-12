@@ -8,7 +8,7 @@
 This is the library for that.
 
 ```ts
-import AssertOrder form 'assert-order'
+import AssertOrder from 'assert-order'
 
 let a = new AssertOrder()
 

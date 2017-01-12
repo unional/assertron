@@ -20,26 +20,34 @@
     "preversion": "git pull && npm run verify",
     "test": "npm run clean && tsc && nyc ava",
     "verify": "npm run lint && npm run coverage && npm run build && npm run dependency-check",
-    "watch": "npm run clean && node bin/watch.js"
+    "watch": "npm run clean && node scripts/watch.js"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unional/assert-order.git"
+  },
+  "bugs": {
+    "url": "https://github.com/unional/assert-order/issues"
+  },
+  "homepage": "https://github.com/unional/assert-order",
   "ava": {
     "files": [
       "dist/spec/**/*.spec.js"
     ],
     "source": [
-      "bin/*.js",
+      "scripts/*.js",
       "dist/spec/**/*.js",
       "*.json"
     ],
     "require": [
-      "./bin/setup-browser-env.js",
-      "./bin/setup-test-env.js"
+      "./scripts/setup-browser-env.js",
+      "./scripts/setup-test-env.js"
     ]
   },
   "nyc": {
     "exclude": [
-      "bin",
+      "scripts",
       "**/*.spec.*",
       "**/fixtures/**/*"
     ]
@@ -48,12 +56,9 @@
     "name": "Homa Wong",
     "email": "homawong@gmail.com"
   },
-  "peerDependencies": {
-    "@unional/logging": ">=0.1.1"
-  },
   "devDependencies": {
-    "@unional/logging": "^0.1.1",
-    "aurelia-polyfills": "^1.1.1",
+    "aurelia-logging": "^1.2.0",
+    "aurelia-logging-color": "^0.3.1",
     "ava": "^0.17.0",
     "browser-env": "^2.0.19",
     "core-js": "^2.4.1",
@@ -61,6 +66,7 @@
     "eslint": "^3.12.2",
     "eslint-config-unional": "^0.2.3",
     "nyc": "^10.0.0",
+    "param-case": "^2.1.0",
     "pascal-case": "^2.0.0",
     "rimraf": "^2.5.4",
     "source-map-loader": "^0.1.5",
@@ -68,7 +74,6 @@
     "tslint-config-unional": "^0.6.0",
     "typescript": "^2.1.4",
     "typings": "^2.1.0",
-    "webpack": "^1.14.0",
-    "webpack-fail-plugin": "^1.0.5"
+    "webpack": "^2.2.0-rc.4"
   }
 }

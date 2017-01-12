@@ -1,43 +1,32 @@
 'use strict';
-const path = require('path')
+const paramCase = require('param-case')
 const pascalCase = require('pascal-case')
-const webpack = require('webpack')
-const failPlugin = require('webpack-fail-plugin')
+const path = require('path')
+
 const pjson = require('./package.json')
 
 const packageName = pjson.name
-const filename = (packageName.indexOf('@') === 0? packageName.slice(1): packageName).split('/').join('-')
-const version = pjson.version
-const ns = pascalCase(filename)
+const filename = paramCase(packageName)
+const globalVariable = pascalCase(filename)
 
 module.exports = {
-  externals: {
-    // TODO: list external dependencies, e.g.:
-    // lodash: '_'
-  },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   entry: {
     [filename]: './dist/commonjs/index'
   },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: `${filename}.js`,
-    library: ns,
+    library: globalVariable,
     libraryTarget: 'var'
   },
   module: {
-    preLoaders: [
+    rules: [
       {
-        test: /\.js$/,
-        loader: "source-map-loader"
+        enforce: 'pre',
+        loader: "source-map-loader",
+        test: /\.js?$/
       }
     ]
-  },
-  plugins: [
-    new webpack.BannerPlugin(`${filename}.js, version: ${version}, generated on: ${new Date().toDateString()}`),
-    failPlugin
-  ],
-  ts: {
-    configFileName: 'tsconfig.webpack.json'
   }
 }
