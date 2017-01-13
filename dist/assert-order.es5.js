@@ -1,4 +1,3 @@
-/*! assert-order.js version: 2.2.3 generated on: Fri Jan 13 2017 */
 var AssertOrder =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
