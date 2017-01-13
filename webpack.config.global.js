@@ -17,7 +17,7 @@ module.exports = {
   },
   devtool: 'source-map',
   entry: {
-    [filename]: './dist/es5/index'
+    [filename]: './dist/es2015/index'
   },
   output: {
     path: path.join(__dirname, 'dist'),

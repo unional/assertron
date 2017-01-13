@@ -13,7 +13,7 @@ const moduleName = pascalCase(pkg.name)
 
 export default {
   dest: `dist/${paramCase(pkg.name)}.js`,
-  entry: 'dist/es2015/index.js',
+  entry: 'dist/es5/index.js',
   exports: 'named',
   format: 'iife',
   moduleId: pkg.name,
@@ -35,9 +35,8 @@ export default {
     }),
     nodeGlobals(),
     nodeBuiltins(),
-    commonjs()
-    // ,
-    // uglify()
+    commonjs(),
+    uglify()
   ],
   sourceMap: true
 };
