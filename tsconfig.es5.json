@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist/es5",
+    "sourceRoot": "/assert-order"
+  },
+  "files": [
+    "src/index.ts"
+  ],
+  "include": [
+    "typings/index.d.ts"
+  ]
+}

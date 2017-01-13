@@ -13,7 +13,9 @@
     "moduleResolution": "node",
     "newLine": "LF",
     "noImplicitAny": false,
-    "removeComments": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": false,
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es5"

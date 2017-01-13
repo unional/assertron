@@ -1,82 +1,16 @@
-/*! assert-order.js version: 2.2.1 generated on: Thu Jan 12 2017 */
-var AssertOrder =
-/******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-/******/
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// identity function for calling harmony imports with the correct context
-/******/ 	__webpack_require__.i = function(value) { return value; };
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, {
-/******/ 				configurable: false,
-/******/ 				enumerable: true,
-/******/ 				get: getter
-/******/ 			});
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+(function (exports) {
+'use strict';
 
-"use strict";
+function unwrapExports (x) {
+	return x && x.__esModule ? x['default'] : x;
+}
 
-var AssertOrder = (function () {
-    function AssertOrder(plannedSteps, initStep) {
-        if (initStep === void 0) { initStep = 0; }
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+class AssertOrder {
+    constructor(plannedSteps, initStep = 0) {
         this.plannedSteps = plannedSteps;
         this.miniSteps = 0;
         this.nextStep = initStep;
@@ -86,20 +20,19 @@ var AssertOrder = (function () {
             all: [initStep]
         };
     }
-    Object.defineProperty(AssertOrder.prototype, "next", {
-        get: function () { return this.nextStep; },
-        enumerable: true,
-        configurable: true
-    });
-    AssertOrder.prototype.end = function (timeout) {
-        var _this = this;
-        var check = (function () {
-            return _this.plannedSteps === undefined || _this.nextStep === _this.plannedSteps;
+    /**
+     * Gets what is the next expecting step.
+     * If the current step is `some(n)`, this reflects the step after `some(n)`
+     */
+    get next() { return this.nextStep; }
+    end(timeout) {
+        const check = (() => {
+            return this.plannedSteps === undefined || this.nextStep === this.plannedSteps;
         });
-        var getErrorMsg = function () { return "Planned " + _this.plannedSteps + " steps but executed " + _this.nextStep + " steps"; };
+        const getErrorMsg = () => `Planned ${this.plannedSteps} steps but executed ${this.nextStep} steps`;
         if (timeout) {
-            return new Promise(function (resolve, reject) {
-                setTimeout(function () {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
                     if (check()) {
                         resolve();
                     }
@@ -112,8 +45,8 @@ var AssertOrder = (function () {
         if (!check()) {
             throw new Error(getErrorMsg());
         }
-    };
-    AssertOrder.prototype.step = function (step) {
+    }
+    step(step) {
         if (this.isValidStep('step', [step])) {
             this.moveNext();
             return this.nextStep++;
@@ -121,8 +54,12 @@ var AssertOrder = (function () {
         else {
             throw new Error(this.getErrorMessage('step', step));
         }
-    };
-    AssertOrder.prototype.once = function (step) {
+    }
+    /**
+     * Assert the specified step will run once.
+     */
+    once(step) {
+        // this.validate('once', [step], 1)
         if (this.isValidStep('once', [step])) {
             this.moveNext();
             return this.nextStep++;
@@ -130,21 +67,25 @@ var AssertOrder = (function () {
         else {
             throw new Error(this.getErrorMessage('once', step));
         }
-    };
-    AssertOrder.prototype.any = function () {
-        var anySteps = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            anySteps[_i] = arguments[_i];
-        }
+    }
+    /**
+     * Assert this place will be called during any of the specified steps.
+     * @returns the step it is being called right now.
+     */
+    any(...anySteps) {
         if (this.isValidStep('any', anySteps)) {
             this.moveNext();
             return this.nextStep++;
         }
         else {
-            throw new Error(this.getErrorMessage.apply(this, ['any'].concat(anySteps)));
+            throw new Error(this.getErrorMessage('any', ...anySteps));
         }
-    };
-    AssertOrder.prototype.some = function (step) {
+    }
+    /**
+     * Assert the specified step will be reached at least once.
+     * @returns how many times this step has occured.
+     */
+    some(step) {
         if (this.isValidStep('some', [step])) {
             if (step === this.nextStep) {
                 this.moveNext({
@@ -160,13 +101,17 @@ var AssertOrder = (function () {
         else {
             throw new Error(this.getErrorMessage('some', step));
         }
-    };
-    AssertOrder.prototype.all = function (step, plan) {
+    }
+    /**
+     * Assert the specified step will be reached x times.
+     * @returns how many times this step has occured.
+     */
+    all(step, plan) {
         if (plan <= 0) {
-            throw new Error(plan + " is not a valid 'plan' value.");
+            throw new Error(`${plan} is not a valid 'plan' value.`);
         }
         if (this.targetMiniSteps && this.targetMiniSteps !== plan) {
-            throw new Error("The plan count (" + plan + ") does not match with previous value (" + this.targetMiniSteps + ").");
+            throw new Error(`The plan count (${plan}) does not match with previous value (${this.targetMiniSteps}).`);
         }
         if (this.isValidStep('all', [step], plan)) {
             if (this.targetMiniSteps === undefined) {
@@ -187,40 +132,28 @@ var AssertOrder = (function () {
         else {
             throw new Error(this.getErrorMessage('all', step));
         }
-    };
-    AssertOrder.prototype.isValidStep = function (fnName, steps, count) {
-        var _this = this;
-        var id = AssertOrder.alias[fnName] || fnName;
-        var step = steps.find(function (s) { return _this.possibleMoves[id] && _this.possibleMoves[id].some(function (x) { return x === s; }); });
+    }
+    isValidStep(fnName, steps, count) {
+        // console.log(`${fnName}(${steps}${count ? ',' + count : ''}), c: ${this.currentStep}, m: ${this.miniSteps}`, this.possibleMoves)
+        const id = AssertOrder.alias[fnName] || fnName;
+        const step = steps.find(s => this.possibleMoves[id] && this.possibleMoves[id].some(x => x === s));
         return (!count || this.miniSteps <= count) && step !== undefined;
-    };
-    AssertOrder.prototype.moveNext = function (nextMoves) {
-        if (nextMoves === void 0) { nextMoves = {
+    }
+    moveNext(nextMoves = {
             once: [this.nextStep + 1],
             some: [this.nextStep + 1],
             all: [this.nextStep + 1]
-        }; }
+        }) {
         this.possibleMoves = nextMoves;
-    };
-    AssertOrder.prototype.getErrorMessage = function (calledFn) {
-        var _this = this;
-        var calledSteps = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            calledSteps[_i - 1] = arguments[_i];
+    }
+    getErrorMessage(calledFn, ...calledSteps) {
+        const should = [];
+        for (let key in this.possibleMoves) {
+            should.push(...([key, ...AssertOrder.reverseAlias[key]].map(name => `'${name}(${this.possibleMoves[key].join('|')})'`)));
         }
-        var should = [];
-        var _loop_1 = function (key) {
-            should.push.apply(should, ([key].concat(AssertOrder.reverseAlias[key]).map(function (name) {
-                return "'" + name + "(" + _this.possibleMoves[key].join('|') + ")'";
-            })));
-        };
-        for (var key in this.possibleMoves) {
-            _loop_1(key);
-        }
-        return "Expecting " + should.join(', ') + ", but received '" + calledFn + "(" + calledSteps.join(',') + ")'";
-    };
-    return AssertOrder;
-}());
+        return `Expecting ${should.join(', ')}, but received '${calledFn}(${calledSteps.join(',')})'`;
+    }
+}
 AssertOrder.alias = {
     step: 'once',
     any: 'once'
@@ -230,20 +163,24 @@ AssertOrder.reverseAlias = {
     some: [],
     all: []
 };
-exports.AssertOrder = AssertOrder;
+var AssertOrder_1 = AssertOrder;
 
 
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+var assertOrder = {
+	AssertOrder: AssertOrder_1
+};
 
+var index = createCommonjsModule(function (module, exports) {
 "use strict";
-
-var assertOrder_1 = __webpack_require__(0);
+const assertOrder_1 = assertOrder;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = assertOrder_1.AssertOrder;
 
+});
 
-/***/ })
-/******/ ]);
+var index$1 = unwrapExports(index);
+
+exports['default'] = index$1;
+
+}((this.AssertOrder = this.AssertOrder || {})));
 //# sourceMappingURL=assert-order.js.map

@@ -17,7 +17,7 @@ module.exports = {
   },
   devtool: 'source-map',
   entry: {
-    [filename]: './dist/commonjs/index'
+    [filename]: './dist/es5/index'
   },
   output: {
     path: path.join(__dirname, 'dist'),
