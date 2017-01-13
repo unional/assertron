@@ -1,6 +1,6 @@
 {
   "name": "assert-order",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "main": "dist/es5/index.js",
   "module": "dist/es2015/index.js",
   "typings": "dist/es5/index.d.ts",
