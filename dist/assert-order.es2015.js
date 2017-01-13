@@ -1,15 +1,7 @@
 (function (exports) {
 'use strict';
 
-function unwrapExports (x) {
-	return x && x.__esModule ? x['default'] : x;
-}
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-class AssertOrder {
+class AssertOrder$1 {
     constructor(plannedSteps, initStep = 0) {
         this.plannedSteps = plannedSteps;
         this.miniSteps = 0;
@@ -135,7 +127,7 @@ class AssertOrder {
     }
     isValidStep(fnName, steps, count) {
         // console.log(`${fnName}(${steps}${count ? ',' + count : ''}), c: ${this.currentStep}, m: ${this.miniSteps}`, this.possibleMoves)
-        const id = AssertOrder.alias[fnName] || fnName;
+        const id = AssertOrder$1.alias[fnName] || fnName;
         const step = steps.find(s => this.possibleMoves[id] && this.possibleMoves[id].some(x => x === s));
         return (!count || this.miniSteps <= count) && step !== undefined;
     }
@@ -149,38 +141,22 @@ class AssertOrder {
     getErrorMessage(calledFn, ...calledSteps) {
         const should = [];
         for (let key in this.possibleMoves) {
-            should.push(...([key, ...AssertOrder.reverseAlias[key]].map(name => `'${name}(${this.possibleMoves[key].join('|')})'`)));
+            should.push(...([key, ...AssertOrder$1.reverseAlias[key]].map(name => `'${name}(${this.possibleMoves[key].join('|')})'`)));
         }
         return `Expecting ${should.join(', ')}, but received '${calledFn}(${calledSteps.join(',')})'`;
     }
 }
-AssertOrder.alias = {
+AssertOrder$1.alias = {
     step: 'once',
     any: 'once'
 };
-AssertOrder.reverseAlias = {
+AssertOrder$1.reverseAlias = {
     once: ['step'],
     some: [],
     all: []
 };
-var AssertOrder_1 = AssertOrder;
 
-
-var assertOrder = {
-	AssertOrder: AssertOrder_1
-};
-
-var index = createCommonjsModule(function (module, exports) {
-"use strict";
-const assertOrder_1 = assertOrder;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = assertOrder_1.AssertOrder;
-
-});
-
-var index$1 = unwrapExports(index);
-
-exports['default'] = index$1;
+exports['default'] = AssertOrder$1;
 
 }((this.AssertOrder = this.AssertOrder || {})));
 //# sourceMappingURL=assert-order.es2015.js.map
