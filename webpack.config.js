@@ -17,11 +17,11 @@ module.exports = {
   },
   devtool: 'source-map',
   entry: {
-    [filename]: './dist/es2015/index'
+    [filename]: './dist/es5/index'
   },
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: `${filename}.js`,
+    filename: `${filename}.es5.js`,
     library: globalVariable,
     libraryTarget: 'var'
   },
