@@ -7,12 +7,13 @@ export interface Steps {
 export class AssertOrder {
   private static alias = {
     step: 'once',
-    any: 'once'
+    any: 'once',
+    multiple: 'all'
   }
   private static reverseAlias = {
     once: ['step'],
     some: [],
-    all: []
+    all: ['multiple']
   }
 
   /**

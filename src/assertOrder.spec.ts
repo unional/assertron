@@ -28,15 +28,15 @@ test('once()', t => {
   t.is(a.next, 4)
 
   a = new AssertOrder()
-  t.throws(() => a.once(1), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', but received 'once(1)'")
+  t.throws(() => a.once(1), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'once(1)'")
 
   a = new AssertOrder()
   a.once(0)
-  t.throws(() => a.once(2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', but received 'once(2)'")
+  t.throws(() => a.once(2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'once(2)'")
 
   a = new AssertOrder()
   a.once(0)
-  t.throws(() => a.once(0), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', but received 'once(0)'")
+  t.throws(() => a.once(0), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'once(0)'")
 })
 
 test('step()', t => {
@@ -47,15 +47,15 @@ test('step()', t => {
   a.step(3)
 
   a = new AssertOrder()
-  t.throws(() => a.step(1), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', but received 'step(1)'")
+  t.throws(() => a.step(1), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'step(1)'")
 
   a = new AssertOrder()
   a.step(0)
-  t.throws(() => a.step(2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', but received 'step(2)'")
+  t.throws(() => a.step(2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'step(2)'")
 
   a = new AssertOrder()
   a.step(0)
-  t.throws(() => a.step(0), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', but received 'step(0)'")
+  t.throws(() => a.step(0), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'step(0)'")
 })
 
 test('any()', t => {
@@ -73,11 +73,11 @@ test('any()', t => {
   a.step(5)
 
   a = new AssertOrder()
-  t.throws(() => a.any(1, 2), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', but received 'any(1,2)'")
+  t.throws(() => a.any(1, 2), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'any(1,2)'")
 
   a = new AssertOrder()
   a.step(0)
-  t.throws(() => a.any(2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', but received 'any(2)'")
+  t.throws(() => a.any(2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'any(2)'")
 })
 
 test('some()', t => {
@@ -97,7 +97,7 @@ test('some()', t => {
   a.some(0)
   a.some(0)
   a.step(1)
-  t.throws(() => a.some(1), "Expecting 'once(2)', 'step(2)', 'some(2)', 'all(2)', but received 'some(1)'")
+  t.throws(() => a.some(1), "Expecting 'once(2)', 'step(2)', 'some(2)', 'all(2)', 'multiple(2)', but received 'some(1)'")
 
   a = new AssertOrder()
   t.is(a.some(0), 1)
@@ -110,14 +110,14 @@ test('some()', t => {
   a = new AssertOrder()
   a.some(0)
   a.some(1)
-  t.throws(() => a.some(0), "Expecting 'once(2)', 'step(2)', 'some(1|2)', 'all(2)', but received 'some(0)'")
+  t.throws(() => a.some(0), "Expecting 'once(2)', 'step(2)', 'some(1|2)', 'all(2)', 'multiple(2)', but received 'some(0)'")
 
   a = new AssertOrder()
-  t.throws(() => a.some(1), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', but received 'some(1)'")
+  t.throws(() => a.some(1), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'some(1)'")
 
   a = new AssertOrder()
   a.some(0)
-  t.throws(() => a.some(2), "Expecting 'once(1)', 'step(1)', 'some(0|1)', 'all(1)', but received 'some(2)'")
+  t.throws(() => a.some(2), "Expecting 'once(1)', 'step(1)', 'some(0|1)', 'all(1)', 'multiple(1)', but received 'some(2)'")
 })
 
 test('all()', t => {
@@ -136,17 +136,17 @@ test('all()', t => {
   a = new AssertOrder()
   a.step(0)
   a.some(1)
-  t.throws(() => a.all(1, 1), "Expecting 'once(2)', 'step(2)', 'some(1|2)', 'all(2)', but received 'all(1)'")
+  t.throws(() => a.all(1, 1), "Expecting 'once(2)', 'step(2)', 'some(1|2)', 'all(2)', 'multiple(2)', but received 'all(1)'")
 
   a = new AssertOrder()
   a.step(0)
   a.all(1, 2)
-  t.throws(() => a.some(1), "Expecting 'all(1)', but received 'some(1)'")
+  t.throws(() => a.some(1), "Expecting 'all(1)', 'multiple(1)', but received 'some(1)'")
 
   a = new AssertOrder()
   a.all(0, 2)
   a.all(0, 2)
-  t.throws(() => a.all(0, 2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', but received 'all(0)'")
+  t.throws(() => a.all(0, 2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'all(0)'")
 
   a = new AssertOrder()
   a.all(0, 2)
