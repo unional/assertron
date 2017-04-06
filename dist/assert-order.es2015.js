@@ -148,12 +148,13 @@ class AssertOrder$1 {
 }
 AssertOrder$1.alias = {
     step: 'once',
-    any: 'once'
+    any: 'once',
+    multiple: 'all'
 };
 AssertOrder$1.reverseAlias = {
     once: ['step'],
     some: [],
-    all: []
+    all: ['multiple']
 };
 
 exports['default'] = AssertOrder$1;
