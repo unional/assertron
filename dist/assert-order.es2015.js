@@ -99,31 +99,50 @@ class AssertOrder$1 {
      * @returns how many times this step has occured.
      */
     all(step, plan) {
+        this.validatePlanned(plan);
+        if (this.isValidStep('all', [step], plan)) {
+            return this.moveAllState(step, plan);
+        }
+        else {
+            throw new Error(this.getErrorMessage('all', step));
+        }
+    }
+    /**
+     * Assert the specified step will be reached x times.
+     * @returns how many times this step has occured.
+     */
+    multiple(step, plan) {
+        this.validatePlanned(plan);
+        if (this.isValidStep('multiple', [step], plan)) {
+            return this.moveAllState(step, plan);
+        }
+        else {
+            throw new Error(this.getErrorMessage('multiple', step));
+        }
+    }
+    validatePlanned(plan) {
         if (plan <= 0) {
             throw new Error(`${plan} is not a valid 'plan' value.`);
         }
         if (this.targetMiniSteps && this.targetMiniSteps !== plan) {
             throw new Error(`The plan count (${plan}) does not match with previous value (${this.targetMiniSteps}).`);
         }
-        if (this.isValidStep('all', [step], plan)) {
-            if (this.targetMiniSteps === undefined) {
-                this.targetMiniSteps = plan;
-                this.miniSteps = 0;
-                this.moveNext({
-                    all: [step]
-                });
-            }
-            this.miniSteps++;
-            if (plan === this.miniSteps) {
-                this.moveNext();
-                this.nextStep++;
-                this.targetMiniSteps = undefined;
-            }
-            return this.miniSteps;
+    }
+    moveAllState(step, plan) {
+        if (this.targetMiniSteps === undefined) {
+            this.targetMiniSteps = plan;
+            this.miniSteps = 0;
+            this.moveNext({
+                all: [step]
+            });
         }
-        else {
-            throw new Error(this.getErrorMessage('all', step));
+        this.miniSteps++;
+        if (plan === this.miniSteps) {
+            this.moveNext();
+            this.nextStep++;
+            this.targetMiniSteps = undefined;
         }
+        return this.miniSteps;
     }
     isValidStep(fnName, steps, count) {
         // console.log(`${fnName}(${steps}${count ? ',' + count : ''}), c: ${this.currentStep}, m: ${this.miniSteps}`, this.possibleMoves)
