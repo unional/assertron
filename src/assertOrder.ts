@@ -130,33 +130,56 @@ export class AssertOrder {
    * @returns how many times this step has occured.
    */
   all(step: number, plan: number) {
+    this.validatePlanned(plan)
+
+    if (this.isValidStep('all', [step], plan)) {
+      return this.moveAllState(step, plan)
+    }
+    else {
+      throw new Error(this.getErrorMessage('all', step))
+    }
+  }
+
+  /**
+   * Assert the specified step will be reached x times.
+   * @returns how many times this step has occured.
+   */
+  multiple(step: number, plan: number) {
+    this.validatePlanned(plan)
+
+    if (this.isValidStep('multiple', [step], plan)) {
+      return this.moveAllState(step, plan)
+    }
+    else {
+      throw new Error(this.getErrorMessage('multiple', step))
+    }
+  }
+
+  private validatePlanned(plan) {
     if (plan <= 0) {
       throw new Error(`${plan} is not a valid 'plan' value.`)
     }
     if (this.targetMiniSteps && this.targetMiniSteps !== plan) {
       throw new Error(`The plan count (${plan}) does not match with previous value (${this.targetMiniSteps}).`)
     }
+  }
 
-    if (this.isValidStep('all', [step], plan)) {
-      if (this.targetMiniSteps === undefined) {
-        this.targetMiniSteps = plan
-        this.miniSteps = 0
-        this.moveNext({
-          all: [step]
-        })
-      }
+  private moveAllState(step, plan) {
+    if (this.targetMiniSteps === undefined) {
+      this.targetMiniSteps = plan
+      this.miniSteps = 0
+      this.moveNext({
+        all: [step]
+      })
+    }
 
-      this.miniSteps++
-      if (plan === this.miniSteps) {
-        this.moveNext()
-        this.nextStep++
-        this.targetMiniSteps = undefined
-      }
-      return this.miniSteps
+    this.miniSteps++
+    if (plan === this.miniSteps) {
+      this.moveNext()
+      this.nextStep++
+      this.targetMiniSteps = undefined
     }
-    else {
-      throw new Error(this.getErrorMessage('all', step))
-    }
+    return this.miniSteps
   }
 
   private isValidStep(fnName: string, steps: number[], count?: number) {
