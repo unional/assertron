@@ -36,40 +36,6 @@ setTimeout(() => a.once(1), 10)
 a.end(50)
 ```
 
-## Using global build
-
-To use this library in the global namespace environment, copy and reference the `dist/assert-order.js` file in script tag.
-
-To aid development, you can add the typings to your project by:
-
-Install this package:
-
-```sh
-npm install -D @unional/assert-order
-```
-
-Create `custom-typings/assert-order.d.ts`:
-
-```ts
-export * from 'assert-order'
-export as namesapce AssertOrder
-
-```
-
-Reference that file in your `tsconfig.json`:
-
-```js
-// tsconfig.json
-{
-  "compilerOptions": {
-    "allowJs": true, // if you write in JavaScript
-    "includes": [
-      "custom-typings/*.d.ts"
-    ]
-  }
-}
-```
-
 ## Contribute
 
 ```sh
