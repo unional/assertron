@@ -8,12 +8,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm run clean && npm run build-es5 && npm run build-es2015 && npm run bundle",
+    "build": "npm run clean && npm run build-es5 && npm run build-es2015",
     "build-es5": "tsc -p tsconfig.es5.json",
     "build-es2015": "tsc -p tsconfig.es2015.json",
-    "bundle": "npm run bundle-rollup && npm run bundle-webpack",
-    "bundle-rollup": "rollup --config rollup.config.es2015.js",
-    "bundle-webpack": "webpack --config webpack.config.es5.js",
     "clean": "rimraf dist/es5 && rimraf dist/es2015",
     "coverage": "nyc --check-coverage --branch 85 --functions 85 --lines 85 npm test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
@@ -21,7 +18,7 @@
     "lint": "tslint \"src/**/*.ts\"",
     "postpublish": "git push",
     "prepare": "npm run build",
-    "preversion": "git pull && npm run verify && git add -f dist/assert-order*",
+    "preversion": "git pull && npm run verify",
     "test": "npm run clean && tsc && ava",
     "verify": "npm run lint && npm run coverage && npm run build && npm run dependency-check",
     "watch": "npm run clean && node scripts/watch.js"
