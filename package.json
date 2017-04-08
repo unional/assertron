@@ -34,11 +34,11 @@
   "homepage": "https://github.com/unional/assert-order",
   "ava": {
     "files": [
-      "dist/spec/**/*.spec.js"
+      "dist/es5/**/*.spec.js"
     ],
     "source": [
       "scripts/*.js",
-      "dist/spec/**/*.js",
+      "dist/es5/**/*.js",
       "*.json"
     ],
     "require": [
