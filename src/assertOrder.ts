@@ -1,3 +1,7 @@
+import {FormatError} from './formatError'
+
+var errFormatter = new FormatError();
+
 export interface Steps {
   runOnce?: number[]
   runAtleastOnce?: number[]
@@ -70,7 +74,7 @@ export class AssertOrder {
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('step', step))
+      throw new Error(errFormatter.formatError('step',this.possibleMoves,AssertOrder.reverseAlias,step));
     }
   }
 
@@ -84,7 +88,7 @@ export class AssertOrder {
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('runOnce', step))
+      throw new Error(errFormatter.formatError('runOnce',this.possibleMoves,AssertOrder.reverseAlias,step));
     }
   }
 
@@ -98,7 +102,7 @@ export class AssertOrder {
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('any', ...anySteps))
+      throw new Error(errFormatter.formatError('any',this.possibleMoves,AssertOrder.reverseAlias,...anySteps));
     }
   }
 
@@ -121,7 +125,7 @@ export class AssertOrder {
       return ++this.miniSteps
     }
     else {
-      throw new Error(this.getErrorMessage('runAtleastOnce', step))
+      throw new Error(errFormatter.formatError('runAtleastOnce',this.possibleMoves,AssertOrder.reverseAlias,step));
     }
   }
 
@@ -136,7 +140,7 @@ export class AssertOrder {
       return this.moveAllState(step, plan)
     }
     else {
-      throw new Error(this.getErrorMessage('repeatExactCount', step))
+      throw new Error(errFormatter.formatError('repeatExactCount',this.possibleMoves,AssertOrder.reverseAlias,step));
     }
   }
 
@@ -151,7 +155,7 @@ export class AssertOrder {
       return this.moveAllState(step, plan)
     }
     else {
-      throw new Error(this.getErrorMessage('multiple', step))
+      throw new Error(errFormatter.formatError('multiple',this.possibleMoves,AssertOrder.reverseAlias, step));
     }
   }
 
@@ -194,16 +198,5 @@ export class AssertOrder {
     repeatExactCount: [this.nextStep + 1]
   }) {
     this.possibleMoves = nextMoves
-  }
-
-  private getErrorMessage(calledFn: string, ...calledSteps: number[]) {
-    const should: string[] = []
-    for (let key in this.possibleMoves) {
-      should.push(...([key, ...AssertOrder.reverseAlias[key]].map(name =>
-        `'${name}(${this.possibleMoves[key].join('|')})'`
-      )))
-    }
-
-    return `Expecting ${should.join(', ')}, but received '${calledFn}(${calledSteps.join(',')})'`
   }
 }
