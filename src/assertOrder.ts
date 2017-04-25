@@ -1,6 +1,6 @@
 import {FormatError} from './formatError'
 
-var errFormatter = new FormatError();
+let errFormatter = new FormatError();
 
 export interface Steps {
   runOnce?: number[]
