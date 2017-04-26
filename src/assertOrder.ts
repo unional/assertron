@@ -1,19 +1,23 @@
+import {FormatError} from './formatError'
+
+let errFormatter = new FormatError();
+
 export interface Steps {
-  once?: number[]
-  some?: number[]
-  all?: number[]
+  runOnce?: number[]
+  runAtleastOnce?: number[]
+  repeatExactCount?: number[]
 }
 
 export class AssertOrder {
   private static alias = {
-    step: 'once',
-    any: 'once',
-    multiple: 'all'
+    step: 'runOnce',
+    any: 'runOnce',
+    multiple: 'repeatExactCount'
   }
   private static reverseAlias = {
-    once: ['step'],
-    some: [],
-    all: ['multiple']
+    runOnce: ['step'],
+    runAtleastOnce: [],
+    repeatExactCount: ['multiple']
   }
 
   /**
@@ -28,9 +32,9 @@ export class AssertOrder {
   constructor(public plannedSteps?: number, initStep = 0) {
     this.nextStep = initStep
     this.possibleMoves = {
-      once: [initStep],
-      some: [initStep],
-      all: [initStep]
+      runOnce: [initStep],
+      runAtleastOnce: [initStep],
+      repeatExactCount: [initStep]
     }
   }
 
@@ -70,21 +74,21 @@ export class AssertOrder {
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('step', step))
+      throw new Error(errFormatter.formatError('step',this.possibleMoves,AssertOrder.reverseAlias,step));
     }
   }
 
   /**
    * Assert the specified step will run once.
    */
-  once(step: number) {
+  runOnce(step: number) {
     // this.validate('once', [step], 1)
-    if (this.isValidStep('once', [step])) {
+    if (this.isValidStep('runOnce', [step])) {
       this.moveNext()
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('once', step))
+      throw new Error(errFormatter.formatError('runOnce',this.possibleMoves,AssertOrder.reverseAlias,step));
     }
   }
 
@@ -98,7 +102,7 @@ export class AssertOrder {
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('any', ...anySteps))
+      throw new Error(errFormatter.formatError('any',this.possibleMoves,AssertOrder.reverseAlias,...anySteps));
     }
   }
 
@@ -106,13 +110,13 @@ export class AssertOrder {
    * Assert the specified step will be reached at least once.
    * @returns how many times this step has occured.
    */
-  some(step: number) {
-    if (this.isValidStep('some', [step])) {
+  runAtleastOnce(step: number) {
+    if (this.isValidStep('runAtleastOnce', [step])) {
       if (step === this.nextStep) {
         this.moveNext({
-          once: [step + 1],
-          some: [step, step + 1],
-          all: [step + 1]
+          runOnce: [step + 1],
+          runAtleastOnce: [step, step + 1],
+          repeatExactCount: [step + 1]
         })
         this.miniSteps = 0
         this.nextStep++
@@ -121,7 +125,7 @@ export class AssertOrder {
       return ++this.miniSteps
     }
     else {
-      throw new Error(this.getErrorMessage('some', step))
+      throw new Error(errFormatter.formatError('runAtleastOnce',this.possibleMoves,AssertOrder.reverseAlias,step));
     }
   }
 
@@ -129,14 +133,14 @@ export class AssertOrder {
    * Assert the specified step will be reached x times.
    * @returns how many times this step has occured.
    */
-  all(step: number, plan: number) {
+  repeatExactCount(step: number, plan: number) {
     this.validatePlanned(plan)
 
-    if (this.isValidStep('all', [step], plan)) {
+    if (this.isValidStep('repeatExactCount', [step], plan)) {
       return this.moveAllState(step, plan)
     }
     else {
-      throw new Error(this.getErrorMessage('all', step))
+      throw new Error(errFormatter.formatError('repeatExactCount',this.possibleMoves,AssertOrder.reverseAlias,step));
     }
   }
 
@@ -151,7 +155,7 @@ export class AssertOrder {
       return this.moveAllState(step, plan)
     }
     else {
-      throw new Error(this.getErrorMessage('multiple', step))
+      throw new Error(errFormatter.formatError('multiple',this.possibleMoves,AssertOrder.reverseAlias, step));
     }
   }
 
@@ -169,7 +173,7 @@ export class AssertOrder {
       this.targetMiniSteps = plan
       this.miniSteps = 0
       this.moveNext({
-        all: [step]
+        repeatExactCount: [step]
       })
     }
 
@@ -189,21 +193,10 @@ export class AssertOrder {
     return (!count || this.miniSteps <= count) && step !== undefined
   }
   private moveNext(nextMoves: Steps = {
-    once: [this.nextStep + 1],
-    some: [this.nextStep + 1],
-    all: [this.nextStep + 1]
+    runOnce: [this.nextStep + 1],
+    runAtleastOnce: [this.nextStep + 1],
+    repeatExactCount: [this.nextStep + 1]
   }) {
     this.possibleMoves = nextMoves
-  }
-
-  private getErrorMessage(calledFn: string, ...calledSteps: number[]) {
-    const should: string[] = []
-    for (let key in this.possibleMoves) {
-      should.push(...([key, ...AssertOrder.reverseAlias[key]].map(name =>
-        `'${name}(${this.possibleMoves[key].join('|')})'`
-      )))
-    }
-
-    return `Expecting ${should.join(', ')}, but received '${calledFn}(${calledSteps.join(',')})'`
   }
 }
