@@ -1,7 +1,9 @@
 import test from 'ava'
+import utils from './testUtils'
 import AssertOrder from './index'
 
-test('different starting index', _t => {
+
+test('different starting index', t => {
   let a = new AssertOrder(0, 1)
   a.once(1)
   a.once(2)
@@ -37,6 +39,29 @@ test('once()', t => {
   a = new AssertOrder()
   a.once(0)
   t.throws(() => a.once(0), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'once(0)'")
+})
+
+test('once() async', async t => {
+  let a = new AssertOrder()
+  await utils.onceAsync(a, 0)
+  t.is(a.next, 1)
+  await utils.onceAsync(a, 1)
+  t.is(a.next, 2)
+  await utils.onceAsync(a, 2)
+  t.is(a.next, 3)
+  await utils.onceAsync(a, 3)
+  t.is(a.next, 4)
+
+  a = new AssertOrder()
+  await t.throws(utils.onceAsync(a, 1), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'once(1)'")
+
+  a = new AssertOrder()
+  await utils.onceAsync(a, 0)
+  await t.throws(utils.onceAsync(a, 2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'once(2)'")
+
+  a = new AssertOrder()
+  await utils.onceAsync(a, 0)
+  await t.throws(utils.onceAsync(a, 0), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'once(0)'")
 })
 
 test('step()', t => {
