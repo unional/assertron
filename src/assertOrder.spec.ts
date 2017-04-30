@@ -3,7 +3,7 @@ import utils from './testUtils'
 import AssertOrder from './index'
 
 
-test('different starting index', t => {
+test('different starting index', _t => {
   let a = new AssertOrder(0, 1)
   a.once(1)
   a.once(2)
