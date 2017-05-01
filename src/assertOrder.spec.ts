@@ -2,7 +2,6 @@ import test from 'ava'
 import utils from './testUtils'
 import AssertOrder from './index'
 
-
 test('different starting index', _t => {
   let a = new AssertOrder(0, 1)
   a.once(1)
@@ -43,25 +42,25 @@ test('once()', t => {
 
 test('once() async', async t => {
   let a = new AssertOrder()
-  await utils.onceAsync(a, 0)
+  await utils.runAsync(() => a.once(0))
   t.is(a.next, 1)
-  await utils.onceAsync(a, 1)
+  await utils.runAsync(() => a.once(1))
   t.is(a.next, 2)
-  await utils.onceAsync(a, 2)
+  await utils.runAsync(() => a.once(2))
   t.is(a.next, 3)
-  await utils.onceAsync(a, 3)
+  await utils.runAsync(() => a.once(3))
   t.is(a.next, 4)
 
   a = new AssertOrder()
-  await t.throws(utils.onceAsync(a, 1), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'once(1)'")
+  await t.throws(utils.runAsync(() => a.once(1)), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'once(1)'")
 
   a = new AssertOrder()
-  await utils.onceAsync(a, 0)
-  await t.throws(utils.onceAsync(a, 2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'once(2)'")
+  await utils.runAsync(() => a.once(0))
+  await t.throws(utils.runAsync(() => a.once(2)), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'once(2)'")
 
   a = new AssertOrder()
-  await utils.onceAsync(a, 0)
-  await t.throws(utils.onceAsync(a, 0), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'once(0)'")
+  await utils.runAsync(() => a.once(0))
+  await t.throws(utils.runAsync(() => a.once(0)), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'once(0)'")
 })
 
 test('step()', t => {
@@ -81,6 +80,27 @@ test('step()', t => {
   a = new AssertOrder()
   a.step(0)
   t.throws(() => a.step(0), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'step(0)'")
+})
+
+test('step() async', async t => {
+  let a = new AssertOrder()
+  await utils.runSequentialAsync(
+    () => a.step(0),
+    () => a.step(1),
+    () => a.step(2),
+    () => a.step(3)
+  )
+
+  a = new AssertOrder()
+  await t.throws(utils.runAsync(() => a.step(1)), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'step(1)'")
+
+  a = new AssertOrder()
+  await utils.runAsync(() => a.step(0))
+  await t.throws(utils.runAsync(() => a.step(2)), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'step(2)'")
+
+  a = new AssertOrder()
+  await utils.runAsync(() => a.step(0))
+  await t.throws(utils.runAsync(() => a.step(0)), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'step(0)'")
 })
 
 test('any()', t => {
@@ -105,9 +125,30 @@ test('any()', t => {
   t.throws(() => a.any(2), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'any(2)'")
 })
 
+test('any() async', async t => {
+  let a = new AssertOrder()
+  t.is(await utils.runAsync(() => a.any(0, 1)), 0)
+  t.is(await utils.runAsync(() => a.any(0, 1)), 1)
+  await utils.runAsync(() => a.step(2))
+
+  a = new AssertOrder()
+  t.is(await utils.runAsync(() => a.any(0, 2)), 0)
+  await utils.runAsync(() => a.step(1))
+  t.is(await utils.runAsync(() => a.any(1, 2)), 2)
+  t.is(await utils.runAsync(() => a.any(3, 4, 5)), 3)
+  t.is(await utils.runAsync(() => a.any(4)), 4)
+  await utils.runAsync(() => a.step(5))
+
+  a = new AssertOrder()
+  t.throws(utils.runAsync(() => a.any(1, 2)), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'any(1,2)'")
+
+  a = new AssertOrder()
+  await utils.runAsync(() => a.step(0))
+  await t.throws(utils.runAsync(() => a.any(2)), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'any(2)'")
+})
+
 test('some()', t => {
   let a = new AssertOrder()
-
   a.step(0)
   t.is(a.next, 1)
   a.some(1)
@@ -118,7 +159,6 @@ test('some()', t => {
   t.is(a.next, 3)
 
   a = new AssertOrder()
-
   a.some(0)
   a.some(0)
   a.step(1)
@@ -134,6 +174,7 @@ test('some()', t => {
 
   a = new AssertOrder()
   a.some(0)
+  a.some(0)
   a.some(1)
   t.throws(() => a.some(0), "Expecting 'once(2)', 'step(2)', 'some(1|2)', 'all(2)', 'multiple(2)', but received 'some(0)'")
 
@@ -143,6 +184,45 @@ test('some()', t => {
   a = new AssertOrder()
   a.some(0)
   t.throws(() => a.some(2), "Expecting 'once(1)', 'step(1)', 'some(0|1)', 'all(1)', 'multiple(1)', but received 'some(2)'")
+})
+
+test('some() async', async t => {
+  let a = new AssertOrder()
+  await utils.runAsync(() => a.step(0))
+  t.is(a.next, 1)
+  await utils.runAsync(() => a.some(1))
+  t.is(a.next, 2)
+  await utils.runAsync(() => a.some(1))
+  t.is(a.next, 2)
+  await utils.runAsync(() => a.step(2))
+  t.is(a.next, 3)
+
+  a = new AssertOrder()
+  await utils.runSequentialAsync(() => a.some(0), () => a.some(0), () => a.step(1))
+  await t.throws(utils.runAsync(() => a.some(1)), "Expecting 'once(2)', 'step(2)', 'some(2)', 'all(2)', 'multiple(2)', but received 'some(1)'")
+
+  a = new AssertOrder()
+  t.is(await utils.runAsync(() => a.some(0)), 1)
+  t.is(await utils.runAsync(() => a.some(0)), 2)
+  t.is(await utils.runAsync(() => a.some(1)), 1)
+  t.is(await utils.runAsync(() => a.some(1)), 2)
+  t.is(await utils.runAsync(() => a.some(2)), 1)
+  t.is(await utils.runAsync(() => a.some(2)), 2)
+
+  a = new AssertOrder()
+  await utils.runParallelAsync(() => a.some(0), () => a.some(0))
+  await utils.runAsync(() => a.some(1))
+  await t.throws(utils.runAsync(() => a.some(0)), "Expecting 'once(2)', 'step(2)', 'some(1|2)', 'all(2)', 'multiple(2)', but received 'some(0)'")
+
+  a = new AssertOrder()
+  await t.throws(utils.runAsync(() => a.some(1)), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'some(1)'")
+
+  a = new AssertOrder()
+  await utils.runAsync(() => a.some(0))
+  await t.throws(utils.runAsync(() => a.some(2)), "Expecting 'once(1)', 'step(1)', 'some(0|1)', 'all(1)', 'multiple(1)', but received 'some(2)'")
+
+  a = new AssertOrder()
+  await t.throws(utils.runSequentialAsync(() => a.some(0), () => a.some(2)), "Expecting 'once(1)', 'step(1)', 'some(0|1)', 'all(1)', 'multiple(1)', but received 'some(2)'")
 })
 
 test('all()', t => {
@@ -183,6 +263,51 @@ test('all()', t => {
   t.is(a.all(2, 2), 1)
   t.is(a.all(2, 2), 2)
   a.step(3)
+})
+
+test('all() async', async t => {
+  let a = new AssertOrder()
+  t.is(await utils.runAsync(() => a.all(0, 2)), 1)
+  t.is(a.next, 0)
+  t.is(await utils.runAsync(() => a.all(0, 2)), 2)
+  t.is(a.next, 1)
+  await utils.runAsync(() => a.step(1))
+  t.is(a.next, 2)
+
+  a = new AssertOrder()
+  await t.throws(utils.runAsync(() => a.all(0, 0)), "0 is not a valid 'plan' value.")
+  await t.throws(utils.runAsync(() => a.all(0, -1)), "-1 is not a valid 'plan' value.")
+
+  a = new AssertOrder()
+  await utils.runAsync(() => a.step(0))
+  await utils.runAsync(() => a.some(1))
+  await t.throws(utils.runAsync(() => a.all(1, 1)), "Expecting 'once(2)', 'step(2)', 'some(1|2)', 'all(2)', 'multiple(2)', but received 'all(1)'")
+
+  a = new AssertOrder()
+  await utils.runAsync(() => a.step(0))
+  await utils.runAsync(() => a.all(1, 2))
+  await t.throws(utils.runAsync(() => a.some(1)), "Expecting 'all(1)', 'multiple(1)', but received 'some(1)'")
+
+  a = new AssertOrder()
+  await utils.runAsync(() => a.all(0, 2))
+  await utils.runAsync(() => a.all(0, 2))
+  await t.throws(utils.runAsync(() => a.all(0, 2)), "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'all(0)'")
+
+  a = new AssertOrder()
+  await t.throws(
+    utils.runParallelAsync(() => a.all(0, 2), () => a.all(0, 2), () => a.all(0, 2)),
+    "Expecting 'once(1)', 'step(1)', 'some(1)', 'all(1)', 'multiple(1)', but received 'all(0)'")
+
+  a = new AssertOrder()
+  await utils.runAsync(() => a.all(0, 2))
+  await t.throws(utils.runAsync(() => a.all(0, 3)), 'The plan count (3) does not match with previous value (2).')
+
+  a = new AssertOrder()
+  await t.is(await utils.runAsync(() => a.all(0, 1)), 1)
+  await utils.runAsync(() => a.step(1))
+  await t.is(await utils.runAsync(() => a.all(2, 2)), 1)
+  await t.is(await utils.runAsync(() => a.all(2, 2)), 2)
+  await utils.runAsync(() => a.step(3))
 })
 
 test('multiple()', t => {
