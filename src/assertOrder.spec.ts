@@ -1,5 +1,5 @@
 import test from 'ava'
-import utils from './testUtils'
+import * as utils from './testUtils'
 import AssertOrder from './index'
 
 test('different starting index', _t => {
