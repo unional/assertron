@@ -37,7 +37,7 @@ a.end(50)
 ## Contribute
 
 ```sh
-# right after clone
+# right after fork
 npm install
 
 # begin making changes
