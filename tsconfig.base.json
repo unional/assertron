@@ -12,7 +12,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "removeComments": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "sourceMap": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "typeRoots": ["typings"
+    ],
+    "types": [
+        "core-js", "node"
+        ]
+    },
+    "exclude":[
+        "node_modules"]
   }
-}

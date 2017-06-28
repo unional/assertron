@@ -21,7 +21,8 @@
     "preversion": "git pull && npm run verify",
     "test": "npm run clean && tsc && ava",
     "verify": "npm run lint && npm run coverage && npm run build && npm run dependency-check",
-    "watch": "npm run clean && node scripts/watch.js"
+    "watch": "npm run clean && node scripts/watch.js",
+    "ava": "ava --verbose"
   },
   "license": "MIT",
   "repository": {
@@ -71,6 +72,7 @@
     "rimraf": "^2.5.4",
     "tslint": "^5.1.0",
     "tslint-config-unional": "^0.8.0",
-    "typescript": "^2.3.0"
+    "typescript": "^2.3.0",
+    "webpack": "^3.0.0"
   }
 }

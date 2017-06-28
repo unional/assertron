@@ -1,24 +1,24 @@
 export interface Steps {
-  once?: number[]
-  some?: number[]
-  all?: number[]
+  assertStepOnce?: number[]
+  assertStepAtLeastOnce?: number[]
+  assertAllSteps?: number[]
 }
 
 export class AssertOrder {
   private static alias = {
-    step: 'once',
-    any: 'once',
-    multiple: 'all'
+    step: 'assertStepOnce',
+    any: 'assertStepOnce',
+    multiple: 'assertAllSteps'
   }
   private static reverseAlias = {
-    once: ['step'],
-    some: [],
-    all: ['multiple']
+    assertStepOnce: ['step'],
+    assertStepAtLeastOnce: [],
+    assertAllSteps: ['multiple']
   }
 
   /**
    * Gets what is the next expecting step.
-   * If the current step is `some(n)`, this reflects the step after `some(n)`
+   * If the current step is `assertStepAtLeastOnce(n)`, this reflects the step after `assertStepAtLeastOnce(n)`
    */
   public get next() { return this.nextStep }
   private nextStep: number
@@ -28,9 +28,9 @@ export class AssertOrder {
   constructor(public plannedSteps?: number, initStep = 0) {
     this.nextStep = initStep
     this.possibleMoves = {
-      once: [initStep],
-      some: [initStep],
-      all: [initStep]
+      assertStepOnce: [initStep],
+      assertStepAtLeastOnce: [initStep],
+      assertAllSteps: [initStep]
     }
   }
 
@@ -77,14 +77,14 @@ export class AssertOrder {
   /**
    * Assert the specified step will run once.
    */
-  once(step: number) {
-    // this.validate('once', [step], 1)
-    if (this.isValidStep('once', [step])) {
+  assertStepOnce(step: number) {
+    // this.validate('assertStepOnce', [step], 1)
+    if (this.isValidStep('assertStepOnce', [step])) {
       this.moveNext()
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('once', step))
+      throw new Error(this.getErrorMessage('assertStepOnce', step))
     }
   }
 
@@ -106,13 +106,13 @@ export class AssertOrder {
    * Assert the specified step will be reached at least once.
    * @returns how many times this step has occured.
    */
-  some(step: number) {
-    if (this.isValidStep('some', [step])) {
+  assertStepAtLeastOnce(step: number) {
+    if (this.isValidStep('assertStepAtLeastOnce', [step])) {
       if (step === this.nextStep) {
         this.moveNext({
-          once: [step + 1],
-          some: [step, step + 1],
-          all: [step + 1]
+          assertStepOnce: [step + 1],
+          assertStepAtLeastOnce: [step, step + 1],
+          assertAllSteps: [step + 1]
         })
         this.miniSteps = 0
         this.nextStep++
@@ -121,7 +121,7 @@ export class AssertOrder {
       return ++this.miniSteps
     }
     else {
-      throw new Error(this.getErrorMessage('some', step))
+      throw new Error(this.getErrorMessage('assertStepAtLeastOnce', step))
     }
   }
 
@@ -129,14 +129,14 @@ export class AssertOrder {
    * Assert the specified step will be reached x times.
    * @returns how many times this step has occured.
    */
-  all(step: number, plan: number) {
+  assertAllSteps(step: number, plan: number) {
     this.validatePlanned(plan)
 
-    if (this.isValidStep('all', [step], plan)) {
+    if (this.isValidStep('assertAllSteps', [step], plan)) {
       return this.moveAllState(step, plan)
     }
     else {
-      throw new Error(this.getErrorMessage('all', step))
+      throw new Error(this.getErrorMessage('assertAllSteps', step))
     }
   }
 
@@ -169,7 +169,7 @@ export class AssertOrder {
       this.targetMiniSteps = plan
       this.miniSteps = 0
       this.moveNext({
-        all: [step]
+        assertAllSteps: [step]
       })
     }
 
@@ -189,9 +189,9 @@ export class AssertOrder {
     return (!count || this.miniSteps <= count) && step !== undefined
   }
   private moveNext(nextMoves: Steps = {
-    once: [this.nextStep + 1],
-    some: [this.nextStep + 1],
-    all: [this.nextStep + 1]
+    assertStepOnce: [this.nextStep + 1],
+    assertStepAtLeastOnce: [this.nextStep + 1],
+    assertAllSteps: [this.nextStep + 1]
   }) {
     this.possibleMoves = nextMoves
   }
