@@ -1,4 +1,4 @@
-﻿import Steps from './assertOrder'
+﻿import { Steps } from './assertOrder'
 
 export default class AssertError extends Error {
   constructor(possibleMoves: Steps, reverseAlias: object, calledFn: string, ...calledSteps: number[]) {
