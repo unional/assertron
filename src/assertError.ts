@@ -1,6 +1,6 @@
 import { Steps } from './assertOrder'
 
-export default class AssertError extends Error {
+export class AssertError extends Error {
   constructor(possibleMoves: Steps, reverseAlias: object, calledFn: string, ...calledSteps: number[]) {
     const should: string[] = []
     for (let key in possibleMoves) {

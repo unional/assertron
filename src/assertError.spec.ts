@@ -1,5 +1,5 @@
 import test from 'ava'
-import AssertError from './assertError'
+import { AssertError } from './assertError'
 
 test('test error format based on input', _t => {
   let reverseAlias = {

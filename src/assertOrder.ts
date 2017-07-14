@@ -1,4 +1,4 @@
-import AssertError from './assertError'
+import { AssertError } from './assertError'
 
 export interface Steps {
   once?: number[]
