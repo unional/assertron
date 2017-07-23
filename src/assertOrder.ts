@@ -1,3 +1,5 @@
+import { AssertError } from './assertError'
+
 export interface Steps {
   once?: number[]
   some?: number[]
@@ -70,7 +72,7 @@ export class AssertOrder {
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('step', step))
+      throw new AssertError(this.possibleMoves, AssertOrder.reverseAlias, 'step', step)
     }
   }
 
@@ -84,7 +86,7 @@ export class AssertOrder {
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('once', step))
+      throw new AssertError(this.possibleMoves, AssertOrder.reverseAlias, 'once', step)
     }
   }
 
@@ -98,7 +100,7 @@ export class AssertOrder {
       return this.nextStep++
     }
     else {
-      throw new Error(this.getErrorMessage('any', ...anySteps))
+      throw new AssertError(this.possibleMoves, AssertOrder.reverseAlias, 'any', ...anySteps)
     }
   }
 
@@ -121,7 +123,7 @@ export class AssertOrder {
       return ++this.miniSteps
     }
     else {
-      throw new Error(this.getErrorMessage('some', step))
+      throw new AssertError(this.possibleMoves, AssertOrder.reverseAlias, 'some', step)
     }
   }
 
@@ -136,7 +138,7 @@ export class AssertOrder {
       return this.moveAllState(step, plan)
     }
     else {
-      throw new Error(this.getErrorMessage('all', step))
+      throw new AssertError(this.possibleMoves, AssertOrder.reverseAlias, 'all', step)
     }
   }
 
@@ -151,7 +153,7 @@ export class AssertOrder {
       return this.moveAllState(step, plan)
     }
     else {
-      throw new Error(this.getErrorMessage('multiple', step))
+      throw new AssertError(this.possibleMoves, AssertOrder.reverseAlias, 'multiple', step)
     }
   }
 
@@ -194,16 +196,5 @@ export class AssertOrder {
     all: [this.nextStep + 1]
   }) {
     this.possibleMoves = nextMoves
-  }
-
-  private getErrorMessage(calledFn: string, ...calledSteps: number[]) {
-    const should: string[] = []
-    for (let key in this.possibleMoves) {
-      should.push(...([key, ...AssertOrder.reverseAlias[key]].map(name =>
-        `'${name}(${this.possibleMoves[key].join('|')})'`
-      )))
-    }
-
-    return `Expecting ${should.join(', ')}, but received '${calledFn}(${calledSteps.join(',')})'`
   }
 }
