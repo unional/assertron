@@ -2,6 +2,25 @@ import test from 'ava'
 import * as utils from './testUtils'
 import AssertOrder from './index'
 
+test('default step is 0', _t => {
+  const a = new AssertOrder()
+  a.step(0)
+})
+
+test('should throws for step other than 0', t => {
+  const a = new AssertOrder()
+  t.throws(() => a.step(1))
+  t.throws(() => a.step(-1))
+})
+
+test('will pass consecutive steps', _t => {
+  const a = new AssertOrder()
+  a.step(0)
+  a.step(1)
+  a.step(2)
+})
+
+
 test('different starting index', _t => {
   let a = new AssertOrder(0, 1)
   a.once(1)
