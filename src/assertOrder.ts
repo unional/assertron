@@ -157,6 +157,15 @@ export class AssertOrder {
     }
   }
 
+  on(step: number) {
+    return new Promise(a => {
+      if (step === this.next) {
+        this.moveNext()
+        this.nextStep++
+        a()
+      }
+    })
+  }
   private validatePlanned(plan) {
     if (plan <= 0) {
       throw new Error(`${plan} is not a valid 'plan' value.`)

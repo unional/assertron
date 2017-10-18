@@ -20,7 +20,6 @@ test('will pass consecutive steps', _t => {
   a.step(2)
 })
 
-
 test('different starting index', _t => {
   let a = new AssertOrder(0, 1)
   a.once(1)
@@ -159,7 +158,7 @@ test('any() async', async t => {
   await utils.runAsync(() => a.step(5))
 
   a = new AssertOrder()
-  t.throws(utils.runAsync(() => a.any(1, 2)), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'any(1,2)'")
+  await t.throws(utils.runAsync(() => a.any(1, 2)), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'any(1,2)'")
 
   a = new AssertOrder()
   await utils.runAsync(() => a.step(0))
@@ -322,10 +321,10 @@ test('all() async', async t => {
   await t.throws(utils.runAsync(() => a.all(0, 3)), 'The plan count (3) does not match with previous value (2).')
 
   a = new AssertOrder()
-  await t.is(await utils.runAsync(() => a.all(0, 1)), 1)
+  t.is(await utils.runAsync(() => a.all(0, 1)), 1)
   await utils.runAsync(() => a.step(1))
-  await t.is(await utils.runAsync(() => a.all(2, 2)), 1)
-  await t.is(await utils.runAsync(() => a.all(2, 2)), 2)
+  t.is(await utils.runAsync(() => a.all(2, 2)), 1)
+  t.is(await utils.runAsync(() => a.all(2, 2)), 2)
   await utils.runAsync(() => a.step(3))
 })
 
@@ -402,4 +401,14 @@ test(`end() reject`, t => {
     a.once(0)
   }, 50)
   return a.end(1).then(() => t.fail('should fail'), () => t.pass('should fail'))
+})
+
+test('on(x) returns promise that resolves when it hits on x', async t => {
+  const a = new AssertOrder(2)
+  const o = new AssertOrder(2)
+  await a.on(0).then(() => o.once(0))
+  await a.on(1).then(() => o.once(1))
+
+  a.end()
+  t.pass()
 })
