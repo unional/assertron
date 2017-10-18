@@ -20,7 +20,6 @@ test('will pass consecutive steps', _t => {
   a.step(2)
 })
 
-
 test('different starting index', _t => {
   let a = new AssertOrder(0, 1)
   a.once(1)
@@ -402,4 +401,14 @@ test(`end() reject`, t => {
     a.once(0)
   }, 50)
   return a.end(1).then(() => t.fail('should fail'), () => t.pass('should fail'))
+})
+
+test('on(x) returns promise that resolves when it hits on x', t => {
+  const a = new AssertOrder(2)
+  const o = new AssertOrder(2)
+  a.on(0).then(() => o.once(0))
+  a.on(1).then(() => o.once(1))
+
+  a.end()
+  t.pass()
 })

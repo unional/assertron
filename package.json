@@ -15,7 +15,7 @@
     "coverage": "nyc --check-coverage --branch 85 --functions 85 --lines 85 npm test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "dependency-check": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
-    "lint": "tslint \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json --type-check \"src/**/*.ts\"",
     "postpublish": "git push",
     "prepare": "npm run build",
     "preversion": "git pull && npm run verify",
