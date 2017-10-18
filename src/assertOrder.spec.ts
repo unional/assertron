@@ -403,11 +403,13 @@ test(`end() reject`, t => {
   return a.end(1).then(() => t.fail('should fail'), () => t.pass('should fail'))
 })
 
-test('on(x) returns promise that resolves when it hits on x', async t => {
+test('on(x) returns promise that resolves when it hits on x', t => {
   const a = new AssertOrder(2)
   const o = new AssertOrder(2)
-  await a.on(0).then(() => o.once(0))
-  await a.on(1).then(() => o.once(1))
+
+  // make sure call not in order still works
+  a.on(1, () => o.once(1))
+  a.on(0, () => o.once(0))
 
   a.end()
   t.pass()

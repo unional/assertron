@@ -27,6 +27,7 @@ export class AssertOrder {
   private possibleMoves: Steps
   private miniSteps = 0
   private targetMiniSteps: number | undefined
+  private onceCallbacks = {}
   constructor(public plannedSteps?: number, initStep = 0) {
     this.nextStep = initStep
     this.possibleMoves = {
@@ -83,7 +84,13 @@ export class AssertOrder {
     // this.validate('once', [step], 1)
     if (this.isValidStep('once', [step])) {
       this.moveNext()
-      return this.nextStep++
+      this.nextStep++
+      if (this.onceCallbacks[step]) {
+        this.onceCallbacks[step]()
+        if (this.onceCallbacks[this.nextStep])
+          this.once(this.nextStep)
+      }
+      return this.nextStep
     }
     else {
       throw new AssertError(this.possibleMoves, AssertOrder.reverseAlias, 'once', step)
@@ -157,14 +164,12 @@ export class AssertOrder {
     }
   }
 
-  on(step: number) {
-    return new Promise(a => {
-      if (step === this.next) {
-        this.moveNext()
-        this.nextStep++
-        a()
-      }
-    })
+  on(step: number, callback: Function) {
+    this.onceCallbacks[step] = callback
+
+    if (step === this.next) {
+      this.once(step)
+    }
   }
   private validatePlanned(plan) {
     if (plan <= 0) {
