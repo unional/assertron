@@ -158,7 +158,7 @@ test('any() async', async t => {
   await utils.runAsync(() => a.step(5))
 
   a = new AssertOrder()
-  t.throws(utils.runAsync(() => a.any(1, 2)), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'any(1,2)'")
+  await t.throws(utils.runAsync(() => a.any(1, 2)), "Expecting 'once(0)', 'step(0)', 'some(0)', 'all(0)', 'multiple(0)', but received 'any(1,2)'")
 
   a = new AssertOrder()
   await utils.runAsync(() => a.step(0))
