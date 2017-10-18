@@ -321,10 +321,10 @@ test('all() async', async t => {
   await t.throws(utils.runAsync(() => a.all(0, 3)), 'The plan count (3) does not match with previous value (2).')
 
   a = new AssertOrder()
-  await t.is(await utils.runAsync(() => a.all(0, 1)), 1)
+  t.is(await utils.runAsync(() => a.all(0, 1)), 1)
   await utils.runAsync(() => a.step(1))
-  await t.is(await utils.runAsync(() => a.all(2, 2)), 1)
-  await t.is(await utils.runAsync(() => a.all(2, 2)), 2)
+  t.is(await utils.runAsync(() => a.all(2, 2)), 1)
+  t.is(await utils.runAsync(() => a.all(2, 2)), 2)
   await utils.runAsync(() => a.step(3))
 })
 
@@ -403,11 +403,11 @@ test(`end() reject`, t => {
   return a.end(1).then(() => t.fail('should fail'), () => t.pass('should fail'))
 })
 
-test('on(x) returns promise that resolves when it hits on x', t => {
+test('on(x) returns promise that resolves when it hits on x', async t => {
   const a = new AssertOrder(2)
   const o = new AssertOrder(2)
-  a.on(0).then(() => o.once(0))
-  a.on(1).then(() => o.once(1))
+  await a.on(0).then(() => o.once(0))
+  await a.on(1).then(() => o.once(1))
 
   a.end()
   t.pass()
