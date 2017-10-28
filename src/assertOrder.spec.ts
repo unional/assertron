@@ -1,6 +1,8 @@
 import test from 'ava'
-import * as utils from './testUtils'
+
 import AssertOrder from './index'
+
+import * as utils from './testUtils'
 
 test('default step is 0', _t => {
   const a = new AssertOrder()
@@ -412,5 +414,6 @@ test('on(x) returns promise that resolves when it hits on x', t => {
   a.on(0, () => o.once(0))
 
   a.end()
+  o.end()
   t.pass()
 })

@@ -1,11 +1,5 @@
 import { AssertError } from './assertError'
-
-export interface Steps {
-  once?: number[]
-  some?: number[]
-  all?: number[]
-}
-
+import { Steps } from './internalInterfaces'
 export class AssertOrder {
   private static alias = {
     step: 'once',
