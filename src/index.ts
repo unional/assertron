@@ -1,4 +1,4 @@
-import { AssertOrder } from './assertOrder'
+import { AssertOrder } from './AssertOrder'
 export default AssertOrder
 
 export * from './AssertError'
