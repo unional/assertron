@@ -125,8 +125,6 @@ export class AssertOrder {
     }
   }
 
-<<<<<<< Updated upstream
-=======
   onAny(steps: number[], ...callbacks: Function[]) {
 
     steps.forEach(step => {
@@ -137,7 +135,6 @@ export class AssertOrder {
       this.once(this.next)
   }
 
->>>>>>> Stashed changes
   /**
    * Assert the specified step will be reached at least once.
    * @returns how many times this step has occured.

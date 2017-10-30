@@ -14,12 +14,15 @@
 export interface State {
   step: number
   subStep: number
+  maxStep: number | undefined
 }
 
 class StateMachine {
   listeners = {}
+  step: number
   subStep: number
-  constructor(public step: number) {
+  constructor(public maxStep?: number) {
+    this.step = 1
     this.subStep = 0
   }
   move(step: number = this.step + 1) {
@@ -34,26 +37,45 @@ class StateMachine {
     this.subStep++
   }
   get(): State {
-    const { step, subStep } = this
+    const { step, subStep, maxStep } = this
     return {
       step,
-      subStep
+      subStep,
+      maxStep
     }
   }
   on(step: number, listener) {
     this.listeners[step] = [listener]
+  }
+  isNotValid(step: number) {
+    return step !== this.step || (this.maxStep !== undefined && this.maxStep < step)
+  }
+  isValid(step: number) {
+    return step === this.step
+  }
+  isMaxStepDefined() {
+    return this.maxStep !== undefined
+  }
+  stopAccepting() {
+    this.maxStep = this.step - 1
+  }
+  isAccepting() {
+    return this.maxStep ? this.maxStep >= this.step : true
+  }
+  reachedMaxStep() {
+    return
   }
 }
 
 export class AssertError extends Error {
   method: string
   steps: number[]
-  expecting: State
-  constructor(method: string, steps: number[], expecting: State) {
+  state: State
+  constructor(method: string, steps: number[], state: State) {
     super()
     this.method = method
     this.steps = steps
-    this.expecting = expecting
+    this.state = state
     Object.setPrototypeOf(this, new.target.prototype);
   }
 }
@@ -68,8 +90,8 @@ export class AssertOrder {
 
   private state: StateMachine
 
-  constructor() {
-    this.state = new StateMachine(1)
+  constructor(plan?: number) {
+    this.state = new StateMachine(plan)
   }
 
   /**
@@ -85,7 +107,7 @@ export class AssertOrder {
    * @param step not expected step.
    */
   not(step: number) {
-    if (step === this.state.step) {
+    if (this.state.isValid(step)) {
       throw new AssertError('not', [step], this.state.get())
     }
   }
@@ -113,6 +135,10 @@ export class AssertOrder {
   }
 
   atLeastOnce(step: number) {
+    return this.atLeast(step, 1)
+  }
+
+  atLeast(step: number, times: number) {
     if (this.state.step === step) {
       this.state.move()
       this.state.moveSubStep()
@@ -125,7 +151,8 @@ export class AssertOrder {
     else
       throw new AssertError('atLeastOnce', [step], this.state.get())
   }
-  any(...steps: number[]) {
+
+  any(steps: number[]) {
     const index = steps.indexOf(this.state.step)
     if (index === -1)
       throw new AssertError('any', steps, this.state.get())
@@ -133,8 +160,51 @@ export class AssertOrder {
     this.state.move()
     return steps[index]
   }
+  onAny(steps: number[], ...asserts: Function[]) {
+    steps.forEach(step => {
+      this.state.on(step, () => {
+        let firstError
+        let hasPass = false
+        asserts.forEach(assert => {
+          try {
+            assert(step)
+            hasPass = true
+          }
+          catch (err) {
+            if (!firstError) firstError = err
+          }
+        })
+        if (!hasPass)
+          throw firstError
+      })
+    })
+    return
+  }
+  end(timeout: number): Promise<void>
+  end(): void
+  end(timeout?: number) {
+    if (timeout) {
+      return new Promise(r => {
+        setTimeout(r, timeout)
+      }).then(() => {
+        this.end()
+      })
+    }
+
+    if (!this.state.isMaxStepDefined()) {
+      this.state.stopAccepting()
+      return
+    }
+
+    if (this.state.isAccepting()) {
+      throw new AssertError('end', [], this.state.get())
+    }
+  }
+  exactly(step: number, times: number) {
+    console.log(step, times)
+  }
   private assert(method: string, step: number) {
-    if (step !== this.state.step) {
+    if (this.state.isNotValid(step)) {
       throw new AssertError(method, [step], this.state.get())
     }
   }
