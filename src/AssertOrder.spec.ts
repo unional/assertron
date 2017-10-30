@@ -374,3 +374,11 @@ test(`exactly() returns the sub step`, t => {
   t.is(order.exactly(1, 2), 1)
   t.is(order.exactly(1, 2), 2)
 })
+
+test('move(0) restore 0 based step AssertOrder', t => {
+  const order = new AssertOrder()
+  order.move(0)
+  order.once(0)
+  order.once(1)
+  t.pass()
+})
