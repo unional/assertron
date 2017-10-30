@@ -83,8 +83,8 @@ import { AssertOrder } from 'assert-order'
 
 const o = new AssertOrder()
 
-for (let i = 0; i < 4; i++) {
-  if (i & 2)
+for (let i = 1; i <= 4; i++) {
+  if (i % 2)
     o.any([1, 3])
   else
     o.any([2, 4])
