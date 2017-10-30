@@ -29,7 +29,6 @@ foo()
 foo() // throws
 ```
 
-
 ```ts
 import { AssertOrder } from 'assert-order'
 
