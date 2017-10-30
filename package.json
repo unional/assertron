@@ -33,7 +33,6 @@
   },
   "homepage": "https://github.com/unional/assert-order",
   "ava": {
-    "failWithoutAssertions": false,
     "files": [
       "dist/es5/**/*.spec.js"
     ],

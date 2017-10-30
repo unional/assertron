@@ -1,5 +1,6 @@
 import { AssertError } from './assertError'
 import { Steps } from './internalInterfaces'
+
 export class AssertOrder {
   private static alias = {
     step: 'once',
@@ -35,7 +36,7 @@ export class AssertOrder {
    * Verify all planned steps are executed.
    * @param timeout If specified, will return a promise that resolve after the specified time (in milliseconds) or rejected if failed.
    */
-  end(timeout: number): Promise<never>
+  end(timeout: number): Promise<void>
   end(): void
   end(timeout?: number) {
     const check = (() => {
@@ -44,7 +45,7 @@ export class AssertOrder {
     const getErrorMsg = () => `Planned ${this.plannedSteps} steps but executed ${this.nextStep} steps`
 
     if (timeout) {
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         setTimeout(() => {
           if (check()) {
             resolve()
@@ -75,19 +76,39 @@ export class AssertOrder {
    * Assert the specified step will run once.
    */
   once(step: number) {
-    // this.validate('once', [step], 1)
-    if (this.isValidStep('once', [step])) {
+    return this.onceInternal('once', step)
+  }
+
+  private onceInternal(name: string, step: number) {
+    if (this.isValidStep(name, [step])) {
+      this.callCallbacks(step);
       this.moveNext()
-      this.nextStep++
-      if (this.onceCallbacks[step]) {
-        this.onceCallbacks[step]()
-        if (this.onceCallbacks[this.nextStep])
-          this.once(this.nextStep)
-      }
+      if (this.onceCallbacks[this.nextStep])
+        this.once(this.nextStep);
       return this.nextStep
     }
     else {
       throw new AssertError(this.possibleMoves, AssertOrder.reverseAlias, 'once', step)
+    }
+  }
+
+  private callCallbacks(step: number) {
+    if (this.onceCallbacks[step]) {
+      let firstError;
+      let hasPass = false;
+      this.onceCallbacks[step].forEach(cb => {
+        try {
+          cb(step);
+          hasPass = true;
+        }
+        catch (err) {
+          if (!firstError)
+            firstError = err;
+        }
+      });
+      if (!hasPass) {
+        throw firstError;
+      }
     }
   }
 
@@ -97,14 +118,26 @@ export class AssertOrder {
    */
   any(...anySteps: number[]) {
     if (this.isValidStep('any', anySteps)) {
-      this.moveNext()
-      return this.nextStep++
+      return this.moveNext()
     }
     else {
       throw new AssertError(this.possibleMoves, AssertOrder.reverseAlias, 'any', ...anySteps)
     }
   }
 
+<<<<<<< Updated upstream
+=======
+  onAny(steps: number[], ...callbacks: Function[]) {
+
+    steps.forEach(step => {
+      this.onceCallbacks[step] = (this.onceCallbacks[step] || []).concat(callbacks)
+    })
+
+    if (steps.indexOf(this.next) >= 0)
+      this.once(this.next)
+  }
+
+>>>>>>> Stashed changes
   /**
    * Assert the specified step will be reached at least once.
    * @returns how many times this step has occured.
@@ -118,7 +151,7 @@ export class AssertOrder {
           all: [step + 1]
         })
         this.miniSteps = 0
-        this.nextStep++
+        this.callCallbacks(step)
       }
 
       return ++this.miniSteps
@@ -178,7 +211,7 @@ export class AssertOrder {
     if (this.targetMiniSteps === undefined) {
       this.targetMiniSteps = plan
       this.miniSteps = 0
-      this.moveNext({
+      this.updateMoves({
         all: [step]
       })
     }
@@ -186,19 +219,26 @@ export class AssertOrder {
     this.miniSteps++
     if (plan === this.miniSteps) {
       this.moveNext()
-      this.nextStep++
       this.targetMiniSteps = undefined
     }
     return this.miniSteps
   }
 
   private isValidStep(fnName: string, steps: number[], count?: number) {
-    // console.log(`${fnName}(${steps}${count ? ',' + count : ''}), c: ${this.currentStep}, m: ${this.miniSteps}`, this.possibleMoves)
     const id = AssertOrder.alias[fnName] || fnName
     const step = steps.find(s => this.possibleMoves[id] && this.possibleMoves[id].some(x => x === s))
     return (!count || this.miniSteps <= count) && step !== undefined
   }
   private moveNext(nextMoves: Steps = {
+    once: [this.nextStep + 1],
+    some: [this.nextStep + 1],
+    all: [this.nextStep + 1]
+  }) {
+    this.updateMoves(nextMoves)
+    return this.nextStep++
+  }
+
+  private updateMoves(nextMoves: Steps = {
     once: [this.nextStep + 1],
     some: [this.nextStep + 1],
     all: [this.nextStep + 1]
