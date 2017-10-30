@@ -1,13 +1,8 @@
+import { AssertError } from './AssertError'
+import { State } from './interfaces'
+
 // order.atLeast(step, count) // expected to be executed at least `count` times
 // order.atMost(step, count) // exected to be executed at most `count` times
-
-export interface State {
-  step: number
-  maxStep?: number
-  subStep: number
-  minSubStep?: number
-  maxSubStep?: number
-}
 
 class StateMachine {
   listeners = {}
@@ -68,18 +63,6 @@ class StateMachine {
   }
 }
 
-export class AssertError extends Error {
-  method: string
-  args: any[]
-  state: State
-  constructor(state: State, method: string, ...args: any[]) {
-    super()
-    this.method = method
-    this.args = args
-    this.state = state
-    Object.setPrototypeOf(this, new.target.prototype);
-  }
-}
 
 export class AssertOrder {
   /**
