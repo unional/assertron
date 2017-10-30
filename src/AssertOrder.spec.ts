@@ -254,6 +254,17 @@ test('onAny() passes if one of the assert functions passes ', t => {
   t.is(steps, '2233')
 })
 
+test(`onAny() throws if all assert functions throws`, t => {
+  const a = new AssertOrder(2)
+  a.onAny([2], () => {
+    throw new Error('first error')
+  }, () => {
+    throw new Error('second error')
+  })
+  const err = t.throws(() => a.move())
+  t.is(err.message, 'first error')
+})
+
 test('AssertOrder(0) accepts no step >= 1', t => {
   const order = new AssertOrder(0)
 

@@ -54,7 +54,4 @@ export class StateMachine {
   isAccepting() {
     return this.maxStep ? this.maxStep >= this.step : true
   }
-  reachedMaxStep() {
-    return
-  }
 }
