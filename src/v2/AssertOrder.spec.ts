@@ -3,11 +3,10 @@ import test from 'ava'
 
 import { AssertOrder, AssertError, State } from './AssertOrder'
 
-function assertThrows(t, fn, method, value, state: Partial<State>) {
+function assertThrows(t, fn, state: Partial<State>, method, ...args) {
   const err = t.throws(fn) as AssertError
-  value = Array.isArray(value) ? value : [value]
   t.is(err.method, method)
-  t.deepEqual(err.steps, value)
+  t.deepEqual(err.args, args)
   if (state.step) {
     t.is(err.state.step, state.step)
   }
@@ -31,13 +30,13 @@ test('is() does not move the order forward', t => {
 
 test('is() with wrong step should throw', t => {
   const order = new AssertOrder()
-  assertThrows(t, () => order.is(0), 'is', 0, { step: 1 })
+  assertThrows(t, () => order.is(0), { step: 1 }, 'is', 0)
 })
 
 test(`not() with right step should throw`, t => {
   const order = new AssertOrder()
 
-  assertThrows(t, () => order.not(1), 'not', 1, { step: 1 })
+  assertThrows(t, () => order.not(1), { step: 1 }, 'not', 1)
 })
 
 test('not() with wrong step should pass', t => {
@@ -84,7 +83,7 @@ test('once() move to next step', t => {
 test('once() assert for current step', t => {
   const order = new AssertOrder()
 
-  assertThrows(t, () => order.once(0), 'once', 0, { step: 1 })
+  assertThrows(t, () => order.once(0), { step: 1 }, 'once', 0)
 })
 
 test('on(1) will have no effect', t => {
@@ -143,7 +142,7 @@ test('atLeastOnce(1) can called multiple times', t => {
 test('atLeastOnce(1) should throws after once(1)', t => {
   const order = new AssertOrder()
   order.once(1)
-  assertThrows(t, () => order.atLeastOnce(1), 'atLeastOnce', 1, { step: 2 })
+  assertThrows(t, () => order.atLeastOnce(1), { step: 2 }, 'atLeastOnce', 1)
 })
 
 test('atLeastOnce() returns sub step', t => {
@@ -156,16 +155,20 @@ test('atLeastOnce() returns sub step', t => {
   t.is(order.atLeastOnce(3), 2)
 })
 
+test.todo(`atLeast(n, m) where m <= 0 doesn't make sense`)
+test.todo(`atLeast(n, 2) pass`)
+test.todo(`atLeast(n, 2) fail`)
+
 test('any(2) should throws', t => {
   const order = new AssertOrder()
 
-  assertThrows(t, () => order.any([2]), 'any', [2], { step: 1 })
+  assertThrows(t, () => order.any([2]), { step: 1 }, 'any', [2])
 })
 
 test('any(2, 3) should throws', t => {
   const order = new AssertOrder()
 
-  assertThrows(t, () => order.any([2, 3]), 'any', [2, 3], { step: 1 })
+  assertThrows(t, () => order.any([2, 3]), { step: 1 }, 'any', [2, 3])
 })
 
 test('any(1) should move to next step', t => {
@@ -338,9 +341,25 @@ test('end(n) waits n milliseconds and fail when step not met', async t => {
 
   t.is(err.state.maxStep, 1)
 })
+test.todo(`exactly(n, 0) doesn't make sense`)
 
-test('exactly()', t => {
+test(`exactly(n, 1) is the same as once(n)`, t => {
   const order = new AssertOrder()
-  order.exactly(2, 3)
+  order.exactly(1, 1)
+  order.once(2)
   t.pass()
+})
+
+test(`exactly(n, 2) moves to next step at sub step 2`, t => {
+  const order = new AssertOrder()
+  order.exactly(1, 2)
+  order.exactly(1, 2)
+  order.once(2)
+  t.pass()
+})
+
+test(`exactly() returns the sub step`, t => {
+  const order = new AssertOrder()
+  t.is(order.exactly(1, 2), 1)
+  t.is(order.exactly(1, 2), 2)
 })

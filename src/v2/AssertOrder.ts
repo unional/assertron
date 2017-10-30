@@ -1,29 +1,24 @@
-
-// order.exactly(step, count) // expected to be executed exactly `count` times
 // order.atLeast(step, count) // expected to be executed at least `count` times
 // order.atMost(step, count) // exected to be executed at most `count` times
 
-// // need more debate
-// order.anyOf([step1, step2, ...], count)
-// order.anyOf([step1, step2, ...], [count1, count2, ...])
-
-// // alias
-// order.atLeastOnce(step) // `atLeast(step, 1)`
-// order.atMostOnce(step) // `atMost(step, 1)`
-
 export interface State {
   step: number
+  maxStep?: number
   subStep: number
-  maxStep: number | undefined
+  minSubStep?: number
+  maxSubStep?: number
 }
 
 class StateMachine {
   listeners = {}
-  step: number
-  subStep: number
-  constructor(public maxStep?: number) {
-    this.step = 1
-    this.subStep = 0
+  step: number = 1
+  maxStep?: number
+
+  subStep: number = 0
+  minSubStep?: number
+  maxSubStep?: number
+  constructor(maxStep?: number) {
+    this.maxStep = maxStep
   }
   move(step: number = this.step + 1) {
     this.step = step
@@ -32,16 +27,22 @@ class StateMachine {
     if (listeners) {
       listeners.forEach(l => l())
     }
+    return this.step
   }
   moveSubStep() {
-    this.subStep++
+    const subStep = ++this.subStep
+    if (this.maxSubStep === this.subStep)
+      this.move()
+    return subStep
   }
   get(): State {
-    const { step, subStep, maxStep } = this
+    const { step, subStep, maxStep, minSubStep, maxSubStep } = this
     return {
       step,
+      maxStep,
       subStep,
-      maxStep
+      minSubStep,
+      maxSubStep
     }
   }
   on(step: number, listener) {
@@ -69,12 +70,12 @@ class StateMachine {
 
 export class AssertError extends Error {
   method: string
-  steps: number[]
+  args: any[]
   state: State
-  constructor(method: string, steps: number[], state: State) {
+  constructor(state: State, method: string, ...args: any[]) {
     super()
     this.method = method
-    this.steps = steps
+    this.args = args
     this.state = state
     Object.setPrototypeOf(this, new.target.prototype);
   }
@@ -108,7 +109,7 @@ export class AssertOrder {
    */
   not(step: number) {
     if (this.state.isValid(step)) {
-      throw new AssertError('not', [step], this.state.get())
+      throw new AssertError(this.state.get(), 'not', step)
     }
   }
 
@@ -135,27 +136,22 @@ export class AssertOrder {
   }
 
   atLeastOnce(step: number) {
-    return this.atLeast(step, 1)
-  }
-
-  atLeast(step: number, times: number) {
+    const nextStep = step + 1
     if (this.state.step === step) {
       this.state.move()
-      this.state.moveSubStep()
-      return this.state.subStep
+      return this.state.moveSubStep()
     }
-    else if (this.state.step === step + 1 && this.state.subStep > 0) {
-      this.state.moveSubStep()
-      return this.state.subStep
+    else if (this.state.step === nextStep && this.state.subStep > 0) {
+      return this.state.moveSubStep()
     }
     else
-      throw new AssertError('atLeastOnce', [step], this.state.get())
+      throw new AssertError(this.state.get(), 'atLeastOnce', step)
   }
 
   any(steps: number[]) {
     const index = steps.indexOf(this.state.step)
     if (index === -1)
-      throw new AssertError('any', steps, this.state.get())
+      throw new AssertError(this.state.get(), 'any', steps)
 
     this.state.move()
     return steps[index]
@@ -197,15 +193,24 @@ export class AssertOrder {
     }
 
     if (this.state.isAccepting()) {
-      throw new AssertError('end', [], this.state.get())
+      throw new AssertError(this.state.get(), 'end')
     }
   }
   exactly(step: number, times: number) {
-    console.log(step, times)
+    if (this.state.isNotValid(step))
+      throw new AssertError(this.state.get(), 'exactly', step, times)
+
+    if (this.state.maxSubStep === undefined) {
+      this.state.maxSubStep = times
+      this.state.minSubStep = times
+    }
+
+    return this.state.moveSubStep()
   }
+
   private assert(method: string, step: number) {
     if (this.state.isNotValid(step)) {
-      throw new AssertError(method, [step], this.state.get())
+      throw new AssertError(this.state.get(), method, step)
     }
   }
 }
