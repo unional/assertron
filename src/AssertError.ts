@@ -15,7 +15,7 @@ export class AssertError extends Error {
 }
 
 function getEndMessage(state: State) {
-  return `Planned for ${state.maxStep} step but we are expecting step ${state.step} when 'end()' is called`
+  return `Planned for ${state.maxStep} step but expecting step ${state.step} when 'end()' is called`
 }
 
 function getExpectingMessage(state, method, args) {
