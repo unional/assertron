@@ -57,5 +57,5 @@ test('error message for end()', t => {
   const order = new AssertOrder(1)
 
   const err = t.throws(() => order.end())
-  t.is(err.message, `Expecting 'is(1)', 'once(1)', 'any([1])', but received 'end()'`)
+  t.is(err.message, `Planned for 1 step but expecting step 1 when 'end()' is called`)
 })

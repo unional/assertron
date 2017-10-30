@@ -5,12 +5,21 @@ export class AssertError extends Error {
   args: any[]
   state: State
   constructor(state: State, method: string, ...args: any[]) {
-    super(`Expecting ${getExpectingCalls(state)}, but received '${method}(${getMethodArgs(args)})'`)
+    const message = method === 'end' ? getEndMessage(state) : getExpectingMessage(state, method, args)
+    super(message)
     this.method = method
     this.args = args
     this.state = state
     Object.setPrototypeOf(this, new.target.prototype);
   }
+}
+
+function getEndMessage(state: State) {
+  return `Planned for ${state.maxStep} step but we are expecting step ${state.step} when 'end()' is called`
+}
+
+function getExpectingMessage(state, method, args) {
+  return `Expecting ${getExpectingCalls(state)}, but received '${method}(${getMethodArgs(args)})'`
 }
 
 function getExpectingCalls(state: State) {
