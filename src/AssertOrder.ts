@@ -1,5 +1,4 @@
 import { AssertError } from './AssertError'
-import { State } from './interfaces'
 import { StateMachine } from './StateMachine'
 
 // order.atLeast(step, count) // expected to be executed at least `count` times
