@@ -11,30 +11,88 @@
 
 This is the library for that.
 
+## Usage
+
+### order.once(step: number)
+
+Asserts the current code will execute once at `step`.
+
 ```ts
-import AssertOrder from 'assert-order'
+import { AssertOrder } from 'assert-order'
 
-let a = new AssertOrder()
+const o = new AssertOrder()
+function foo() {
+  o.once(1)
+}
 
-function doSomething() { a.any(5, 6) }
-
-a.once(0)
-a.once(1)
-a.some(2)
-a.some(2)
-a.all(3, 2)
-a.all(3, 2)
-a.once(4)
-doSomething()
-doSomething()
-
-a = new AssertOrder(2)
-a.once(0)
-setTimeout(() => a.once(1), 10)
-
-// Wait for 50 millisecond before verifying.
-a.end(50)
+foo()
+foo() // throws
 ```
+
+
+```ts
+import { AssertOrder } from 'assert-order'
+
+const o = new AssertOrder()
+function foo() {
+  o.once(1)
+}
+
+function boo() {
+  o.once(2)
+}
+
+foo()
+boo()
+```
+
+### order.atLeastOnce(step: number)
+
+Assert the code will execute at least once at `step`
+
+```ts
+import { AssertOrder } from 'assert-order'
+
+const o = new AssertOrder()
+
+for (let i = 0; i < 10; i++)
+  o.atLeastOnce(1)
+
+
+o.once(2)
+```
+
+### order.exactly(step: number, times: number)
+
+Asserts the code will execute exactly n `times` at `step`
+
+```ts
+import { AssertOrder } from 'assert-order'
+
+const o = new AssertOrder()
+
+for (let i = 0; i < 4; i++)
+  o.exactly(1, 3) // throws at i === 3
+```
+
+### order.any(steps: number[])
+
+Asserts the code will execute at any of the `steps`
+
+```ts
+import { AssertOrder } from 'assert-order'
+
+const o = new AssertOrder()
+
+for (let i = 0; i < 4; i++) {
+  if (i & 2)
+    o.any([1, 3])
+  else
+    o.any([2, 4])
+}
+```
+
+There are more methods available. Use TypeScript to discover them!
 
 ## Contribute
 
