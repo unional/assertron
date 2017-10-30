@@ -1,7 +1,7 @@
 
 import test from 'ava'
 
-import { AssertOrder, AssertError, State } from './AssertOrder'
+import { AssertOrder, AssertError, State } from './index'
 
 function assertThrows(t, fn, state: Partial<State>, method, ...args) {
   const err = t.throws(fn) as AssertError
