@@ -382,3 +382,17 @@ test('move(0) restore 0 based step AssertOrder', t => {
   order.once(1)
   t.pass()
 })
+
+test('end() returns time taken', t => {
+  const order = new AssertOrder()
+  let i = 10000
+  while (i) i--
+  t.true(order.end() > 0)
+})
+
+test('end(number) returns promise with time taken', async t => {
+  const order = new AssertOrder()
+  let i = 10000
+  while (i) i--
+  t.true(await order.end(1) > 0)
+})

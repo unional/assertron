@@ -13,9 +13,10 @@ export class AssertOrder {
   }
 
   private state: StateMachine
-
+  private startTick: [number, number]
   constructor(plan?: number) {
     this.state = new StateMachine(plan)
+    this.startTick = process.hrtime()
   }
 
   /**
@@ -99,20 +100,20 @@ export class AssertOrder {
     })
     return
   }
-  end(timeout: number): Promise<void>
-  end(): void
+  end(timeout: number): Promise<number>
+  end(): number
   end(timeout?: number) {
     if (timeout) {
       return new Promise(r => {
         setTimeout(r, timeout)
       }).then(() => {
-        this.end()
+        return this.end()
       })
     }
 
     if (!this.state.isMaxStepDefined()) {
       this.state.stopAccepting()
-      return
+      return this.getTimeTaken()
     }
 
     if (this.state.isAccepting()) {
@@ -135,5 +136,10 @@ export class AssertOrder {
     if (this.state.isNotValid(step)) {
       throw new AssertError(this.state.get(), method, step)
     }
+  }
+
+  private getTimeTaken() {
+    const [second, nanoSecond] = process.hrtime(this.startTick)
+    return second * 1000 + nanoSecond / 1e6
   }
 }
