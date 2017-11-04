@@ -1,18 +1,21 @@
 {
   "name": "assert-order",
   "version": "3.0.0",
-  "main": "dist/es5/index.js",
-  "module": "dist/es2015/index.js",
-  "typings": "dist/es5/index.d.ts",
+  "main": "dist-es5/index.js",
+  "module": "dist-es2015/index.js",
+  "typings": "dist-es5/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "dist-es5",
+    "dist-es2015",
+    "src"
   ],
   "scripts": {
     "build": "npm run clean && npm run build-es5 && npm run build-es2015",
     "build-es5": "tsc -p tsconfig.es5.json",
     "build-es2015": "tsc -p tsconfig.es2015.json",
-    "clean": "rimraf dist/es5 && rimraf dist/es2015",
-    "coverage": "nyc --check-coverage --branch 85 --functions 85 --lines 85 npm test",
+    "clean": "rimraf dist dist-es5 && rimraf dist-es2015",
+    "coverage": "nyc npm test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "dependency-check": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
     "lint": "tslint -p tsconfig.json \"src/**/*.ts\"",
@@ -34,11 +37,11 @@
   "homepage": "https://github.com/unional/assert-order",
   "ava": {
     "files": [
-      "dist/es5/**/*.spec.js"
+      "dist-es5/**/*.spec.js"
     ],
     "source": [
       "scripts/*.js",
-      "dist/es5/**/*.js",
+      "dist-es5/**/*.js",
       "*.json"
     ]
   },
@@ -59,10 +62,10 @@
     "dependency-check": "^2.9.1",
     "eslint": "^4.10.0",
     "eslint-config-unional": "^0.2.3",
-    "nyc": "^11.2.1",
+    "nyc": "^11.3.0",
     "rimraf": "^2.6.2",
     "tslint": "^5.8.0",
     "tslint-config-unional": "^0.8.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.6.1"
   }
 }
