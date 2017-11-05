@@ -1,11 +1,10 @@
 # assert-order
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/unional/assert-order.svg)](https://greenkeeper.io/)
-
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
 [![Build status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
+[![Greenkeeper badge](https://badges.greenkeeper.io/unional/assert-order.svg)](https://greenkeeper.io/)
 
 ...sometimes we do need to assert code are executed in certain order.
 
@@ -15,7 +14,7 @@ This is the library for that.
 
 ### order.once(step: number)
 
-Asserts the current code will execute once at `step`.
+Asserts the step `step` executed once.
 
 ```ts
 import { AssertOrder } from 'assert-order'
@@ -47,7 +46,7 @@ boo()
 
 ### order.atLeastOnce(step: number)
 
-Assert the code will execute at least once at `step`
+Assert step `step` have executed at least once.
 
 ```ts
 import { AssertOrder } from 'assert-order'
@@ -63,7 +62,7 @@ o.once(2)
 
 ### order.exactly(step: number, times: number)
 
-Asserts the code will execute exactly n `times` at `step`
+Asserts the step `step` executed exactly n times
 
 ```ts
 import { AssertOrder } from 'assert-order'
@@ -76,7 +75,7 @@ for (let i = 0; i < 4; i++)
 
 ### order.any(steps: number[])
 
-Asserts the code will execute at any of the `steps`
+Asserts any of the steps `steps` executed.
 
 ```ts
 import { AssertOrder } from 'assert-order'
