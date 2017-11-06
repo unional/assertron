@@ -139,6 +139,7 @@ export class AssertOrder {
   }
   private getStartTick() {
     // tslint:disable-next-line
+    // istanbul ignore else
     if (process && typeof process.hrtime === 'function')
       return process.hrtime()
     // tslint:disable-next-line
@@ -149,6 +150,7 @@ export class AssertOrder {
   }
   private getTimeTaken() {
     // tslint:disable-next-line
+    // istanbul ignore else
     if (process && typeof process.hrtime === 'function') {
       const [second, nanoSecond] = process.hrtime(this.startTick as any)
       return second * 1000 + nanoSecond / 1e6
