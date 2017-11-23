@@ -1,4 +1,4 @@
-# assert-order
+# assertron
 
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
@@ -6,11 +6,11 @@
 [![Coverage Status][coveralls-image]][coveralls-url]
 [![Greenkeeper badge](https://badges.greenkeeper.io/unional/assert-order.svg)](https://greenkeeper.io/)
 
-...sometimes we do need to assert code are executed in certain order.
+A supplementary assertion library.
 
-This is the library for that.
+## AssertOrder
 
-## Usage
+Enable tests to check if code are run in certain order.
 
 ### order.once(step: number)
 
