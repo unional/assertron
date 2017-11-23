@@ -8,8 +8,10 @@ export class StateMachine {
   subStep: number = 0
   minSubStep?: number
   maxSubStep?: number
+  private startTick: [number, number] | number
   constructor(maxStep?: number) {
     this.maxStep = maxStep
+    this.startTick = this.getStartTick()
   }
   move(step: number = this.step + 1) {
     this.step = step
@@ -53,5 +55,31 @@ export class StateMachine {
   }
   isAccepting() {
     return this.maxStep ? this.maxStep >= this.step : true
+  }
+  getTimeTaken() {
+    // istanbul ignore else
+    // tslint:disable-next-line
+    if (process && typeof process.hrtime === 'function') {
+      const [second, nanoSecond] = process.hrtime(this.startTick as any)
+      return second * 1000 + nanoSecond / 1e6
+    }
+    // tslint:disable-next-line
+    else if (performance && typeof performance.now === 'function') {
+      const end = performance.now()
+      return end - (this.startTick as any)
+    }
+    else
+      return new Date().valueOf() - (this.startTick as any)
+  }
+  private getStartTick() {
+    // istanbul ignore else
+    // tslint:disable-next-line
+    if (process && typeof process.hrtime === 'function')
+      return process.hrtime()
+    // tslint:disable-next-line
+    else if (performance && typeof performance.now === 'function')
+      return performance.now()
+    else
+      return new Date().valueOf()
   }
 }
