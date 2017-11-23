@@ -13,10 +13,8 @@ export class AssertOrder {
   }
 
   private state: StateMachine
-  private startTick: [number, number] | number
   constructor(plan?: number) {
     this.state = new StateMachine(plan)
-    this.startTick = this.getStartTick()
   }
 
   /**
@@ -113,7 +111,7 @@ export class AssertOrder {
 
     if (!this.state.isMaxStepDefined()) {
       this.state.stopAccepting()
-      return this.getTimeTaken()
+      return this.state.getTimeTaken()
     }
 
     if (this.state.isAccepting()) {
@@ -136,31 +134,5 @@ export class AssertOrder {
     if (this.state.isNotValid(step)) {
       throw new AssertError(this.state.get(), method, step)
     }
-  }
-  private getStartTick() {
-    // istanbul ignore else
-    // tslint:disable-next-line
-    if (process && typeof process.hrtime === 'function')
-      return process.hrtime()
-    // tslint:disable-next-line
-    else if (performance && typeof performance.now === 'function')
-      return performance.now()
-    else
-      return new Date().valueOf()
-  }
-  private getTimeTaken() {
-    // istanbul ignore else
-    // tslint:disable-next-line
-    if (process && typeof process.hrtime === 'function') {
-      const [second, nanoSecond] = process.hrtime(this.startTick as any)
-      return second * 1000 + nanoSecond / 1e6
-    }
-    // tslint:disable-next-line
-    else if (performance && typeof performance.now === 'function') {
-      const end = performance.now()
-      return end - (this.startTick as any)
-    }
-    else
-      return new Date().valueOf() - (this.startTick as any)
   }
 }
