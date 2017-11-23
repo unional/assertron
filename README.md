@@ -92,6 +92,26 @@ for (let i = 1; i <= 4; i++) {
 
 There are more methods available. Use TypeScript to discover them!
 
+## satisfy(actual, expected)
+
+`satisfy()` checks if `actual` meets the requirements specified by `expected`.
+Each property in `expected` can be a value, a `RegExp`, or a predicate function (test pass if function returns true).
+
+```ts
+import { satisfy } from 'assertron'
+
+// these passes
+satisfy({ a: 1, b: 2 }, { a: 1 })
+satisfy({ a: 'foo', b: 'boo' }, { a: /foo/ })
+satisfy({ a: 1, b, 2 }, { a: n => n === 1 })
+
+// these fails
+satisfy({ a: 1 }, { a: 2 })
+satisfy({ a: 1 }, { a: 1, b: 2 })
+satisfy({ a: 'foo' }, { a: /boo/ })
+satisfy({ a: 1 }, { a: () => false })
+```
+
 ## Contribute
 
 ```sh
