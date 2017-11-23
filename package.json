@@ -31,12 +31,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/unional/assert-order.git"
+    "url": "https://github.com/unional/assertron.git"
   },
   "bugs": {
-    "url": "https://github.com/unional/assert-order/issues"
+    "url": "https://github.com/unional/assertron/issues"
   },
-  "homepage": "https://github.com/unional/assert-order",
+  "homepage": "https://github.com/unional/assertron",
   "ava": {
     "files": [
       "dist-es5/**/*.spec.js"
