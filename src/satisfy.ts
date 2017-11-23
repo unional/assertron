@@ -38,6 +38,10 @@ function satisfyInternal(actual, expected, path: string) {
   else if (Array.isArray(actual)) {
     if (actual.length !== expected.length)
       throw new Error(`Number of entries does not match`)
+    actual.forEach((a, i) => {
+      const e = expected[i]
+      satisfyInternal(a, e, `entry[${i}]`)
+    })
   }
   else if (typeof actual !== 'object') {
     if (!Object.is(actual, expected))
@@ -45,9 +49,7 @@ function satisfyInternal(actual, expected, path: string) {
   }
   else
     Object.keys(expected).forEach(k => {
-      if (!expected.hasOwnProperty(k))
-        return
-      else if (actual[k] === undefined)
+      if (actual[k] === undefined)
         throw new MissingProperty(path ? `${path}.${k}` : k)
       else
         satisfyInternal(actual[k], expected[k], path ? `${path}.${k}` : k)

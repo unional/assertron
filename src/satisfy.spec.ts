@@ -41,11 +41,21 @@ test(`array length not match throws error`, t => {
 
 test.todo('matching entries within array')
 
+test(`array entries are checked`, t => {
+  const err = t.throws(() => satisfy([1], [2]))
+  t.is(err.message, `Expect entry[0] to be 2, but received 1`)
+})
+
 test('work with primitive array', t => {
   satisfy([1, 2, 3], [1, 2, 3])
   satisfy([true, false], [true, false])
   satisfy(['a', 'b'], ['a', 'b'])
   t.pass()
+})
+
+test(`check deep entry in array`, t => {
+  const err = t.throws(() => satisfy([1, { a: { b: 1 } }], [1, { a: { b: 2 } }]))
+  t.is(err.message, `Expect entry[1].a.b to be 2, but received 1`)
 })
 
 test('missing property will fail', t => {
@@ -91,4 +101,16 @@ test('predicate error should mention path', t => {
 test('deep predicate error should mention path', t => {
   const err = t.throws(() => satisfy({ a: { b: 1 } }, { a: { b: b => b === 2 } }))
   t.is(err.message, `Property a.b fails predicate`)
+})
+
+test('can check parent property', t => {
+  class Foo {
+    foo = 'foo'
+  }
+  class Boo extends Foo {
+    boo = 'boo'
+  }
+  const boo = new Boo()
+  satisfy(boo, { foo: 'foo' })
+  t.pass()
 })
