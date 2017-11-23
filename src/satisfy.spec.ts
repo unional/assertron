@@ -39,8 +39,6 @@ test(`array length not match throws error`, t => {
   t.throws(() => satisfy([1, 2], [1]))
 })
 
-test.todo('matching entries within array')
-
 test(`array entries are checked`, t => {
   const err = t.throws(() => satisfy([1], [2]))
   t.is(err.message, `Expect entry[0] to be 2, but received 1`)
