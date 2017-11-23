@@ -9,7 +9,7 @@ export function satisfy<
 }
 export class FailedPredicate extends Error {
   constructor(path: string) {
-    super(`Property ${path ? path : 'actual'} fails predicate`)
+    super(`Property ${path} fails predicate`)
     Object.setPrototypeOf(this, new.target.prototype)
   }
 }
