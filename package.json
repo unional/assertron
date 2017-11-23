@@ -58,9 +58,6 @@
     "name": "Homa Wong",
     "email": "homawong@gmail.com"
   },
-  "release": {
-    "branch": "assertron"
-  },
   "devDependencies": {
     "@types/node": "^8.0.47",
     "ava": "^0.23.0",
