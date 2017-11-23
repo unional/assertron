@@ -1,5 +1,5 @@
 import { test } from 'ava'
-import { satisfy } from './satisfy'
+import { satisfy } from './index'
 
 test('primitive types will pass', t => {
   satisfy(1, 1)

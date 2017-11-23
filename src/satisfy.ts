@@ -25,6 +25,7 @@ export class MissingProperty extends Error {
     Object.setPrototypeOf(this, new.target.prototype)
   }
 }
+
 function satisfyInternal(actual, expected, path: string) {
   if (expected instanceof RegExp && typeof actual === 'string')
     expected.test(actual)
