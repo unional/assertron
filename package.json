@@ -1,6 +1,7 @@
 {
-  "name": "assert-order",
-  "version": "3.1.1",
+  "name": "assertron",
+  "description": "A supplementary assertion library",
+  "version": "0.0.0-development",
   "main": "dist-es5/index.js",
   "module": "dist-es2015/index.js",
   "typings": "dist-es5/index.d.ts",
@@ -24,7 +25,8 @@
     "preversion": "git pull && npm run verify",
     "test": "npm run clean && tsc && ava",
     "verify": "npm run lint && npm run coverage && npm run build && npm run dependency-check",
-    "watch": "npm run clean && node scripts/watch.js"
+    "watch": "npm run clean && node scripts/watch.js",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "license": "MIT",
   "repository": {
@@ -64,6 +66,7 @@
     "eslint-config-unional": "^0.2.3",
     "nyc": "^11.3.0",
     "rimraf": "^2.6.2",
+    "semantic-release": "^8.2.0",
     "tslint": "^5.8.0",
     "tslint-config-unional": "^0.8.0",
     "typescript": "^2.6.1"
