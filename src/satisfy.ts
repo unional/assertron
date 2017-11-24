@@ -8,7 +8,9 @@ export type SatisfyExpected<T> = {
  */
 export function satisfy<
   Actual,
-  Expected extends Partial<SatisfyExpected<Actual>>>(actual: Actual, expected: Expected) {
+  // Using `| any` to disable type checking due to:
+  // https://github.com/Microsoft/TypeScript/issues/20247
+  Expected extends Partial<SatisfyExpected<Actual>> | any>(actual: Actual, expected: Expected) {
   satisfyInternal(actual, expected, '')
 }
 export class FailedPredicate extends Error {
