@@ -2,6 +2,10 @@ export type SatisfyExpected<T> = {
   [P in keyof T]: Partial<SatisfyExpected<T[P]>> | RegExp | Function
 }
 
+/**
+ * Check if `actual` satisfies criteria in `expected`.
+ * @param expected All properties can be a value which will be compared to the same property in `actual`, RegExp, or a predicate function that will be used to check against the property.
+ */
 export function satisfy<
   Actual,
   Expected extends Partial<SatisfyExpected<Actual>>>(actual: Actual, expected: Expected) {
