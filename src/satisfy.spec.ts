@@ -112,3 +112,9 @@ test('can check parent property', t => {
   satisfy(boo, { foo: 'foo' })
   t.pass()
 })
+
+test('actual of type any should not have type checking error', t => {
+  let actual: any = { a: 1 }
+  satisfy(actual, { a: 1 })
+  t.pass()
+})
