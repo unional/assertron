@@ -1,10 +1,10 @@
 
 import test from 'ava'
 
-import { AssertOrder, AssertError, State } from './index'
+import { AssertOrder, InvalidOrder, State } from './index'
 
 function assertThrows(t, fn, state: Partial<State>, method, ...args) {
-  const err = t.throws(fn) as AssertError
+  const err = t.throws(fn) as InvalidOrder
   t.is(err.method, method)
   t.deepEqual(err.args, args)
   if (state.step) {
@@ -268,7 +268,7 @@ test(`onAny() throws if all assert functions throws`, t => {
 test('AssertOrder(0) accepts no step >= 1', t => {
   const order = new AssertOrder(0)
 
-  const err = t.throws(() => order.once(1)) as AssertError
+  const err = t.throws(() => order.once(1)) as InvalidOrder
 
   t.is(err.state.maxStep, 0)
 })
@@ -278,7 +278,7 @@ test('AssertOrder(1) accepts step 1 but not 2', t => {
 
   order.once(1)
 
-  const err = t.throws(() => order.once(2)) as AssertError
+  const err = t.throws(() => order.once(2)) as InvalidOrder
 
   t.is(err.state.maxStep, 1)
 })
@@ -301,7 +301,7 @@ test('end() would mark to not accepting more steps if plan is not defined', t =>
   let order = new AssertOrder()
   order.end()
 
-  let err = t.throws(() => order.once(1)) as AssertError
+  let err = t.throws(() => order.once(1)) as InvalidOrder
 
   t.is(err.state.maxStep, 0)
 
@@ -309,7 +309,7 @@ test('end() would mark to not accepting more steps if plan is not defined', t =>
   order.once(1)
   order.end()
 
-  err = t.throws(() => order.once(2)) as AssertError
+  err = t.throws(() => order.once(2)) as InvalidOrder
 
   t.is(err.state.maxStep, 1)
 })
@@ -326,7 +326,7 @@ test('end() throws if planned step not met', t => {
   const order = new AssertOrder(2)
   order.once(1)
 
-  const err = t.throws(() => order.end()) as AssertError
+  const err = t.throws(() => order.end()) as InvalidOrder
 
   t.is(err.state.maxStep, 2)
 })
@@ -348,7 +348,7 @@ test('end(n) waits n milliseconds and fail when step not met', async t => {
   setTimeout(() => {
     order.once(1)
   }, 10)
-  const err: AssertError = await t.throws(order.end(1))
+  const err: InvalidOrder = await t.throws(order.end(1))
 
   t.is(err.state.maxStep, 1)
 })

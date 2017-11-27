@@ -1,6 +1,6 @@
 import { State } from './interfaces'
 
-export class AssertError extends Error {
+export class InvalidOrder extends Error {
   method: string
   args: any[]
   state: State

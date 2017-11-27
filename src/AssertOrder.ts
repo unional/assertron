@@ -1,4 +1,4 @@
-import { AssertError } from './AssertError'
+import { InvalidOrder } from './InvalidOrder'
 import { StateMachine } from './StateMachine'
 
 // order.atLeast(step, count) // expected to be executed at least `count` times
@@ -31,7 +31,7 @@ export class AssertOrder {
    */
   not(step: number) {
     if (this.state.isValid(step)) {
-      throw new AssertError(this.state.get(), 'not', step)
+      throw new InvalidOrder(this.state.get(), 'not', step)
     }
   }
 
@@ -67,13 +67,13 @@ export class AssertOrder {
       return this.state.moveSubStep()
     }
     else
-      throw new AssertError(this.state.get(), 'atLeastOnce', step)
+      throw new InvalidOrder(this.state.get(), 'atLeastOnce', step)
   }
 
   any(steps: number[]) {
     const index = steps.indexOf(this.state.step)
     if (index === -1)
-      throw new AssertError(this.state.get(), 'any', steps)
+      throw new InvalidOrder(this.state.get(), 'any', steps)
 
     this.state.move()
     return steps[index]
@@ -115,12 +115,12 @@ export class AssertOrder {
     }
 
     if (this.state.isAccepting()) {
-      throw new AssertError(this.state.get(), 'end')
+      throw new InvalidOrder(this.state.get(), 'end')
     }
   }
   exactly(step: number, times: number) {
     if (this.state.isNotValid(step))
-      throw new AssertError(this.state.get(), 'exactly', step, times)
+      throw new InvalidOrder(this.state.get(), 'exactly', step, times)
 
     if (this.state.maxSubStep === undefined) {
       this.state.maxSubStep = times
@@ -132,7 +132,7 @@ export class AssertOrder {
 
   private assert(method: string, step: number) {
     if (this.state.isNotValid(step)) {
-      throw new AssertError(this.state.get(), method, step)
+      throw new InvalidOrder(this.state.get(), method, step)
     }
   }
 }
