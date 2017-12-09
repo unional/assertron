@@ -11,6 +11,5 @@ test('array should be tersified', t => {
       b: ['a', 'b', 'c']
     }
   }])
-
-  t.is(err.toString(), `{ entries: [{ path: ['a'], actual: { a: [1, 2, 3] }, expected: { b: ['a', 'b', 'c'] } }] }`)
+  t.is(err.toString(), `Error: Expect a to satisfy { b: ['a', 'b', 'c'] }, but received { a: [1, 2, 3] }`)
 })

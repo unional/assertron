@@ -6,10 +6,6 @@ export class NotSatisfied extends Error {
     super(format(entries).join('\n'))
     Object.setPrototypeOf(this, new.target.prototype)
   }
-
-  toString() {
-    return tersify(this)
-  }
 }
 
 function format(entries: SatisfierExec[]) {
