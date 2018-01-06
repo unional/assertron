@@ -58,17 +58,17 @@
     "email": "homawong@gmail.com"
   },
   "devDependencies": {
-    "@types/node": "^8.0.47",
+    "@types/node": "^8.5.7",
     "ava": "^0.24.0",
-    "dependency-check": "^2.9.1",
-    "eslint": "^4.10.0",
+    "dependency-check": "^2.9.2",
+    "eslint": "^4.14.0",
     "eslint-config-unional": "^0.2.3",
-    "nyc": "^11.3.0",
+    "nyc": "^11.4.1",
     "rimraf": "^2.6.2",
     "semantic-release": "^11.0.2",
     "tslint": "^5.8.0",
     "tslint-config-unional": "^0.8.0",
-    "typescript": "^2.6.1"
+    "typescript": "^2.6.2"
   },
   "dependencies": {
     "satisfier": "^0.5.0",
