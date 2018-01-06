@@ -22,9 +22,10 @@ before_script: greenkeeper-lockfile-update
 
 script:
   - npm run verify
-  - npm install coveralls && npm run coveralls
 
 after_script: greenkeeper-lockfile-upload
 
 after_success:
-  - npm run semantic-release
+  - npm install -g travis-deploy-once@4
+  - travis-deploy-once "npm run semantic-release"
+  - npm install --no-save coveralls && npm run coveralls
