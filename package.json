@@ -16,10 +16,11 @@
     "build-es5": "tsc -p tsconfig.es5.json",
     "build-es2015": "tsc -p tsconfig.es2015.json",
     "clean": "rimraf dist dist-es5 && rimraf dist-es2015",
+    "codecov": "nyc report --reporter=json && codecov -f coverage/*.json",
     "coverage": "nyc npm test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "dependency-check": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev",
-    "lint": "tslint -p tsconfig.json \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json 'src/**/*.ts'",
     "prepublishOnly": "npm run build",
     "test": "npm run clean && tsc && ava",
     "verify": "npm run lint && npm run coverage && npm run build && npm run dependency-check",
@@ -57,20 +58,20 @@
     "email": "homawong@gmail.com"
   },
   "devDependencies": {
-    "@types/node": "^9.3.0",
+    "@types/node": "^8.5.8",
     "ava": "^0.24.0",
     "dependency-check": "^2.9.2",
-    "eslint": "^4.14.0",
+    "eslint": "^4.15.0",
     "eslint-config-unional": "^0.2.3",
     "nyc": "^11.4.1",
     "rimraf": "^2.6.2",
-    "semantic-release": "^11.0.2",
+    "semantic-release": "^11.2.0",
     "tslint": "^5.8.0",
     "tslint-config-unional": "^0.9.0",
     "typescript": "^2.6.2"
   },
   "dependencies": {
     "satisfier": "^2.0.1",
-    "tersify": "^0.3.0"
+    "tersify": "^1.0.1"
   }
 }
