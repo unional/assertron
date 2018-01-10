@@ -4,6 +4,34 @@ import { State } from './interfaces'
 
 const performance = perfHooks.performance
 
+// istanbul ignore else
+// tslint:disable-next-line
+const startTick = process && typeof process.hrtime === 'function' ?
+  process.hrtime :
+  // tslint:disable-next-line
+  performance && typeof performance.now === 'function' ?
+    performance.now :
+    function () {
+      return new Date().valueOf()
+    }
+
+// istanbul ignore else
+// tslint:disable-next-line
+const timeTaken = process && typeof process.hrtime === 'function' ?
+  function (startTick) {
+    const [second, nanoSecond] = process.hrtime(startTick)
+    return second * 1000 + nanoSecond / 1e6
+  } :
+  // tslint:disable-next-line
+  performance && typeof performance.now === 'function' ?
+    function (startTick) {
+      const end = performance.now()
+      return end - startTick
+    } :
+    function (startTick) {
+      return new Date().valueOf() - startTick
+    }
+
 export class StateMachine {
   listeners = {}
   step: number = 1
@@ -61,29 +89,9 @@ export class StateMachine {
     return this.maxStep ? this.maxStep >= this.step : true
   }
   getTimeTaken() {
-    // istanbul ignore else
-    // tslint:disable-next-line
-    if (process && typeof process.hrtime === 'function') {
-      const [second, nanoSecond] = process.hrtime(this.startTick as any)
-      return second * 1000 + nanoSecond / 1e6
-    }
-    // tslint:disable-next-line
-    else if (performance && typeof performance.now === 'function') {
-      const end = performance.now()
-      return end - (this.startTick as any)
-    }
-    else
-      return new Date().valueOf() - (this.startTick as any)
+    return timeTaken(this.startTick)
   }
   private getStartTick() {
-    // istanbul ignore else
-    // tslint:disable-next-line
-    if (process && typeof process.hrtime === 'function')
-      return process.hrtime()
-    // tslint:disable-next-line
-    else if (performance && typeof performance.now === 'function')
-      return performance.now()
-    else
-      return new Date().valueOf()
+    return startTick()
   }
 }
