@@ -1,4 +1,8 @@
+import perfHooks = require('perf_hooks')
+
 import { State } from './interfaces'
+
+const performance = perfHooks.performance
 
 export class StateMachine {
   listeners = {}
