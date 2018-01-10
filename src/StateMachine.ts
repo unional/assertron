@@ -1,36 +1,34 @@
-import perfHooks = require('perf_hooks')
+import { performance } from 'perf_hooks'
 
 import { State } from './interfaces'
 
-const performance = perfHooks.performance
-
+let startTick
+let timeTaken
 // istanbul ignore else
 // tslint:disable-next-line
-const startTick = process && typeof process.hrtime === 'function' ?
-  process.hrtime :
-  // tslint:disable-next-line
-  performance && typeof performance.now === 'function' ?
-    performance.now :
-    function () {
-      return new Date().valueOf()
-    }
-
-// istanbul ignore else
-// tslint:disable-next-line
-const timeTaken = process && typeof process.hrtime === 'function' ?
-  function (startTick) {
+if (process && typeof process.hrtime === 'function') {
+  startTick = process.hrtime
+  timeTaken = function (startTick) {
     const [second, nanoSecond] = process.hrtime(startTick)
     return second * 1000 + nanoSecond / 1e6
-  } :
-  // tslint:disable-next-line
-  performance && typeof performance.now === 'function' ?
-    function (startTick) {
-      const end = performance.now()
-      return end - startTick
-    } :
-    function (startTick) {
-      return new Date().valueOf() - startTick
-    }
+  }
+}
+// tslint:disable-next-line
+else if (performance && typeof performance.now === 'function') {
+  startTick = performance.now
+  timeTaken = function (startTick) {
+    const end = performance.now()
+    return end - startTick
+  }
+}
+else {
+  startTick = function () {
+    return new Date().valueOf()
+  }
+  timeTaken = function (startTick) {
+    return new Date().valueOf() - startTick
+  }
+}
 
 export class StateMachine {
   listeners = {}
