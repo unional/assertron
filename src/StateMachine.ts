@@ -1,5 +1,47 @@
 import { State } from './interfaces'
 
+// istanbul ignore next
+function nodeVersionAbove(major: number, minor = 0, patch = 0) {
+  // without this, systemjs will complain `process is not defined`
+  if (!global.process)
+    return false
+  const versionString = process.version.startsWith('v') ? process.version.slice(1) : process.version
+  const [actualMajor, actualMinor, actualPatch] = versionString.split('.').map(s => parseInt(s, 10))
+  const checking = major * 1000 * 1000 + minor * 1000 + patch
+  const actual = actualMajor * 1000 * 1000 + actualMinor * 1000 + actualPatch
+  return actual >= checking
+}
+
+const performance = nodeVersionAbove(7) ? require('perf_hooks').performance : undefined
+
+let startTick
+let timeTaken
+// istanbul ignore else
+// tslint:disable-next-line
+if (process && typeof process.hrtime === 'function') {
+  startTick = process.hrtime
+  timeTaken = function (startTick) {
+    const [second, nanoSecond] = process.hrtime(startTick)
+    return second * 1000 + nanoSecond / 1e6
+  }
+}
+// tslint:disable-next-line
+else if (performance && typeof performance.now === 'function') {
+  startTick = performance.now
+  timeTaken = function (startTick) {
+    const end = performance.now()
+    return end - startTick
+  }
+}
+else {
+  startTick = function () {
+    return new Date().valueOf()
+  }
+  timeTaken = function (startTick) {
+    return new Date().valueOf() - startTick
+  }
+}
+
 export class StateMachine {
   listeners = {}
   step: number = 1
@@ -57,29 +99,9 @@ export class StateMachine {
     return this.maxStep ? this.maxStep >= this.step : true
   }
   getTimeTaken() {
-    // istanbul ignore else
-    // tslint:disable-next-line
-    if (process && typeof process.hrtime === 'function') {
-      const [second, nanoSecond] = process.hrtime(this.startTick as any)
-      return second * 1000 + nanoSecond / 1e6
-    }
-    // tslint:disable-next-line
-    else if (performance && typeof performance.now === 'function') {
-      const end = performance.now()
-      return end - (this.startTick as any)
-    }
-    else
-      return new Date().valueOf() - (this.startTick as any)
+    return timeTaken(this.startTick)
   }
   private getStartTick() {
-    // istanbul ignore else
-    // tslint:disable-next-line
-    if (process && typeof process.hrtime === 'function')
-      return process.hrtime()
-    // tslint:disable-next-line
-    else if (performance && typeof performance.now === 'function')
-      return performance.now()
-    else
-      return new Date().valueOf()
+    return startTick()
   }
 }

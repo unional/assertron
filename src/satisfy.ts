@@ -1,4 +1,4 @@
-import { createSatisfier, Struct, SatisfierExec, Expecter } from 'satisfier'
+import { createSatisfier, Struct, SatisfierExec, Expectation } from 'satisfier'
 import { tersify } from 'tersify'
 
 export class NotSatisfied extends Error {
@@ -32,7 +32,7 @@ function isIndice(node: string) {
  * Check if `actual` satisfies criteria in `expected`.
  * @param expected All properties can be a value which will be compared to the same property in `actual`, RegExp, or a predicate function that will be used to check against the property.
  */
-export function satisfy<Actual extends Struct>(actual: Actual, expected: Expecter<Partial<Actual>>) {
+export function satisfy<Actual extends Struct>(actual: Actual, expected: Expectation<Partial<Actual>>) {
   const diff = createSatisfier(expected).exec(actual);
   if (diff) {
     throw new NotSatisfied(diff)
