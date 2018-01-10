@@ -1,6 +1,6 @@
-import { performance } from 'perf_hooks'
-
 import { State } from './interfaces'
+
+const performance = require.resolve('perf_hooks') ? require('perf_hooks').performance : undefined
 
 let startTick
 let timeTaken
