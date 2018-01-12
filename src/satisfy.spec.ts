@@ -86,11 +86,12 @@ test('function will use as predicate', t => {
 })
 
 test('predicate error should mention path', t => {
-  t.throws(() => satisfy({ a: 1 }, { a: /* istanbul ignore next */() => false }), `Expect a to satisfy function () { return false; }, but received 1`)
+  t.throws(() => /* istanbul ignore next */satisfy({ a: 1 }, { a: () => false }), `Expect a to satisfy function () { return false; }, but received 1`)
 })
 
 test('deep predicate error should mention path', t => {
-  t.throws(() => satisfy({ a: { b: 1 } }, { a: { b: /* istanbul ignore next */b => b === 2 } }), `Expect a.b to satisfy function ( /* istanbul ignore next */b) { return b === 2; }, but received 1`)
+
+  t.throws(() => /* istanbul ignore next */satisfy({ a: { b: 1 } }, { a: { b: b => b === 2 } }), `Expect a.b to satisfy function (b) { return b === 2; }, but received 1`)
 })
 
 test('can check parent property', t => {
