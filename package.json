@@ -72,6 +72,6 @@
   },
   "dependencies": {
     "satisfier": "^2.1.4",
-    "tersify": "^1.1.1"
+    "tersify": "^1.2.0"
   }
 }

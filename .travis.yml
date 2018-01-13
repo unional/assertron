@@ -11,10 +11,7 @@ node_js:
 branches:
   only:
     - master
-    - assertron
     - /^greenkeeper.*$/
-  # except:
-  #   - /^v\d+\.\d+\.\d+$/
 before_install:
   - npm install -g greenkeeper-lockfile@1
 
