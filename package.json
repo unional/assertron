@@ -71,7 +71,7 @@
     "typescript": "^2.6.2"
   },
   "dependencies": {
-    "satisfier": "^2.1.4",
+    "satisfier": "^3.0.1",
     "tersify": "^1.2.0"
   }
 }
