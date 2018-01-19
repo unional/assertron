@@ -111,3 +111,18 @@ test('actual of type any should not have type checking error', t => {
   satisfy(actual, { a: 1 })
   t.pass()
 })
+
+test('fsa', t => {
+  interface Foo {
+    payload: any;
+  }
+  let action: Foo = {} as any
+  satisfy(action, { payload: 1 })
+  satisfy(action, { payload: true })
+  satisfy(action, { payload: 'a' })
+  satisfy(action, { payload: [1, 2, 3] })
+  satisfy(action, { payload: ['a', 'b', 'c'] })
+  satisfy(action, { payload: ['a', 1, true] })
+  satisfy(action, { payload: [null, 3, 4] })
+  t.pass()
+})
