@@ -1,7 +1,7 @@
 import { State } from './interfaces'
 
 // istanbul ignore next
-function nodeVersionAbove(major: number, minor = 0, patch = 0) {
+function nodeVersionIsOrAbove(major: number, minor = 0, patch = 0) {
   // without this, systemjs will complain `process is not defined`
   if (!global.process)
     return false
@@ -12,7 +12,7 @@ function nodeVersionAbove(major: number, minor = 0, patch = 0) {
   return actual >= checking
 }
 
-const performance = nodeVersionAbove(7) ? require('perf_hooks').performance : undefined
+const performance = nodeVersionIsOrAbove(8, 5) ? require('perf_hooks').performance : undefined
 
 let startTick
 let timeTaken
