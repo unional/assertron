@@ -129,7 +129,11 @@ export class AssertOrder {
 
     return this.state.moveSubStep()
   }
-
+  wait(step: number) {
+    return new Promise(a => {
+      this.on(step + 1, a)
+    })
+  }
   private assert(method: string, step: number) {
     if (this.state.isNotValid(step)) {
       throw new InvalidOrder(this.state.get(), method, step)

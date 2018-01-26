@@ -396,3 +396,13 @@ test('end(number) returns promise with time taken', async t => {
   while (i) i--
   t.true(await order.end(1) > 0)
 })
+
+test('wait(step) will wait for specific step to happen', async t => {
+  const order = new AssertOrder()
+
+  setImmediate(() => {
+    order.once(1)
+  })
+  await order.wait(1)
+  t.is(order.currentStep, 2)
+})
