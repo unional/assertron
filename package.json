@@ -62,7 +62,6 @@
     "ava": "^0.25.0",
     "dependency-check": "^3.0.0",
     "eslint": "^4.16.0",
-    "eslint-config-unional": "^0.3.6",
     "nyc": "^11.4.1",
     "rimraf": "^2.6.2",
     "semantic-release": "^12.4.1",
