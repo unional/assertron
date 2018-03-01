@@ -1,5 +1,5 @@
-import { AssertOrder } from './AssertOrder'
-export default AssertOrder
+import { assertron } from './assertron'
+export default assertron
 
 export * from './AssertOrder'
 export * from './assertron'
