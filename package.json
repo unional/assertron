@@ -59,7 +59,6 @@
     "email": "homawong@gmail.com"
   },
   "devDependencies": {
-    "@types/is-promise": "^2.1.0",
     "@types/node": "^9.4.0",
     "ava": "^0.25.0",
     "dependency-check": "^3.0.0",
@@ -72,7 +71,6 @@
     "typescript": "^2.7.1"
   },
   "dependencies": {
-    "is-observable": "^1.1.0",
     "is-promise": "^2.1.0",
     "satisfier": "^4.1.1",
     "tersify": "^1.2.2"

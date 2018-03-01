@@ -1,4 +1,4 @@
-import isPromise = require('is-promise')
+import isPromise from 'is-promise'
 
 import { NotRejected } from './NotRejected'
 import { InvalidUsage } from './InvalidUsage'
