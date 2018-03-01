@@ -6,6 +6,7 @@ export class InvalidOrder extends Error {
   state: State
   constructor(state: State, method: string, ...args: any[]) {
     const message = method === 'end' ? getEndMessage(state) : getExpectingMessage(state, method, args)
+    // istanbul ignore next
     super(message)
     this.method = method
     this.args = args

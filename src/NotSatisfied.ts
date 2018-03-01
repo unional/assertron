@@ -2,6 +2,7 @@ import { SatisfierExec } from 'satisfier'
 import { tersify } from 'tersify'
 
 export class NotSatisfied extends Error {
+  // istanbul ignore next
   constructor(public entries: SatisfierExec[]) {
     super(format(entries).join('\n'))
     Object.setPrototypeOf(this, new.target.prototype)

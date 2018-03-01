@@ -1,6 +1,13 @@
 import { test } from 'ava'
 
-import { assertron, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError } from '.'
+import { assertron, InvalidUsage, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError } from '.'
+
+test('assertron.throws() throws if input not function or promise', t => {
+  t.throws(() => assertron.throws(0 as any), err => err instanceof InvalidUsage)
+  t.throws(() => assertron.throws(true as any), err => err instanceof InvalidUsage)
+  t.throws(() => assertron.throws('...' as any), err => err instanceof InvalidUsage)
+  t.throws(() => assertron.throws(/foo/ as any), err => err instanceof InvalidUsage)
+})
 
 test('assertron.throws() throws NotRejected for resolved promise', t => {
   return t.throws(
