@@ -72,6 +72,7 @@
   },
   "dependencies": {
     "is-promise": "^2.1.0",
+    "path-equal": "^1.0.0",
     "satisfier": "^4.1.1",
     "tersify": "^1.2.2"
   }
