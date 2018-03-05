@@ -9,6 +9,18 @@
 
 A supplementary assertion library.
 
+## assertron object
+
+```ts
+import assertron from 'assertron'
+
+assertron.throws(Promise.reject(new Error('foo')))
+assertron.throws(() => { throw new Error('foo') })
+assertron.throws(() => Promise.reject(new Error('foo')))
+
+assertron.pathEqual('dir/sub-dir/file.txt', 'dir\\sub-dir\\file.txt')
+```
+
 ## AssertOrder
 
 Enable tests to check if code are run in certain order.
