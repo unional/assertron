@@ -1,4 +1,5 @@
 import isPromise from 'is-promise'
+import { pathEqual } from 'path-equal'
 
 import { NotRejected } from './NotRejected'
 import { NotEqual } from './NotEqual'
@@ -48,11 +49,8 @@ export const assertron: Assertron = {
     }
   },
   pathEqual(actual: string, expected: string) {
-    if (actual === expected) return
-
-    const normalizedActual = actual.replace(/\\/g, '/')
-    const normalizedExpected = expected.replace(/\\/g, '/')
-    if (normalizedActual !== normalizedExpected) throw new NotEqual(actual, expected)
+    if (!pathEqual(actual, expected))
+      throw new NotEqual(actual, expected)
   }
 }
 
