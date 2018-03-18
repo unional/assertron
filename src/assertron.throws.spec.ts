@@ -61,20 +61,38 @@ test('assertron.throws() throws if function returns rejected promise not passing
     err => err instanceof UnexpectedError && err.err === 'ok')
 })
 
+class FakeError extends Error {
+  constructor() {
+    super('')
+
+    Object.setPrototypeOf(this, new.target.prototype)
+  }
+  foo = 'foo'
+}
+
 test('validate Promise using Error constructor', async t => {
-  class FakeError extends Error { foo = 'foo' }
   const err = await assertron.throws(Promise.reject(new FakeError()), FakeError)
   t.is(err.foo, 'foo')
 })
 
+test('validate Promise using another Error constructor will throw', async t => {
+  return t.throws(assertron.throws(Promise.reject(new FakeError()), InvalidUsage), UnexpectedError)
+})
+
 test('validate () => Promise using Error constructor', async t => {
-  class FakeError extends Error { foo = 'foo' }
   const err = await assertron.throws(() => Promise.reject(new FakeError()), FakeError)
   t.is(err.foo, 'foo')
 })
 
+test('validate () => Promise using anothert Error constructor will throw', async t => {
+  return t.throws(assertron.throws(() => Promise.reject(new FakeError()), InvalidUsage))
+})
+
 test('validate () => throw using Error constructor', async t => {
-  class FakeError extends Error { foo = 'foo' }
   const err = await assertron.throws(() => { throw new FakeError() }, FakeError)
   t.is(err.foo, 'foo')
+})
+
+test('validate () => throw using another Error constructor will throw', async t => {
+  return t.throws(() => assertron.throws(() => { throw new FakeError() }, InvalidUsage))
 })

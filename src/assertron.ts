@@ -23,9 +23,6 @@ export interface Assertron {
   pathEqual(actual: string, expected: string): void
 }
 
-function isErrorConstructor(validator): validator is ErrorConstructor<any> {
-  return Error.isPrototypeOf(validator)
-}
 export const assertron: Assertron = {
   throws(value: PromiseLike<any> | (() => any | PromiseLike<any>), validator?: ErrorValidator | ErrorConstructor<any>): any {
     if (typeof value !== 'function' && !isPromise(value)) {
@@ -36,38 +33,26 @@ export const assertron: Assertron = {
       return value.then(
         val => { throw new NotRejected(val) },
         err => {
-          if (validator) {
-            if (isErrorConstructor(validator)) {
-              if (err instanceof validator)
-                throw new UnexpectedError(err)
-            }
-            else if (!validator(err))
-              throw new UnexpectedError(err)
-          }
+          validateError(validator, err)
           return err
         }
       )
     }
-
     const { threw, err, result } = tryCatch(value)
-    if (threw) return err
-
+    if (threw) {
+      validateError(validator, err)
+      return err
+    }
     if (isPromise(result)) {
       return result.then(
         val => { throw new ReturnNotRejected(val) },
         err => {
-          if (validator) {
-            if (isErrorConstructor(validator)) {
-              if (err instanceof validator)
-                throw new UnexpectedError(err)
-            }
-            else if (!validator(err))
-              throw new UnexpectedError(err)
-          }
+          validateError(validator, err)
           return err
         }
       )
     }
+
     throw new NotThrown(result)
   },
   pathEqual(actual: string, expected: string) {
@@ -90,3 +75,17 @@ function tryCatch(fn) {
   return { threw, err, result }
 }
 
+function validateError(validator, err) {
+  if (validator) {
+    if (isErrorConstructor(validator)) {
+      if (!(err instanceof validator))
+        throw new UnexpectedError(err)
+    }
+    else if (!validator(err))
+      throw new UnexpectedError(err)
+  }
+}
+
+function isErrorConstructor(validator): validator is ErrorConstructor<any> {
+  return Error.isPrototypeOf(validator)
+}
