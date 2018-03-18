@@ -12,6 +12,7 @@ function nodeVersionIsOrAbove(major: number, minor = 0, patch = 0) {
   return actual >= checking
 }
 
+// istanbul ignore next
 const performance = nodeVersionIsOrAbove(8, 5) ? require('perf_hooks').performance : undefined
 
 let startTick
@@ -96,6 +97,7 @@ export class StateMachine {
     this.maxStep = this.step - 1
   }
   isAccepting() {
+    // istanbul ignore next
     return this.maxStep ? this.maxStep >= this.step : true
   }
   getTimeTaken() {

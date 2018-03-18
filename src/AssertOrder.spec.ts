@@ -397,6 +397,23 @@ test('end(number) returns promise with time taken', async t => {
   t.true(await order.end(1) > 0)
 })
 
+test('calling end() with planned step met will pass', () => {
+  const order = new AssertOrder(1)
+  order.once(1)
+  order.end()
+})
+
+test('calling end() early will throw', t => {
+  const order = new AssertOrder(2)
+  order.once(1)
+  t.throws(() => order.end(), InvalidOrder)
+})
+
+test('calling end() without planned step will pass', () => {
+  const order = new AssertOrder()
+  order.end()
+})
+
 test('wait(step) will wait for specific step to happen', async t => {
   const order = new AssertOrder()
 
