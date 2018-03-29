@@ -1,7 +1,10 @@
-export class UnexpectedError extends Error {
+import { BaseError } from 'make-error'
+import { tersify } from 'tersify'
+
+export class UnexpectedError extends BaseError {
   // istanbul ignore next
   constructor(public err: any) {
-    super(`Threw unexpected exception: ${err}`)
+    super(`Threw unexpected exception: ${tersify(err)}`)
 
     Object.setPrototypeOf(this, new.target.prototype)
   }
