@@ -1,6 +1,8 @@
+import { BaseError } from 'make-error'
+
 import { State } from './interfaces'
 
-export class InvalidOrder extends Error {
+export class InvalidOrder extends BaseError {
   method: string
   args: any[]
   state: State
@@ -8,12 +10,13 @@ export class InvalidOrder extends Error {
     const message = method === 'end' ? getEndMessage(state) : getExpectingMessage(state, method, args)
     // istanbul ignore next
     super(message)
+    Object.setPrototypeOf(this, InvalidOrder.prototype);
     this.method = method
     this.args = args
     this.state = state
-    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
+// util.inherits(InvalidOrder, Error)
 
 function getEndMessage(state: State) {
   return `Planned for ${state.maxStep} step but expecting step ${state.step} when 'end()' is called`

@@ -87,5 +87,5 @@ function validateError(validator, err) {
 }
 
 function isErrorConstructor(validator): validator is ErrorConstructor<any> {
-  return Error.isPrototypeOf(validator)
+  return Error.prototype.isPrototypeOf(validator.prototype)
 }

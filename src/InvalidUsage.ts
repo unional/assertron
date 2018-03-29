@@ -1,4 +1,6 @@
-export class InvalidUsage extends Error {
+import { BaseError } from 'make-error'
+
+export class InvalidUsage extends BaseError {
   // istanbul ignore next
   constructor(message: string) {
     super(message)

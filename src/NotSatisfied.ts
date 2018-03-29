@@ -1,7 +1,8 @@
+import { BaseError } from 'make-error'
 import { SatisfierExec } from 'satisfier'
 import { tersify } from 'tersify'
 
-export class NotSatisfied extends Error {
+export class NotSatisfied extends BaseError {
   // istanbul ignore next
   constructor(public entries: SatisfierExec[]) {
     super(format(entries).join('\n'))
