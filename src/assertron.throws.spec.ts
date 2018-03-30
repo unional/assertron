@@ -76,7 +76,9 @@ test('validate Promise using Error constructor', async t => {
 })
 
 test('validate Promise using another Error constructor will throw', async t => {
-  return t.throws(assertron.throws(Promise.reject(new FakeError()), InvalidUsage), DifferentError)
+  const err = await t.throws(assertron.throws(Promise.reject(new FakeError()), InvalidUsage), DifferentError)
+
+  t.is(err.message, `Expecting 'InvalidUsage' but received Error: { foo: 'foo', message: '' }`)
 })
 
 test('validate () => Promise using Error constructor', async t => {
