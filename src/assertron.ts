@@ -6,7 +6,7 @@ import { NotEqual } from './NotEqual'
 import { NotThrown } from './NotThrown'
 import { InvalidUsage } from './InvalidUsage'
 import { ReturnNotRejected } from './ReturnNotRejected'
-import { UnexpectedError } from './UnexpectedError'
+import { UnexpectedError, DifferentError } from './UnexpectedError'
 
 export type ErrorValidator = (value) => boolean
 export type ErrorConstructor<E extends Error> = new (...args: any[]) => E
@@ -79,7 +79,7 @@ function validateError(validator, err) {
   if (validator) {
     if (isErrorConstructor(validator)) {
       if (!(err instanceof validator))
-        throw new UnexpectedError(err)
+        throw new DifferentError(validator.name, err)
     }
     else if (!validator(err))
       throw new UnexpectedError(err)

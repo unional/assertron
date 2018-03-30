@@ -9,3 +9,11 @@ export class UnexpectedError extends BaseError {
     Object.setPrototypeOf(this, new.target.prototype)
   }
 }
+
+export class DifferentError extends BaseError {
+  constructor(public expected: string, public actual: any) {
+    super(`Expecting '${expected}' but received ${tersify(actual)}`)
+
+    Object.setPrototypeOf(this, new.target.prototype)
+  }
+}

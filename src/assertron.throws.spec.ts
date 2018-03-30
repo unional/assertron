@@ -1,6 +1,6 @@
 import { test } from 'ava'
 
-import { assertron, InvalidUsage, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError } from '.'
+import { assertron, InvalidUsage, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError, DifferentError } from '.'
 
 test('assertron.throws() throws if input not function or promise', t => {
   t.throws(() => assertron.throws(0 as any), InvalidUsage)
@@ -76,7 +76,7 @@ test('validate Promise using Error constructor', async t => {
 })
 
 test('validate Promise using another Error constructor will throw', async t => {
-  return t.throws(assertron.throws(Promise.reject(new FakeError()), InvalidUsage), UnexpectedError)
+  return t.throws(assertron.throws(Promise.reject(new FakeError()), InvalidUsage), DifferentError)
 })
 
 test('validate () => Promise using Error constructor', async t => {
