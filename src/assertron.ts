@@ -6,10 +6,8 @@ import { NotEqual } from './NotEqual'
 import { NotThrown } from './NotThrown'
 import { InvalidUsage } from './InvalidUsage'
 import { ReturnNotRejected } from './ReturnNotRejected'
-import { UnexpectedError, DifferentError } from './UnexpectedError'
-
-export type ErrorValidator = (value) => boolean
-export type ErrorConstructor<E extends Error> = new (...args: any[]) => E
+import { UnexpectedError } from './UnexpectedError'
+import { ErrorConstructor, ErrorValidator, isErrorConstructor } from './errors'
 
 // NOTE: `Promise<X>`, `PromiseLike<X>` and `() => X` only describes the resolve/return value.
 // They don't describe reject/Error type.
@@ -79,13 +77,9 @@ function validateError(validator, err) {
   if (validator) {
     if (isErrorConstructor(validator)) {
       if (!(err instanceof validator))
-        throw new DifferentError(validator.name, err)
+        throw new UnexpectedError(validator, err)
     }
     else if (!validator(err))
-      throw new UnexpectedError(err)
+      throw new UnexpectedError(validator, err)
   }
-}
-
-function isErrorConstructor(validator): validator is ErrorConstructor<any> {
-  return Error.prototype.isPrototypeOf(validator.prototype)
 }

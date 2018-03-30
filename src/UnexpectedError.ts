@@ -1,19 +1,12 @@
 import { BaseError } from 'make-error'
 import { tersify } from 'tersify'
 
+import { ErrorConstructor, ErrorValidator, isErrorConstructor } from './errors'
+
 export class UnexpectedError extends BaseError {
   // istanbul ignore next
-  constructor(public err: any) {
-    super(`Threw unexpected exception: ${tersify(err)}`)
-
-    Object.setPrototypeOf(this, new.target.prototype)
-  }
-}
-
-export class DifferentError extends BaseError {
-  // istanbul ignore next
-  constructor(public expected: string, public actual: any) {
-    super(`Expecting '${expected}' but received ${actual.name ? actual.name + ': ' : ''}${tersify(actual)}`)
+  constructor(public expected: ErrorValidator | ErrorConstructor<any>, public actual: any) {
+    super(`Unexpected error. Expecting '${isErrorConstructor(expected) ? expected.name : tersify(expected)}' but received ${actual.name ? actual.name + ': ' : ''}${tersify(actual)}`)
 
     Object.setPrototypeOf(this, new.target.prototype)
   }

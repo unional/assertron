@@ -1,6 +1,6 @@
 import { test } from 'ava'
 
-import { assertron, InvalidUsage, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError, DifferentError } from '.'
+import { assertron, InvalidUsage, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError } from '.'
 
 test('assertron.throws() throws if input not function or promise', t => {
   t.throws(() => assertron.throws(0 as any), InvalidUsage)
@@ -26,7 +26,7 @@ test('assertron.throws() passes with rejected promise passing validator', () => 
 test('assertron.throws() throws with rejected promise failing validator', t => {
   return t.throws(
     assertron.throws(Promise.reject('no'), err => err !== 'no'),
-    err => err instanceof UnexpectedError && err.err === 'no')
+    err => err instanceof UnexpectedError && err.actual === 'no')
 })
 
 test('assertron.throws() passes with throwing function', () => {
@@ -58,7 +58,7 @@ test('assertron.throws() pass if function returns rejected promise passing valda
 test('assertron.throws() throws if function returns rejected promise not passing valdation', t => {
   return t.throws(
     assertron.throws(() => { return Promise.reject('ok') }, err => err !== 'ok'),
-    err => err instanceof UnexpectedError && err.err === 'ok')
+    err => err instanceof UnexpectedError && err.actual === 'ok')
 })
 
 class FakeError extends Error {
@@ -76,9 +76,9 @@ test('validate Promise using Error constructor', async t => {
 })
 
 test('validate Promise using another Error constructor will throw', async t => {
-  const err = await t.throws(assertron.throws(Promise.reject(new FakeError()), InvalidUsage), DifferentError)
+  const err = await t.throws(assertron.throws(Promise.reject(new FakeError()), InvalidUsage), UnexpectedError)
 
-  t.is(err.message, `Expecting 'InvalidUsage' but received Error: { foo: 'foo', message: '' }`)
+  t.is(err.message, `Unexpected error. Expecting 'InvalidUsage' but received Error: { foo: 'foo', message: '' }`)
 })
 
 test('validate () => Promise using Error constructor', async t => {
