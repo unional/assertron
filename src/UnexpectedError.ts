@@ -11,6 +11,7 @@ export class UnexpectedError extends BaseError {
 }
 
 export class DifferentError extends BaseError {
+  // istanbul ignore next
   constructor(public expected: string, public actual: any) {
     super(`Expecting '${expected}' but received ${actual.name ? actual.name + ': ' : ''}${tersify(actual)}`)
 
