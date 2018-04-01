@@ -6,6 +6,7 @@ import { NotEqual } from './NotEqual'
 import { NotThrown } from './NotThrown'
 import { InvalidUsage } from './InvalidUsage'
 import { ReturnNotRejected } from './ReturnNotRejected'
+import { satisfy } from './satisfy'
 import { UnexpectedError } from './UnexpectedError'
 import { ErrorConstructor, ErrorValidator, isErrorConstructor } from './errors'
 
@@ -19,6 +20,7 @@ export interface Assertron {
   throws<T = any>(value: PromiseLike<any>, error?: ErrorValidator, message?: string): Promise<T>,
   throws<T = any>(value: (() => any) | PromiseLike<any>, error?: ErrorValidator, message?: string): T,
   pathEqual(actual: string, expected: string): void
+  satisfy: typeof satisfy
 }
 
 export const assertron: Assertron = {
@@ -56,7 +58,8 @@ export const assertron: Assertron = {
   pathEqual(actual: string, expected: string) {
     if (!pathEqual(actual, expected))
       throw new NotEqual(actual, expected)
-  }
+  },
+  satisfy
 }
 
 function tryCatch(fn) {
