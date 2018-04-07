@@ -1,5 +1,7 @@
 import isPromise from 'is-promise'
+import isFunction from 'lodash.isfunction'
 import { pathEqual } from 'path-equal'
+import { tersify } from 'tersify'
 
 import { NotRejected } from './NotRejected'
 import { NotEqual } from './NotEqual'
@@ -8,7 +10,7 @@ import { InvalidUsage } from './InvalidUsage'
 import { ReturnNotRejected } from './ReturnNotRejected'
 import { satisfy } from './satisfy'
 import { UnexpectedError } from './UnexpectedError'
-import { ErrorConstructor, ErrorValidator, isErrorConstructor } from './errors'
+import { ErrorConstructor, ErrorValidator, isErrorConstructor, FailedAssertion } from './errors'
 
 // NOTE: `Promise<X>`, `PromiseLike<X>` and `() => X` only describes the resolve/return value.
 // They don't describe reject/Error type.
@@ -20,7 +22,8 @@ export interface Assertron {
   throws<T = any>(value: PromiseLike<any>, error?: ErrorValidator, message?: string): Promise<T>,
   throws<T = any>(value: (() => any) | PromiseLike<any>, error?: ErrorValidator, message?: string): T,
   pathEqual(actual: string, expected: string): void
-  satisfy: typeof satisfy
+  satisfy: typeof satisfy,
+  false(value: any): void
 }
 
 export const assertron: Assertron = {
@@ -59,7 +62,18 @@ export const assertron: Assertron = {
     if (!pathEqual(actual, expected))
       throw new NotEqual(actual, expected)
   },
-  satisfy
+  satisfy,
+  false(value) {
+    if (isFunction(value)) {
+      const result = value()
+      if (result !== false) {
+        throw new FailedAssertion(value, result, `Expected '${tersify(value)}' to equal false, but received ${result}`)
+      }
+    }
+    else if (value !== false) {
+      throw new FailedAssertion(value, value, `Expected value to equal false, but received ${value}`)
+    }
+  }
 }
 
 function tryCatch(fn) {
