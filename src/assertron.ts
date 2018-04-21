@@ -18,7 +18,7 @@ import { ErrorConstructor, ErrorValidator, isErrorConstructor, FailedAssertion }
 // except for the `ErrorConstructor` overload.
 
 export interface Assertron {
-  throws<E extends Error>(value: (() => any) | PromiseLike<any>, error?: ErrorConstructor<E>, message?: string): Promise<E>,
+  throws<E extends Error = Error & { [k: string]: any }>(value: (() => any) | PromiseLike<any>, error?: ErrorConstructor<E>, message?: string): Promise<E>,
   throws<T = any>(value: PromiseLike<any>, error?: ErrorValidator, message?: string): Promise<T>,
   throws<T = any>(value: (() => any) | PromiseLike<any>, error?: ErrorValidator, message?: string): T,
   pathEqual(actual: string, expected: string): void

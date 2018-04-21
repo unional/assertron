@@ -13,7 +13,7 @@ export class NotSatisfied extends BaseError {
 function format(entries: SatisfierExec[]) {
   return entries.map(e => {
     const path = formatPath(e.path)
-    return `Expect ${path} to satisfy ${tersify(e.expected)}, but received ${tersify(e.actual)}`
+    return `Expect ${path} to satisfy ${formatValue(e.expected)}, but received ${formatValue(e.actual)}`
   })
 }
 
@@ -29,4 +29,8 @@ function formatPath(entries: string[]) {
 
 function isIndice(node: string) {
   return /\[\d*\]/.test(node)
+}
+
+function formatValue(value) {
+  return typeof value === 'string' ? `'${tersify(value)}'` : tersify(value)
 }
