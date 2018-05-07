@@ -56,10 +56,15 @@ export class StateMachine {
     this.maxStep = maxStep
     this.startTick = this.getStartTick()
   }
-  move(step: number = this.step + 1) {
+  jump(step: number) {
     this.step = step
     this.subStep = 0
-    const listeners = this.listeners[step]
+    return this.step
+  }
+  move() {
+    const listeners = this.listeners[this.step]
+    this.step = this.step + 1
+    this.subStep = 0
     if (listeners) {
       listeners.forEach(l => l())
     }

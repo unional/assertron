@@ -55,17 +55,17 @@ test('move() to move to next step', t => {
 
 test('move(n) moves to step n', t => {
   const order = new AssertOrder()
-  order.move(3)
+  order.jump(3)
   order.is(3)
   t.pass()
 })
 
 test('move(0) or negative also works', t => {
   const order = new AssertOrder()
-  order.move(0)
+  order.jump(0)
   order.is(0)
 
-  order.move(-2)
+  order.jump(-2)
   order.is(-2)
 
   order.move()
@@ -86,40 +86,41 @@ test('once() assert for current step', t => {
   assertThrows(t, () => order.once(0), { step: 1 }, 'once', 0)
 })
 
-test('on(1) will have no effect', t => {
+test('on(1) will invoke at initial move', t => {
   const order = new AssertOrder()
-  order.on(1, () => t.fail('should not be called'))
+  let called = false
+  order.on(1, () => called = true)
 
   order.move()
 
-  t.pass()
+  t.is(called, true)
 })
 
-test('on(1) will be invoked on move(1)', t => {
+test('move(n) will not invoke on(y)', t => {
   const order = new AssertOrder()
   order.on(1, () => t.pass())
 
-  order.move(1)
+  order.jump(1)
 })
 
-test('on(1) will be invoked on move(0) + move()', t => {
+test('on(0) will be invoked on jump(0) + move()', t => {
+  const order = new AssertOrder()
+  order.on(0, () => t.pass())
+
+  order.jump(0)
+  order.move()
+})
+
+test('on(1) will be invoked on move()', t => {
   const order = new AssertOrder()
   order.on(1, () => t.pass())
 
-  order.move(0)
   order.move()
 })
 
-test('on(2) will be invoked on move()', t => {
+test('on(1) will be invoke on once(1)', t => {
   const order = new AssertOrder()
-  order.on(2, () => t.pass())
-
-  order.move()
-})
-
-test('on(2) will be invoke on once(1)', t => {
-  const order = new AssertOrder()
-  order.on(2, () => t.pass())
+  order.on(1, () => t.pass())
   order.once(1)
 })
 
@@ -216,8 +217,8 @@ test(`onAny() should not move step`, t => {
   const order = new AssertOrder()
   const o = new AssertOrder()
 
-  order.onAny([2], step => {
-    t.is(step, 2)
+  order.onAny([1], step => {
+    t.is(step, 1)
     o.once(2)
   })
   o.once(1)
@@ -231,7 +232,7 @@ test(`onAny([2,3], fn) invoke with the specific step`, t => {
   const order = new AssertOrder()
 
   t.plan(2)
-  order.onAny([2, 3], step => t.true(step === 2 || step === 3))
+  order.onAny([1, 2], step => t.true(step === 1 || step === 2))
 
   order.move()
   order.move()
@@ -240,23 +241,23 @@ test(`onAny([2,3], fn) invoke with the specific step`, t => {
 test('onAny() passes if one of the assert functions passes ', t => {
   const a = new AssertOrder(2)
   let steps = ''
-  a.onAny([2, 3], step => {
+  a.onAny([1, 2], step => {
     steps += step
-    t.true([2, 3].indexOf(step) >= 0)
+    t.true([1, 2].indexOf(step) >= 0)
     throw new Error('some error')
   }, step => {
     steps += step
-    t.true([2, 3].indexOf(step) >= 0)
+    t.true([1, 2].indexOf(step) >= 0)
   })
   a.move()
   a.move()
 
-  t.is(steps, '2233')
+  t.is(steps, '1122')
 })
 
 test(`onAny() throws if all assert functions throws`, t => {
   const a = new AssertOrder(2)
-  a.onAny([2], () => {
+  a.onAny([1], () => {
     throw new Error('first error')
   }, () => {
     throw new Error('second error')
@@ -283,10 +284,10 @@ test('AssertOrder(1) accepts step 1 but not 2', t => {
   t.is(err.state.maxStep, 1)
 })
 
-test('AssertOrder(0) can use move(...)', t => {
+test('AssertOrder(0) can use jump(...)', t => {
   const order = new AssertOrder(0)
 
-  order.move(0)
+  order.jump(0)
   order.once(0)
   t.pass()
 })
@@ -375,9 +376,9 @@ test(`exactly() returns the sub step`, t => {
   t.is(order.exactly(1, 2), 2)
 })
 
-test('move(0) restore 0 based step AssertOrder', t => {
+test('jump(0) restore 0 based step AssertOrder', t => {
   const order = new AssertOrder()
-  order.move(0)
+  order.jump(0)
   order.once(0)
   order.once(1)
   t.pass()

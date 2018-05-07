@@ -36,11 +36,17 @@ export class AssertOrder {
   }
 
   /**
-   * Moves the state to a new step.
-   * @param step new step to move to. Move to next step if not specified.
+   * Reset to specified step.
    */
-  move(step?: number) {
-    this.state.move(step)
+  jump(step: number) {
+    this.state.jump(step)
+  }
+
+  /**
+   * Move to next step.
+   */
+  move() {
+    this.state.move()
   }
 
   /**
@@ -131,7 +137,7 @@ export class AssertOrder {
   }
   wait(step: number) {
     return new Promise(a => {
-      this.on(step + 1, a)
+      this.on(step, a)
     })
   }
   private assert(method: string, step: number) {
