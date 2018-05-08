@@ -9,7 +9,7 @@ export function isErrorConstructor(validator): validator is ErrorConstructor<any
 
 export class FailedAssertion extends BaseError {
   // istanbul ignore next
-  constructor(public value, public result, msg: string) {
+  constructor(public expected, public result, msg: string) {
     super(msg)
 
     Object.setPrototypeOf(this, new.target.prototype)

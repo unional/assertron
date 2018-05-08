@@ -11,6 +11,7 @@ import { ReturnNotRejected } from './ReturnNotRejected'
 import { satisfy } from './satisfy'
 import { UnexpectedError } from './UnexpectedError'
 import { ErrorConstructor, ErrorValidator, isErrorConstructor, FailedAssertion } from './errors'
+import { resolves, rejects } from './promise'
 
 // NOTE: `Promise<X>`, `PromiseLike<X>` and `() => X` only describes the resolve/return value.
 // They don't describe reject/Error type.
@@ -23,7 +24,9 @@ export interface Assertron {
   throws<T = any>(value: (() => any) | PromiseLike<any>, error?: ErrorValidator, message?: string): T,
   pathEqual(actual: string, expected: string): void
   satisfy: typeof satisfy,
-  false(value: any): void
+  false(value: any): void,
+  resolves(promise: Promise<any>): Promise<void>
+  rejects(promise: Promise<any>): Promise<void>
 }
 
 export const assertron: Assertron = {
@@ -73,7 +76,9 @@ export const assertron: Assertron = {
     else if (value !== false) {
       throw new FailedAssertion(value, value, `Expected value to equal false, but received ${value}`)
     }
-  }
+  },
+  resolves,
+  rejects
 }
 
 function tryCatch(fn) {
