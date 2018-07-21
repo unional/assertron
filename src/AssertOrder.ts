@@ -135,10 +135,13 @@ export class AssertOrder {
 
     return this.state.moveSubStep()
   }
-  wait(step: number) {
-    return new Promise(a => {
-      this.on(step, a)
-    })
+  wait(step: number): Promise<void>
+  wait(step: number, callback: () => void): void
+  wait(step: number, callback?: () => void) {
+    if (callback)
+      this.on(step, callback)
+    else
+      return new Promise<any>(a => { this.on(step, a) })
   }
   private assert(method: string, step: number) {
     if (this.state.isNotValid(step)) {

@@ -7,7 +7,7 @@ cp.spawn('tsc', ['-w'], { shell: true })
   .stdout.on('data', (data) => {
     const text = data.toString()
     process.stdout.write(text)
-    if (/.*Compilation complete/.test(text)) {
+    if (/.*Watching for file changes/.test(text)) {
       if (!ava) {
         ava = cp.spawn('ava', ['-w'], {
           stdio: 'inherit',
