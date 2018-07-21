@@ -424,3 +424,33 @@ test('wait(step) will wait for specific step to happen', async t => {
   await order.wait(1)
   t.is(order.currentStep, 2)
 })
+
+test('wait(step, callback) will execute the callback and return void', async () => {
+  const order = new AssertOrder(2)
+
+  order.wait(1, () => {
+    order.once(2)
+  })
+  order.once(1)
+
+  return order.end(100)
+})
+
+test('wait(step, callback) will execute the async callback but not wait for it and return void', async () => {
+  const order = new AssertOrder(1)
+  const o2 = new AssertOrder(1)
+
+  order.wait(1, () => {
+    return new Promise(a => {
+      setImmediate(() => {
+        o2.once(1)
+        a()
+      })
+    })
+  })
+  order.once(1)
+
+  order.end()
+  return o2.end(100)
+})
+
