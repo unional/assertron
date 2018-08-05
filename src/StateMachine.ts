@@ -1,3 +1,4 @@
+import isNode from 'is-node'
 import { State } from './interfaces'
 
 // istanbul ignore next
@@ -13,7 +14,7 @@ function nodeVersionIsOrAbove(major: number, minor = 0, patch = 0) {
 }
 
 // istanbul ignore next
-const performance = nodeVersionIsOrAbove(8, 5) ? require('perf_hooks').performance : undefined
+const performance = isNode && nodeVersionIsOrAbove(8, 5) ? require('perf_hooks').performance : undefined
 
 let startTick
 let timeTaken
