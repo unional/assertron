@@ -1,5 +1,6 @@
+import t from 'assert'
 import isPromise from 'is-promise'
-import isFunction from 'lodash.isfunction'
+import { isFunction, isArray } from 'lodash'
 import { pathEqual } from 'path-equal'
 import { tersify } from 'tersify'
 
@@ -26,7 +27,9 @@ export interface Assertron {
   satisfy: typeof satisfy,
   false(value: any): void,
   resolves(promise: Promise<any>): Promise<void>
-  rejects(promise: Promise<any>): Promise<void>
+  rejects(promise: Promise<any>): Promise<void>,
+  equal<T>(actual: T, expected: T): void,
+  deepEqual<T extends Array<any>>(actual: T, expected: T): void
 }
 
 export const assertron: Assertron = {
@@ -78,7 +81,18 @@ export const assertron: Assertron = {
     }
   },
   resolves,
-  rejects
+  rejects,
+  equal<T>(actual: T, expected: T) {
+    if (actual !== expected) {
+      throw new NotEqual(actual, expected)
+    }
+  },
+  deepEqual(actual, expected) {
+    if (isArray(actual) && JSON.stringify(actual) !== JSON.stringify(expected)) {
+      throw new NotEqual(actual, expected)
+    }
+    t.deepStrictEqual(actual, expected)
+  }
 }
 
 function tryCatch(fn) {
