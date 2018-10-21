@@ -241,31 +241,31 @@ test('onAny() passes if one of the assert functions passes ', () => {
   t.strictEqual(steps, '1122')
 })
 
-test(`onAny() throws if all assert functions throws`, async () => {
+test(`onAny() throws if all assert functions throws`, () => {
   const o = new AssertOrder(2)
   o.onAny([1], () => {
     throw new Error('first error')
   }, () => {
     throw new Error('second error')
   })
-  const err = await a.throws(() => o.move())
+  const err = a.throws(() => o.move())
   t.strictEqual(err.message, 'first error')
 })
 
-test('AssertOrder(0) accepts no step >= 1', async () => {
+test('AssertOrder(0) accepts no step >= 1', () => {
   const order = new AssertOrder(0)
 
-  const err = await a.throws(() => order.once(1), InvalidOrder)
+  const err = a.throws(() => order.once(1), InvalidOrder)
 
   t.strictEqual(err.state.maxStep, 0)
 })
 
-test('AssertOrder(1) accepts step 1 but not 2', async () => {
+test('AssertOrder(1) accepts step 1 but not 2', () => {
   const order = new AssertOrder(1)
 
   order.once(1)
 
-  const err = await a.throws(() => order.once(2), InvalidOrder)
+  const err = a.throws(() => order.once(2), InvalidOrder)
 
   t.strictEqual(err.state.maxStep, 1)
 })
@@ -282,11 +282,11 @@ test('end() should not throw if plan is not defined', () => {
   order.end()
 })
 
-test('end() would mark to not accepting more steps if plan is not defined', async () => {
+test('end() would mark to not accepting more steps if plan is not defined', () => {
   let order = new AssertOrder()
   order.end()
 
-  let err = await a.throws(() => order.once(1), InvalidOrder)
+  let err = a.throws(() => order.once(1), InvalidOrder)
 
   t.strictEqual(err.state.maxStep, 0)
 
@@ -294,7 +294,7 @@ test('end() would mark to not accepting more steps if plan is not defined', asyn
   order.once(1)
   order.end()
 
-  err = await a.throws(() => order.once(2), InvalidOrder)
+  err = a.throws(() => order.once(2), InvalidOrder)
 
   t.strictEqual(err.state.maxStep, 1)
 })
@@ -306,11 +306,11 @@ test('end() passes with meeting planned step', () => {
   order.end()
 })
 
-test('end() throws if planned step not met', async () => {
+test('end() throws if planned step not met', () => {
   const order = new AssertOrder(2)
   order.once(1)
 
-  const err = await a.throws(() => order.end(), InvalidOrder)
+  const err = a.throws(() => order.end(), InvalidOrder)
 
   t.strictEqual(err.state.maxStep, 2)
 })
@@ -384,10 +384,10 @@ test('calling end() with planned step met will pass', () => {
   order.end()
 })
 
-test('calling end() early will throw', async () => {
+test('calling end() early will throw', () => {
   const order = new AssertOrder(2)
   order.once(1)
-  await a.throws(() => order.end(), InvalidOrder)
+  a.throws(() => order.end(), InvalidOrder)
 })
 
 test('calling end() without planned step will pass', () => {
@@ -437,7 +437,7 @@ test('wait(step, callback) will execute the async callback but not wait for it a
 async function assertOrderThrows(fn, state: Partial<State>, method, ...args) {
   const err = await a.throws(fn, InvalidOrder)
   t.strictEqual(err.method, method)
-  t.deepEqual(err.args, args)
+  t.deepStrictEqual(err.args, args)
   if (state.step) {
     t.strictEqual(err.state.step, state.step)
   }

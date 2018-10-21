@@ -1,7 +1,7 @@
 // istanbul ignore file
 import t from 'assert';
 import isPromise from 'is-promise';
-import { isError } from 'util';
+import { isError } from 'lodash';
 import { ErrorConstructor } from './errors';
 
 export function runAsync(fn) {
