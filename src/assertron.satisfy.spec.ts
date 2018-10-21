@@ -1,7 +1,7 @@
-import { test } from 'ava'
+import t from 'assert'
 
 import a, { satisfy } from '.'
 
-test('exposes satisfy', t => {
-  t.is(a.satisfy, satisfy)
+test('exposes satisfy', () => {
+  t.strictEqual(a.satisfy, satisfy)
 })
