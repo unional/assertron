@@ -1,5 +1,5 @@
-import { test } from 'ava'
 import assertron from '.'
+import { assertThrows } from './testUtils';
 
 test('path with same style passes', () => {
   assertron.pathEqual('a', 'a')
@@ -7,8 +7,8 @@ test('path with same style passes', () => {
   assertron.pathEqual('a\\b', 'a\\b')
 })
 
-test('same style different value throws', t => {
-  t.throws(() => assertron.pathEqual('a', 'b'))
+test('same style different value throws', () => {
+  assertThrows(() => assertron.pathEqual('a', 'b'))
 })
 
 test('UNIX style matches Windows style', () => {
@@ -19,4 +19,4 @@ test('UNIX style matches Windows style', () => {
 })
 
 // not supported yet
-test.todo(`/d/foo should match d:\\foo`)
+test.skip(`/d/foo should match d:\\foo`, () => { })

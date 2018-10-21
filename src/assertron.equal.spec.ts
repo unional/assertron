@@ -1,4 +1,3 @@
-import test from 'ava';
 import assertron from '.';
 
 test('equal is strict', async () => {

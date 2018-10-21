@@ -1,7 +1,7 @@
-import { test } from 'ava'
-import { NotSatisfied } from './index'
+import t from 'assert'
+import { NotSatisfied } from '.'
 
-test('array should be tersified', t => {
+test('array should be tersified', () => {
   const err = new NotSatisfied([{
     path: ['a'],
     actual: {
@@ -11,5 +11,5 @@ test('array should be tersified', t => {
       b: ['a', 'b', 'c']
     }
   }])
-  t.is(err.toString(), `NotSatisfied: Expect a to satisfy { b: ['a', 'b', 'c'] }, but received { a: [1, 2, 3] }`)
+  t.strictEqual(err.toString(), `NotSatisfied: Expect a to satisfy { b: ['a', 'b', 'c'] }, but received { a: [1, 2, 3] }`)
 })

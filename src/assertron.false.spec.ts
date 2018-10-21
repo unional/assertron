@@ -1,16 +1,16 @@
 import a from '.'
-import test from 'ava'
 import { FailedAssertion } from './errors'
+import { assertThrows } from './testUtils';
 
-test('non-false statement throws', t => {
-  t.throws(() => a.false(true), FailedAssertion)
-  t.throws(() => a.false(1 === 1), FailedAssertion)
+test('non-false statement throws', () => {
+  assertThrows(() => a.false(true), FailedAssertion)
+  assertThrows(() => a.false(1 === 1), FailedAssertion)
 })
 
-test('non-false function throws', t => {
-  t.throws(() => a.false(() => true), FailedAssertion)
-  t.throws(() => a.false(() => 1), FailedAssertion)
-  t.throws(() => a.false(() => ''), FailedAssertion)
+test('non-false function throws', () => {
+  assertThrows(() => a.false(() => true), FailedAssertion)
+  assertThrows(() => a.false(() => 1), FailedAssertion)
+  assertThrows(() => a.false(() => ''), FailedAssertion)
 })
 
 test('false statement pass', () => {

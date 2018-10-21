@@ -1,100 +1,90 @@
-import { test } from 'ava'
+import a, { satisfy } from '.'
 
-import { satisfy } from './index'
-
-test('primitive types will pass', t => {
+test('primitive types will pass', () => {
   satisfy(1, 1)
   satisfy('a', 'a')
   satisfy(true, true)
-  t.pass()
 })
 
-test('primitive types shows value directly in error', t => {
-  t.throws(() => satisfy<number>(1, 2), 'Expect actual to satisfy 2, but received 1')
+test.only('primitive types shows value directly in error', () => {
+  a.throws(() => satisfy<number>(1, 2), e => e.message === 'Expect actual to satisfy 2, but received 1')
 
-  t.throws(() => satisfy<boolean>(true, false), 'Expect actual to satisfy false, but received true')
+  a.throws(() => satisfy<boolean>(true, false), e => e.message === 'Expect actual to satisfy false, but received true')
 
-  t.throws(() => satisfy<string>('a', 'b'), `Expect actual to satisfy 'b', but received 'a'`)
+  a.throws(() => satisfy<string>('a', 'b'), e => e.message === `Expect actual to satisfy 'b', but received 'a'`)
 })
 
-test('empty object will pass any object', t => {
+test('empty object will pass any object', () => {
   satisfy({}, {})
   satisfy({ a: 1 }, {})
-  t.pass()
 })
 
-test('empty object will fail against primitive types', t => {
-  t.throws(() => satisfy(1, {} as any), 'Expect actual to satisfy {}, but received 1')
+test('empty object will fail against primitive types', () => {
+  a.throws(() => satisfy(1, {} as any), e => e.message === 'Expect actual to satisfy {}, but received 1')
 })
 
-test(`actual is array while expected is single entry will check expected on each entry in the array`, t => {
+test(`actual is array while expected is single entry will check expected on each entry in the array`, () => {
   satisfy([1], 1)
-  t.throws(() => satisfy([1, 2], 1), 'Expect actual[1] to satisfy 1, but received 2')
+  a.throws(() => satisfy([1, 2], 1), e => e.message === 'Expect actual[1] to satisfy 1, but received 2')
 })
 
-test(`expect with shorter array will only check matched indices in actual`, t => {
+test(`expect with shorter array will only check matched indices in actual`, () => {
   satisfy([1, 2], [1])
-  t.pass()
-  t.throws(() => satisfy([2, 1], [1]), 'Expect actual[0] to satisfy 1, but received 2')
+  a.throws(() => satisfy([2, 1], [1]), e => e.message === 'Expect actual[0] to satisfy 1, but received 2')
 })
 
-test(`array entries are checked`, t => {
-  t.throws(() => satisfy([1], [2]), `Expect actual[0] to satisfy 2, but received 1`)
+test(`array entries are checked`, () => {
+  a.throws(() => satisfy([1], [2]), e => e.message === `Expect actual[0] to satisfy 2, but received 1`)
 })
 
-test('work with primitive array', t => {
+test('work with primitive array', () => {
   satisfy([1, 2, 3], [1, 2, 3])
   satisfy([true, false], [true, false])
   satisfy(['a', 'b'], ['a', 'b'])
-  t.pass()
 })
 
-test(`check deep entry in array`, t => {
-  t.throws(() => satisfy([1, { a: { b: 1 } }], [1, { a: { b: 2 } }]), `Expect actual[1].a.b to satisfy 2, but received 1`)
+test(`check deep entry in array`, () => {
+  a.throws(() => satisfy([1, { a: { b: 1 } }], [1, { a: { b: 2 } }]), e => e.message === `Expect actual[1].a.b to satisfy 2, but received 1`)
 })
 
-test('missing property will fail', t => {
-  t.throws(() => satisfy({}, { a: 1 }), `Expect a to satisfy 1, but received undefined`)
+test('missing property will fail', () => {
+  a.throws(() => satisfy({}, { a: 1 }), e => e.message === `Expect a to satisfy 1, but received undefined`)
 })
 
-test('missing property at deeper level', t => {
-  t.throws(() => satisfy({ a: {} }, { a: { b: 1 } }), `Expect a.b to satisfy 1, but received undefined`)
+test('missing property at deeper level', () => {
+  a.throws(() => satisfy({ a: {} }, { a: { b: 1 } }), e => e.message === `Expect a.b to satisfy 1, but received undefined`)
 })
 
-test('extra property will pass', t => {
+test('extra property will pass', () => {
   satisfy({ a: 1, b: 2 }, { a: 1 })
-  t.pass()
 })
 
-test('property not match will fail', t => {
-  t.throws(() => satisfy({ a: 1 }, { a: 2 }), `Expect a to satisfy 2, but received 1`)
+test('property not match will fail', () => {
+  a.throws(() => satisfy({ a: 1 }, { a: 2 }), e => e.message === `Expect a to satisfy 2, but received 1`)
 })
 
-test('regex will match regex', t => {
+test('regex will match regex', () => {
   satisfy({ a: /foo/ }, { a: /foo/ })
-  t.pass()
 })
 
-test('regex will be used to match', t => {
+test('regex will be used to match', () => {
   satisfy({ a: 'foo' }, { a: /foo/ })
-  t.pass()
 })
 
-test('function will use as predicate', t => {
+test('function will use as predicate', () => {
   satisfy({ a: 1 }, { a: a => a === 1 })
-  t.pass()
 })
 
-test('predicate error should mention path', t => {
-  t.throws(() => /* istanbul ignore next */satisfy({ a: 1 }, { a: () => false }), `Expect a to satisfy function () { return false; }, but received 1`)
+test('predicate error should mention path', () => {
+  a.throws(() => /* istanbul ignore next */satisfy({ a: 1 }, { a: () => false }), e => e.message === `Expect a to satisfy function () { return false; }, but received 1`)
 })
 
-test('deep predicate error should mention path', t => {
+test('deep predicate error should mention path', () => {
 
-  t.throws(() => /* istanbul ignore next */satisfy({ a: { b: 1 } }, { a: { b: b => b === 2 } }), `Expect a.b to satisfy function (b) { return b === 2; }, but received 1`)
+  a.throws(() => /* istanbul ignore next */satisfy({ a: { b: 1 } }, { a: { b: b => b === 2 } }), e => e.message === `Expect a.b to satisfy function (b) { return b === 2; }, but received 1`)
 })
 
-test('can check parent property', t => {
+test('can check parent property', () => {
   class Foo {
     foo = 'foo'
   }
@@ -103,20 +93,17 @@ test('can check parent property', t => {
   }
   const boo = new Boo()
   satisfy(boo, { foo: 'foo' })
-  t.pass()
 })
 
-test('actual of type any should not have type checking error', t => {
+test('actual of type any should not have type checking error', () => {
   let actual: any = { a: 1 }
   satisfy(actual, { a: 1 })
-  t.pass()
 })
 
-test('Work with null in array', t => {
+test('Work with null in array', () => {
   interface Foo {
     payload: any;
   }
   let action: Foo = { payload: [null, 3, 4] } as any
   satisfy(action, { payload: [null, 3, 4] })
-  t.pass()
 })

@@ -14,15 +14,11 @@ import { UnexpectedError } from './UnexpectedError'
 import { ErrorConstructor, ErrorValidator, isErrorConstructor, FailedAssertion } from './errors'
 import { resolves, rejects } from './promise'
 
-// NOTE: `Promise<X>`, `PromiseLike<X>` and `() => X` only describes the resolve/return value.
-// They don't describe reject/Error type.
-// Thus, it is not possible to infer the return type of the `throws()`,
-// except for the `ErrorConstructor` overload.
-
 export interface Assertron {
-  throws<E extends Error = Error & { [k: string]: any }>(value: (() => any) | PromiseLike<any>, error?: ErrorConstructor<E>, message?: string): Promise<E>,
-  throws<T = any>(value: PromiseLike<any>, error?: ErrorValidator, message?: string): Promise<T>,
-  throws<T = any>(value: (() => any) | PromiseLike<any>, error?: ErrorValidator, message?: string): T,
+  throws<E extends Error, T = any>(value: (...args: any[]) => T, error: ErrorConstructor<E> | ((value) => boolean), message?: string): T extends Promise<any> ? Promise<E> : E,
+  throws<E extends Error = Error & { [k: string]: any }, T extends PromiseLike<any> = any>(value: T, error: ErrorConstructor<E> | ((value) => boolean), message?: string): Promise<E>,
+  throws<E = Error, T = any>(value: (...args: any[]) => T): T extends Promise<any> ? Promise<E> : E,
+  throws<E = Error, T extends PromiseLike<any> = any>(value: T): Promise<E>,
   pathEqual(actual: string, expected: string): void
   satisfy: typeof satisfy,
   false(value: any): void,

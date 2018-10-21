@@ -1,66 +1,48 @@
 
-import test from 'ava'
+import t from 'assert'
+import a, { AssertOrder, InvalidOrder, State } from '.'
 
-import { AssertOrder, InvalidOrder, State } from './index'
-
-function assertThrows(t, fn, state: Partial<State>, method, ...args) {
-  const err = t.throws(fn) as InvalidOrder
-  t.is(err.method, method)
-  t.deepEqual(err.args, args)
-  if (state.step) {
-    t.is(err.state.step, state.step)
-  }
-  if (state.subStep) {
-    t.is(err.state.subStep, state.subStep)
-  }
-}
-
-test('is() expecting 1', t => {
+test('is() expecting 1', () => {
   const order = new AssertOrder()
   order.is(1)
-  t.pass()
 })
 
-test('is() does not move the order forward', t => {
+test('is() does not move the order forward', () => {
   const order = new AssertOrder()
   order.is(1)
   order.is(1)
-  t.pass()
 })
 
-test('is() with wrong step should throw', t => {
+test('is() with wrong step should throw', async () => {
   const order = new AssertOrder()
-  assertThrows(t, () => order.is(0), { step: 1 }, 'is', 0)
+  await assertOrderThrows(() => order.is(0), { step: 1 }, 'is', 0)
 })
 
-test(`not() with right step should throw`, t => {
+test(`not() with right step should throw`, async () => {
   const order = new AssertOrder()
 
-  assertThrows(t, () => order.not(1), { step: 1 }, 'not', 1)
+  await assertOrderThrows(() => order.not(1), { step: 1 }, 'not', 1)
 })
 
-test('not() with wrong step should pass', t => {
+test('not() with wrong step should pass', () => {
   const order = new AssertOrder()
   order.not(0)
   order.not(2)
-  t.pass()
 })
 
-test('move() to move to next step', t => {
+test('move() to move to next step', () => {
   const order = new AssertOrder()
   order.move()
   order.is(2)
-  t.pass()
 })
 
-test('move(n) moves to step n', t => {
+test('move(n) moves to step n', () => {
   const order = new AssertOrder()
   order.jump(3)
   order.is(3)
-  t.pass()
 })
 
-test('move(0) or negative also works', t => {
+test('move(0) or negative also works', () => {
   const order = new AssertOrder()
   order.jump(0)
   order.is(0)
@@ -70,155 +52,158 @@ test('move(0) or negative also works', t => {
 
   order.move()
   order.is(-1)
-  t.pass()
 })
 
-test('once() move to next step', t => {
+test('once() move to next step', () => {
   const order = new AssertOrder()
   order.once(1)
   order.is(2)
-  t.pass()
 })
 
-test('once() assert for current step', t => {
+test('once() assert for current step', async () => {
   const order = new AssertOrder()
 
-  assertThrows(t, () => order.once(0), { step: 1 }, 'once', 0)
+  await assertOrderThrows(() => order.once(0), { step: 1 }, 'once', 0)
 })
 
-test('on(1) will invoke at initial move', t => {
+test('on(1) will invoke at initial move', () => {
   const order = new AssertOrder()
   let called = false
   order.on(1, () => called = true)
 
   order.move()
 
-  t.is(called, true)
+  t.strictEqual(called, true)
 })
 
-test('move(n) will not invoke on(y)', t => {
+test('jump(n) will not invoke on(y)', () => {
   const order = new AssertOrder()
-  order.on(1, () => t.pass())
+  let called = false
+  order.on(1, () => called = true)
 
   order.jump(1)
+  t(!called)
 })
 
-test('on(0) will be invoked on jump(0) + move()', t => {
+test('on(0) will be invoked on jump(0) + move()', () => {
   const order = new AssertOrder()
-  order.on(0, () => t.pass())
+  let called = false
+  order.on(0, () => called = true)
 
   order.jump(0)
   order.move()
+  t(called)
 })
 
-test('on(1) will be invoked on move()', t => {
+test('on(1) will be invoked on move()', () => {
   const order = new AssertOrder()
-  order.on(1, () => t.pass())
+  let called = false
+  order.on(1, () => called = true)
 
   order.move()
+  t(called)
 })
 
-test('on(1) will be invoke on once(1)', t => {
+test('on(1) will be invoke on once(1)', () => {
   const order = new AssertOrder()
-  order.on(1, () => t.pass())
+  let called = false
+  order.on(1, () => called = true)
+
   order.once(1)
+  t(called)
 })
 
-test('atLeastOnce(1) would move step forward', t => {
+test('atLeastOnce(1) would move step forward', () => {
   const order = new AssertOrder()
   order.atLeastOnce(1)
   order.once(2)
-  t.pass()
 })
 
-test('atLeastOnce(1) can called multiple times', t => {
+test('atLeastOnce(1) can called multiple times', () => {
   const order = new AssertOrder()
   order.once(1)
   order.atLeastOnce(2)
   order.atLeastOnce(2)
   order.once(3)
-  t.is(order.currentStep, 4)
+  t.strictEqual(order.currentStep, 4)
 })
 
-test('atLeastOnce(1) should throws after once(1)', t => {
+test('atLeastOnce(1) should throws after once(1)', async () => {
   const order = new AssertOrder()
   order.once(1)
-  assertThrows(t, () => order.atLeastOnce(1), { step: 2 }, 'atLeastOnce', 1)
+  await assertOrderThrows(() => order.atLeastOnce(1), { step: 2 }, 'atLeastOnce', 1)
 })
 
-test('atLeastOnce() returns sub step', t => {
+test('atLeastOnce() returns sub step', () => {
   const order = new AssertOrder()
-  t.is(order.atLeastOnce(1), 1)
-  t.is(order.atLeastOnce(1), 2)
-  t.is(order.atLeastOnce(2), 1)
-  t.is(order.atLeastOnce(2), 2)
-  t.is(order.atLeastOnce(3), 1)
-  t.is(order.atLeastOnce(3), 2)
+  t.strictEqual(order.atLeastOnce(1), 1)
+  t.strictEqual(order.atLeastOnce(1), 2)
+  t.strictEqual(order.atLeastOnce(2), 1)
+  t.strictEqual(order.atLeastOnce(2), 2)
+  t.strictEqual(order.atLeastOnce(3), 1)
+  t.strictEqual(order.atLeastOnce(3), 2)
 })
 
-test.todo(`atLeast(n, m) where m <= 0 doesn't make sense`)
-test.todo(`atLeast(n, 2) pass`)
-test.todo(`atLeast(n, 2) fail`)
+test.skip(`atLeast(n, m) where m <= 0 doesn't make sense`, () => { })
+test.skip(`atLeast(n, 2) pass`, () => { })
+test.skip(`atLeast(n, 2) fail`, () => { })
 
-test('any(2) should throws', t => {
-  const order = new AssertOrder()
-
-  assertThrows(t, () => order.any([2]), { step: 1 }, 'any', [2])
-})
-
-test('any(2, 3) should throws', t => {
+test('any(2) should throws', async () => {
   const order = new AssertOrder()
 
-  assertThrows(t, () => order.any([2, 3]), { step: 1 }, 'any', [2, 3])
+  await assertOrderThrows(() => order.any([2]), { step: 1 }, 'any', [2])
 })
 
-test('any(1) should move to next step', t => {
+test('any(2, 3) should throws', async () => {
+  const order = new AssertOrder()
+
+  await assertOrderThrows(() => order.any([2, 3]), { step: 1 }, 'any', [2, 3])
+})
+
+test('any(1) should move to next step', () => {
   const order = new AssertOrder()
 
   order.any([1])
 
   order.once(2)
-  t.pass()
 })
 
-test('any(1, 2) should pass with once(1) and move to step 3', t => {
+test('any(1, 2) should pass with once(1) and move to step 3', () => {
   const order = new AssertOrder()
   order.once(1)
 
   order.any([1, 2])
 
   order.once(3)
-  t.pass()
 })
 
-test(`any() should returns the step it encountered`, t => {
+test(`any() should returns the step it encountered`, () => {
   const order = new AssertOrder()
 
-  t.is(order.any([1, 2, 3]), 1)
-  t.is(order.any([1, 2, 3]), 2)
-  t.is(order.any([1, 2, 3]), 3)
+  t.strictEqual(order.any([1, 2, 3]), 1)
+  t.strictEqual(order.any([1, 2, 3]), 2)
+  t.strictEqual(order.any([1, 2, 3]), 3)
 })
 
-test(`onAny(1, fn) will not be invoked immediately`, t => {
+test(`onAny(1, fn) will not be invoked immediately`, () => {
   const order = new AssertOrder()
 
   order.onAny([1], () => t.fail('should be be invoked'))
-  t.pass()
 })
 
-test(`onAny(2, fn) invokes after move()`, t => {
+test(`onAny(2, fn) invokes after move()`, () => {
   const order = new AssertOrder()
 
-  order.onAny([2], step => t.is(step, 2))
+  order.onAny([2], step => t.strictEqual(step, 2))
   order.move()
 })
 
-test(`onAny() should not move step`, t => {
+test(`onAny() should not move step`, () => {
   const order = new AssertOrder()
   const o = new AssertOrder()
 
   order.onAny([1], step => {
-    t.is(step, 1)
+    t.strictEqual(step, 1)
     o.once(2)
   })
   o.once(1)
@@ -228,111 +213,109 @@ test(`onAny() should not move step`, t => {
   o.once(3)
 })
 
-test(`onAny([2,3], fn) invoke with the specific step`, t => {
+test(`onAny([2,3], fn) invoke with the specific step`, () => {
   const order = new AssertOrder()
 
-  t.plan(2)
-  order.onAny([1, 2], step => t.true(step === 1 || step === 2))
+  const steps: number[] = []
+  order.onAny([1, 2], step => steps.push(step))
 
   order.move()
   order.move()
+  a.deepEqual(steps, [1, 2])
 })
 
-test('onAny() passes if one of the assert functions passes ', t => {
+test('onAny() passes if one of the assert functions passes ', () => {
   const a = new AssertOrder(2)
   let steps = ''
   a.onAny([1, 2], step => {
     steps += step
-    t.true([1, 2].indexOf(step) >= 0)
+    t([1, 2].indexOf(step) >= 0)
     throw new Error('some error')
   }, step => {
     steps += step
-    t.true([1, 2].indexOf(step) >= 0)
+    t([1, 2].indexOf(step) >= 0)
   })
   a.move()
   a.move()
 
-  t.is(steps, '1122')
+  t.strictEqual(steps, '1122')
 })
 
-test(`onAny() throws if all assert functions throws`, t => {
-  const a = new AssertOrder(2)
-  a.onAny([1], () => {
+test(`onAny() throws if all assert functions throws`, async () => {
+  const o = new AssertOrder(2)
+  o.onAny([1], () => {
     throw new Error('first error')
   }, () => {
     throw new Error('second error')
   })
-  const err = t.throws(() => a.move())
-  t.is(err.message, 'first error')
+  const err = await a.throws(() => o.move())
+  t.strictEqual(err.message, 'first error')
 })
 
-test('AssertOrder(0) accepts no step >= 1', t => {
+test('AssertOrder(0) accepts no step >= 1', async () => {
   const order = new AssertOrder(0)
 
-  const err = t.throws(() => order.once(1)) as InvalidOrder
+  const err = await a.throws(() => order.once(1), InvalidOrder)
 
-  t.is(err.state.maxStep, 0)
+  t.strictEqual(err.state.maxStep, 0)
 })
 
-test('AssertOrder(1) accepts step 1 but not 2', t => {
+test('AssertOrder(1) accepts step 1 but not 2', async () => {
   const order = new AssertOrder(1)
 
   order.once(1)
 
-  const err = t.throws(() => order.once(2)) as InvalidOrder
+  const err = await a.throws(() => order.once(2), InvalidOrder)
 
-  t.is(err.state.maxStep, 1)
+  t.strictEqual(err.state.maxStep, 1)
 })
 
-test('AssertOrder(0) can use jump(...)', t => {
+test('AssertOrder(0) can use jump(...)', () => {
   const order = new AssertOrder(0)
 
   order.jump(0)
   order.once(0)
-  t.pass()
 })
 
-test('end() should not throw if plan is not defined', t => {
+test('end() should not throw if plan is not defined', () => {
   const order = new AssertOrder()
   order.end()
-  t.pass()
 })
 
-test('end() would mark to not accepting more steps if plan is not defined', t => {
+test('end() would mark to not accepting more steps if plan is not defined', async () => {
   let order = new AssertOrder()
   order.end()
 
-  let err = t.throws(() => order.once(1)) as InvalidOrder
+  let err = await a.throws(() => order.once(1), InvalidOrder)
 
-  t.is(err.state.maxStep, 0)
+  t.strictEqual(err.state.maxStep, 0)
 
   order = new AssertOrder()
   order.once(1)
   order.end()
 
-  err = t.throws(() => order.once(2)) as InvalidOrder
+  err = await a.throws(() => order.once(2), InvalidOrder)
 
-  t.is(err.state.maxStep, 1)
+  t.strictEqual(err.state.maxStep, 1)
 })
 
-test('end() passes with meeting planned step', t => {
+test('end() passes with meeting planned step', () => {
   const order = new AssertOrder(1)
   order.once(1)
 
   order.end()
-  t.pass()
 })
 
-test('end() throws if planned step not met', t => {
+test('end() throws if planned step not met', async () => {
   const order = new AssertOrder(2)
   order.once(1)
 
-  const err = t.throws(() => order.end()) as InvalidOrder
+  const err = await a.throws(() => order.end(), InvalidOrder)
 
-  t.is(err.state.maxStep, 2)
+  t.strictEqual(err.state.maxStep, 2)
 })
 
-test('end(n) waits n milliseconds before checking', async t => {
+test('end(n) waits n milliseconds before checking', async () => {
   const order = new AssertOrder(1)
 
   setTimeout(() => {
@@ -340,62 +323,59 @@ test('end(n) waits n milliseconds before checking', async t => {
   }, 1)
 
   await order.end(2)
-  t.pass()
 })
 
-test('end(n) waits n milliseconds and fail when step not met', async t => {
+test('end(n) waits n milliseconds and fail when step not met', async () => {
   const order = new AssertOrder(1)
 
   setTimeout(() => {
     order.once(1)
   }, 10)
-  const err: InvalidOrder = await t.throws(order.end(1))
+  const err = await a.throws(order.end(1), InvalidOrder)
 
-  t.is(err.state.maxStep, 1)
+  t.strictEqual(err.state.maxStep, 1)
 })
-test.todo(`exactly(n, 0) doesn't make sense`)
 
-test(`exactly(n, 1) is the same as once(n)`, t => {
+test.skip(`exactly(n, 0) doesn't make sense`, () => { })
+
+test(`exactly(n, 1) is the same as once(n)`, () => {
   const order = new AssertOrder()
   order.exactly(1, 1)
   order.once(2)
-  t.pass()
 })
 
-test(`exactly(n, 2) moves to next step at sub step 2`, t => {
+test(`exactly(n, 2) moves to next step at sub step 2`, () => {
   const order = new AssertOrder()
   order.exactly(1, 2)
   order.exactly(1, 2)
   order.once(2)
-  t.pass()
 })
 
-test(`exactly() returns the sub step`, t => {
+test(`exactly() returns the sub step`, () => {
   const order = new AssertOrder()
-  t.is(order.exactly(1, 2), 1)
-  t.is(order.exactly(1, 2), 2)
+  t.strictEqual(order.exactly(1, 2), 1)
+  t.strictEqual(order.exactly(1, 2), 2)
 })
 
-test('jump(0) restore 0 based step AssertOrder', t => {
+test('jump(0) restore 0 based step AssertOrder', () => {
   const order = new AssertOrder()
   order.jump(0)
   order.once(0)
   order.once(1)
-  t.pass()
 })
 
-test('end() returns time taken', t => {
+test('end() returns time taken', () => {
   const order = new AssertOrder()
   let i = 10000
   while (i) i--
-  t.true(order.end() > 0)
+  t(order.end() > 0)
 })
 
-test('end(number) returns promise with time taken', async t => {
+test('end(number) returns promise with time taken', async () => {
   const order = new AssertOrder()
   let i = 10000
   while (i) i--
-  t.true(await order.end(1) > 0)
+  t(await order.end(1) > 0)
 })
 
 test('calling end() with planned step met will pass', () => {
@@ -404,10 +384,10 @@ test('calling end() with planned step met will pass', () => {
   order.end()
 })
 
-test('calling end() early will throw', t => {
+test('calling end() early will throw', async () => {
   const order = new AssertOrder(2)
   order.once(1)
-  t.throws(() => order.end(), InvalidOrder)
+  await a.throws(() => order.end(), InvalidOrder)
 })
 
 test('calling end() without planned step will pass', () => {
@@ -415,14 +395,14 @@ test('calling end() without planned step will pass', () => {
   order.end()
 })
 
-test('wait(step) will wait for specific step to happen', async t => {
+test('wait(step) will wait for specific step to happen', async () => {
   const order = new AssertOrder()
 
   setImmediate(() => {
     order.once(1)
   })
   await order.wait(1)
-  t.is(order.currentStep, 2)
+  t.strictEqual(order.currentStep, 2)
 })
 
 test('wait(step, callback) will execute the callback and return void', async () => {
@@ -454,3 +434,14 @@ test('wait(step, callback) will execute the async callback but not wait for it a
   return o2.end(100)
 })
 
+async function assertOrderThrows(fn, state: Partial<State>, method, ...args) {
+  const err = await a.throws(fn, InvalidOrder)
+  t.strictEqual(err.method, method)
+  t.deepEqual(err.args, args)
+  if (state.step) {
+    t.strictEqual(err.state.step, state.step)
+  }
+  if (state.subStep) {
+    t.strictEqual(err.state.subStep, state.subStep)
+  }
+}
