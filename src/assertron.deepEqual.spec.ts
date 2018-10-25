@@ -7,8 +7,6 @@ test('deepEqual is strict', () => {
 
 test('works with array', () => {
   a.deepEqual([1, 2, 3], [1, 2, 3])
-})
 
-// test('mismatched array throws', () => {
-//   a.throws(() => a.dee)
-// })
+  a.deepEqual(['abc-def', 'a'], ['abc-def', 'a'])
+})

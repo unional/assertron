@@ -84,10 +84,13 @@ export const assertron: Assertron = {
     }
   },
   deepEqual(actual, expected) {
-    if (isArray(actual) && JSON.stringify(actual) !== JSON.stringify(expected)) {
-      throw new NotEqual(actual, expected)
+    if (isArray(actual)) {
+      if (JSON.stringify(actual) !== JSON.stringify(expected))
+        throw new NotEqual(actual, expected)
     }
-    t.deepStrictEqual(actual, expected)
+    else {
+      t.deepStrictEqual(actual, expected)
+    }
   }
 }
 

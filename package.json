@@ -32,7 +32,7 @@
     "dependency-check": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev -i perf_hooks",
     "lint": "tslint -p tsconfig.json 'src/**/*.ts'",
     "semantic-release": "semantic-release",
-    "test": "npm run clean && tsc && ava",
+    "test": "npm run clean && tsc && jest",
     "verify": "npm run lint && npm run build && npm run coverage && npm run dependency-check",
     "verify-ci": "npm run lint && npm run build && jest --coverage --config jest.config.ci.json && npm run dependency-check",
     "watch": "jest --watch"
