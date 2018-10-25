@@ -25,7 +25,7 @@ export interface Assertron {
   resolves(promise: Promise<any>): Promise<void>
   rejects(promise: Promise<any>): Promise<void>,
   equal<T>(actual: T, expected: T): void,
-  deepEqual<T extends Array<any>>(actual: T, expected: T): void
+  deepEqual<T>(actual: T, expected: T): void
 }
 
 export const assertron: Assertron = {

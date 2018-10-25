@@ -10,3 +10,7 @@ test('works with array', () => {
 
   a.deepEqual(['abc-def', 'a'], ['abc-def', 'a'])
 })
+
+test('works with object', () => {
+  a.deepEqual({ a: 1 }, { a: 1 })
+})

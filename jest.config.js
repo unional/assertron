@@ -1,32 +1,33 @@
 module.exports = {
-  "preset": "ts-jest",
-  "globals": {
-    "ts-jest": {
-      "diagnostics": false
+  'preset': 'ts-jest',
+  'globals': {
+    'ts-jest': {
+      'diagnostics': false
     }
   },
-  "reporters": [
-    "default",
-    "jest-audio-reporter"
+  'reporters': [
+    'default',
+    'jest-audio-reporter',
+    'jest-progress-tracker'
   ],
-  "roots": [
-    "<rootDir>/src"
+  'roots': [
+    '<rootDir>/src'
   ],
-  "testEnvironment": "node",
-  "watchPlugins": [
+  'testEnvironment': 'node',
+  'watchPlugins': [
     [
-      "jest-watch-suspend"
+      'jest-watch-suspend'
     ],
     [
-      "jest-watch-toggle-config",
+      'jest-watch-toggle-config',
       {
-        "setting": "verbose"
+        'setting': 'verbose'
       }
     ],
     [
-      "jest-watch-toggle-config",
+      'jest-watch-toggle-config',
       {
-        "setting": "collectCoverage"
+        'setting': 'collectCoverage'
       }
     ]
   ]
