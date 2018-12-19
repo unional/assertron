@@ -15,7 +15,7 @@ else
   target_version=$1;
 fi
 node_version=$(node -v);
-if [ ${node_version:1:1} = ${target_version:0:1} ]; then
+if [ ${node_version:1:2} = ${target_version:0:2} ]; then
   echo "Detected ${node_version}, satisfying ${target_version}. Executing command";
   eval $2;
 else
