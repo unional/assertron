@@ -104,6 +104,6 @@ test('Work with null in array', () => {
   interface Foo {
     payload: any;
   }
-  let action: Foo = { payload: [null, 3, 4] } as any
+  let action: Foo = { payload: [null, 3, 4] }
   satisfy(action, { payload: [null, 3, 4] })
 })
