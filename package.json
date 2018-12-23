@@ -41,14 +41,14 @@
   "dependencies": {
     "is-node": "^1.0.2",
     "is-promise": "^2.1.0",
-    "lodash": "^4.17.11",
     "make-error": "^1.3.5",
     "path-equal": "^1.1.0",
     "satisfier": "^4.5.0",
     "tersify": "^1.2.6"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.118",
-    "@unional/devpkg-node": "^1.1.1"
+    "@types/lodash": "^4.14.119",
+    "@unional/devpkg-node": "^1.1.2",
+    "lodash": "^4.17.11"
   }
 }

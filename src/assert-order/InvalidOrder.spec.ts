@@ -1,6 +1,6 @@
 import t from 'assert';
-import { AssertOrder } from '.';
-import { assertThrows } from './testUtils';
+import { AssertOrder } from '..';
+import { assertThrows } from '../testUtils';
 
 test('error message for once()', () => {
   const o = new AssertOrder()

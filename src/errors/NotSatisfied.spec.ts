@@ -1,5 +1,5 @@
 import t from 'assert'
-import { NotSatisfied } from '.'
+import { NotSatisfied } from '..'
 
 test('array should be tersified', () => {
   const err = new NotSatisfied([{
