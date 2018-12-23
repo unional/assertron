@@ -1,13 +1,10 @@
 import t from 'assert';
-import a, { InvalidUsage, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError } from '.';
-import { assertAsyncThrows, assertIsError, assertIsPromise, assertThrows } from './testUtils';
+import a, { InvalidUsage, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError } from '..';
+import { assertAsyncThrows, assertIsError, assertIsPromise, assertThrows } from '../testUtils';
 
 
 test('when value is PromiseLike returns Promise', async () => {
-  let actual = a.throws(Promise.reject(new Error()), Error, 'some message')
-  assertIsPromise(actual)
-
-  actual = a.throws(Promise.reject(new Error()), Error)
+  let actual = a.throws(Promise.reject(new Error()), Error)
   assertIsPromise(actual)
 
   actual = a.throws(Promise.reject(new Error()), () => true)
@@ -18,10 +15,7 @@ test('when value is PromiseLike returns Promise', async () => {
 })
 
 test('when value is function returning promise, will return promise', () => {
-  let actual = a.throws(() => Promise.reject(new Error()), Error, 'some message')
-  assertIsPromise(actual)
-
-  actual = a.throws(() => Promise.reject(new Error()), Error)
+  let actual = a.throws(() => Promise.reject(new Error()), Error)
   assertIsPromise(actual)
 
   actual = a.throws(() => Promise.reject(new Error()), () => true)
@@ -32,10 +26,7 @@ test('when value is function returning promise, will return promise', () => {
 })
 
 test('when value is function returns error', () => {
-  let actual = a.throws((() => { throw new Error() }) as () => void, Error, 'some message')
-  assertIsError(actual)
-
-  actual = a.throws((() => { throw new Error() }) as () => void, Error)
+  let actual = a.throws((() => { throw new Error() }) as () => void, Error)
   assertIsError(actual)
 
   actual = a.throws((() => { throw new Error() }) as () => void)
@@ -55,7 +46,7 @@ test('throws NotRejected for resolved promise', async () => {
 })
 
 test('passes with rejected promise', async () => {
-  const actual = await a.throws<string>(new Promise((_, r) => {
+  const actual = await a.throws<string>(() => new Promise((_, r) => {
     setImmediate(() => r('no'))
   }))
   t.strictEqual(actual, 'no')

@@ -1,7 +1,7 @@
-import { BaseError } from 'make-error'
-import { tersify } from 'tersify'
-
-import { ErrorConstructor, ErrorValidator, isErrorConstructor } from './errors'
+import { BaseError } from 'make-error';
+import { tersify } from 'tersify';
+import { ErrorConstructor, ErrorValidator } from '../errors';
+import { isErrorConstructor } from './util';
 
 export class UnexpectedError extends BaseError {
   // istanbul ignore next

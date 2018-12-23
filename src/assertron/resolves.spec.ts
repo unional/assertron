@@ -1,6 +1,6 @@
 import t from 'assert';
-import a from '.';
-import { FailedAssertion } from './errors';
+import a from '..';
+import { FailedAssertion } from '../errors';
 
 
 test('pass on resolved promise', async () => {

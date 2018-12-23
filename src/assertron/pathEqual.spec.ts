@@ -1,5 +1,5 @@
-import assertron from '.'
-import { assertThrows } from './testUtils';
+import assertron from '..'
+import { assertThrows } from '../testUtils';
 
 test('path with same style passes', () => {
   assertron.pathEqual('a', 'a')

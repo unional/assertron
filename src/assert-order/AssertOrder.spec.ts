@@ -1,6 +1,6 @@
 
 import t from 'assert'
-import a, { AssertOrder, InvalidOrder, State } from '.'
+import a, { AssertOrder, InvalidOrder, State } from '..'
 
 test('is() expecting 1', () => {
   const order = new AssertOrder()
@@ -221,7 +221,7 @@ test(`onAny([2,3], fn) invoke with the specific step`, () => {
 
   order.move()
   order.move()
-  a.deepEqual(steps, [1, 2])
+  t.deepStrictEqual(steps, [1, 2])
 })
 
 test('onAny() passes if one of the assert functions passes ', () => {

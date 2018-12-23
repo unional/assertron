@@ -1,5 +1,5 @@
 import t from 'assert';
-import a from '.';
+import a from '..';
 
 test('pass on rejected promise', async () => {
   await a.rejects(Promise.reject(1))
