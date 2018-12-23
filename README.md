@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD024 -->
+
 # assertron
 
 [![NPM version][npm-image]][npm-url]
@@ -11,18 +13,40 @@
 [![Greenkeeper badge](https://badges.greenkeeper.io/unional/assertron.svg)](https://greenkeeper.io/)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-A supplementary assertion library.
+A supplementary assertion library that runs on both NodeJS and browser.
 
-## assertron object
+## assertron
+
+`assertron` provides additional or improved assertion functions of the `assert` module.
 
 ```ts
-import assertron from 'assertron'
+import { assertron } from 'assertron'
 
 assertron.throws(Promise.reject(new Error('foo')))
 assertron.throws(() => { throw new Error('foo') })
 assertron.throws(() => Promise.reject(new Error('foo')))
 
 assertron.pathEqual('dir/sub-dir/file.txt', 'dir\\sub-dir\\file.txt')
+```
+
+### assertron.satisfy(actual, expected)
+
+`assertron.satisfies()` checks if `actual` meets the requirements specified by `expected`.
+Each property in `expected` can be a value, a `RegExp`, or a predicate function (test pass if function returns true).
+
+```ts
+import { satisfy } from 'assertron'
+
+// these passes
+satisfies({ a: 1, b: 2 }, { a: 1 })
+satisfies({ a: 'foo', b: 'boo' }, { a: /foo/ })
+satisfies({ a: 1, b, 2 }, { a: n => n === 1 })
+
+// these fails
+satisfies({ a: 1 }, { a: 2 })
+satisfies({ a: 1 }, { a: 1, b: 2 })
+satisfies({ a: 'foo' }, { a: /boo/ })
+satisfies({ a: 1 }, { a: () => false })
 ```
 
 ## AssertOrder
@@ -108,26 +132,6 @@ for (let i = 1; i <= 4; i++) {
 ```
 
 There are more methods available. Use TypeScript to discover them!
-
-## satisfy(actual, expected)
-
-`satisfy()` checks if `actual` meets the requirements specified by `expected`.
-Each property in `expected` can be a value, a `RegExp`, or a predicate function (test pass if function returns true).
-
-```ts
-import { satisfy } from 'assertron'
-
-// these passes
-satisfy({ a: 1, b: 2 }, { a: 1 })
-satisfy({ a: 'foo', b: 'boo' }, { a: /foo/ })
-satisfy({ a: 1, b, 2 }, { a: n => n === 1 })
-
-// these fails
-satisfy({ a: 1 }, { a: 2 })
-satisfy({ a: 1 }, { a: 1, b: 2 })
-satisfy({ a: 'foo' }, { a: /boo/ })
-satisfy({ a: 1 }, { a: () => false })
-```
 
 ## Contribute
 
