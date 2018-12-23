@@ -6,7 +6,7 @@ test('primitive types will pass', () => {
   a.satisfies(true, true)
 })
 
-test.only('primitive types shows value directly in error', () => {
+test('primitive types shows value directly in error', () => {
   a.throws(() => a.satisfies<number>(1, 2), e => e.message === 'Expect actual to satisfy 2, but received 1')
 
   a.throws(() => a.satisfies<boolean>(true, false), e => e.message === 'Expect actual to satisfy false, but received true')
