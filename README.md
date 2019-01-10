@@ -35,18 +35,18 @@ assertron.pathEqual('dir/sub-dir/file.txt', 'dir\\sub-dir\\file.txt')
 Each property in `expected` can be a value, a `RegExp`, or a predicate function (test pass if function returns true).
 
 ```ts
-import { satisfy } from 'assertron'
+import a from 'assertron' // assertron is also exported as default.
 
 // these passes
-satisfies({ a: 1, b: 2 }, { a: 1 })
-satisfies({ a: 'foo', b: 'boo' }, { a: /foo/ })
-satisfies({ a: 1, b, 2 }, { a: n => n === 1 })
+a.satisfies({ a: 1, b: 2 }, { a: 1 })
+a.satisfies({ a: 'foo', b: 'boo' }, { a: /foo/ })
+a.satisfies({ a: 1, b, 2 }, { a: n => n === 1 })
 
 // these fails
-satisfies({ a: 1 }, { a: 2 })
-satisfies({ a: 1 }, { a: 1, b: 2 })
-satisfies({ a: 'foo' }, { a: /boo/ })
-satisfies({ a: 1 }, { a: () => false })
+a.satisfies({ a: 1 }, { a: 2 })
+a.satisfies({ a: 1 }, { a: 1, b: 2 })
+a.satisfies({ a: 'foo' }, { a: /boo/ })
+a.satisfies({ a: 1 }, { a: () => false })
 ```
 
 ## AssertOrder
