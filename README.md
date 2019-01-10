@@ -29,7 +29,7 @@ assertron.throws(() => Promise.reject(new Error('foo')))
 assertron.pathEqual('dir/sub-dir/file.txt', 'dir\\sub-dir\\file.txt')
 ```
 
-### assertron.satisfy(actual, expected)
+### assertron.satisfies(actual, expected)
 
 `assertron.satisfies()` checks if `actual` meets the requirements specified by `expected`.
 Each property in `expected` can be a value, a `RegExp`, or a predicate function (test pass if function returns true).
