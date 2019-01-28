@@ -1,7 +1,7 @@
 import t from 'assert';
-import a, { InvalidUsage, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError } from '..';
-import { assertAsyncThrows, assertIsError, assertIsPromise, assertThrows } from '../testUtils';
-
+import AssertionError from 'assertion-error';
+import a from '..';
+import { assertAsyncThrows, assertIsError, assertIsPromise, assertThrows, noStackTraceFor } from '../testUtils';
 
 test('when value is PromiseLike returns Promise', async () => {
   let actual = a.throws(Promise.reject(new Error()), Error)
@@ -34,15 +34,20 @@ test('when value is function returns error', () => {
 })
 
 test('throws InvalidUsage if input is not a function or promise', () => {
-  assertThrows(() => a.throws(0 as any), InvalidUsage)
-  assertThrows(() => a.throws(true as any), InvalidUsage)
-  assertThrows(() => a.throws('...' as any), InvalidUsage)
-  assertThrows(() => a.throws(/foo/ as any), InvalidUsage)
+  assertThrows(() => a.throws(0 as any))
+  assertThrows(() => a.throws(true as any))
+  assertThrows(() => a.throws('...' as any))
+  assertThrows(() => a.throws(/foo/ as any))
 })
 
-test('throws NotRejected for resolved promise', async () => {
-  const actual = await assertAsyncThrows(() => a.throws(Promise.resolve('ok')), NotRejected)
+test('throws for resolved promise', async () => {
+  const actual = await assertAsyncThrows<AssertionError<{ value: string }>>(() => a.throws(Promise.resolve('ok')), AssertionError)
   t.strictEqual(actual.value, 'ok')
+})
+
+test('throws error does not contain internal stack trace for resolved promise', async () => {
+  const err = await assertAsyncThrows<AssertionError<{ value: string }>>(() => a.throws(Promise.resolve('ok')), AssertionError)
+  noStackTraceFor('throws.ts', err)
 })
 
 test('passes with rejected promise', async () => {
@@ -52,44 +57,68 @@ test('passes with rejected promise', async () => {
   t.strictEqual(actual, 'no')
 })
 
-test('assertron.throws() passes with rejected promise passing validator', () => {
+test('passes with rejected promise passing validator', () => {
   return a.throws(Promise.reject('no'), err => err === 'no')
 })
 
-test('assertron.throws() throws with rejected promise failing validator', async () => {
-  const err = await assertAsyncThrows(() => a.throws(Promise.reject('no'), err => err !== 'no'), UnexpectedError)
+test('throws with rejected promise failing validator', async () => {
+  const err = await assertAsyncThrows<AssertionError<{ actual: string }>>(() => a.throws(Promise.reject('no'), err => err !== 'no'))
 
   t.strictEqual(err.actual, 'no')
 })
 
-test('assertron.throws() passes with throwing function', () => {
+test('thrown error does not contain internal stack trace with rejected promise failing validator', async () => {
+  const err = await assertAsyncThrows<AssertionError<{ actual: string }>>(() => a.throws(Promise.reject('no'), err => err !== 'no'))
+
+  noStackTraceFor('throws.ts', err)
+})
+
+test('passes with throwing function', () => {
   a.throws(() => { throw new Error('foo') })
 })
 
-test('assertron.throws() throws if function does not', () => {
-  t.throws(() => a.throws(
-    () => { return 'foo' },
-    err => err instanceof NotThrown && err.value === 'foo'))
+test('throws if function does not', () => {
+  const err = assertThrows<AssertionError<{ value: string }>>(() => a.throws(
+    () => { return 'foo' }, AssertionError),
+    AssertionError)
+  t.strictEqual(err.value, 'foo')
 })
 
-test('assertron.throws() throws if function returns resolved promise', async () => {
-  const err = await assertAsyncThrows(() => a.throws(() => Promise.resolve('ok')), ReturnNotRejected)
+test('thrown error does not contain internal stack track if function does not', () => {
+  const err = assertThrows<AssertionError<{ value: string }>>(() => a.throws(
+    () => { return 'foo' }, AssertionError),
+    AssertionError)
+  noStackTraceFor('throws.ts', err)
+})
+
+test('throws if function returns resolved promise', async () => {
+  const err = await assertAsyncThrows<AssertionError<{ value: string }>>(() => a.throws(() => Promise.resolve('ok')), AssertionError)
   t.strictEqual(err.value, 'ok')
 })
 
-test('assertron.throws() pass if function returns rejected promise', () => {
+test('thrown error does not contain internal stack trace if function returns resolved promise', async () => {
+  const err = await assertAsyncThrows<AssertionError<{ value: string }>>(() => a.throws(() => Promise.resolve('ok')), AssertionError)
+  noStackTraceFor('throws.ts', err)
+})
+
+test('pass if function returns rejected promise', () => {
   return a.throws(() => { return Promise.reject('ok') })
 })
 
-test('assertron.throws() pass if function returns rejected promise passing valdation', () => {
+test('pass if function returns rejected promise passing valdation', () => {
   return a.throws(
     () => { return Promise.reject('ok') },
     err => err === 'ok')
 })
 
-test('assertron.throws() throws if function returns rejected promise not passing valdation', async () => {
-  const err = await assertAsyncThrows(() => a.throws(() => Promise.reject('ok'), err => err !== 'ok'), UnexpectedError)
+test('throws if function returns rejected promise not passing valdation', async () => {
+  const err = await assertAsyncThrows<AssertionError<{ actual: any }>>(() => a.throws(() => Promise.reject('ok'), err => err !== 'ok'))
   t.strictEqual(err.actual, 'ok')
+})
+
+test('thrown error does not contain stack trace if function returns rejected promise not passing valdation', async () => {
+  const err = await assertAsyncThrows<AssertionError<{ actual: any }>>(() => a.throws(() => Promise.reject('ok'), err => err !== 'ok'))
+  noStackTraceFor('throws.ts', err)
 })
 
 class FakeError extends Error {
@@ -107,9 +136,9 @@ test('validate Promise using Error constructor', async () => {
 })
 
 test('validate Promise using another Error constructor will throw', async () => {
-  const err = await assertAsyncThrows(() => a.throws(Promise.reject(new FakeError()), InvalidUsage), UnexpectedError)
+  const err = await assertAsyncThrows(() => a.throws(Promise.reject(new FakeError()), AssertionError), AssertionError)
 
-  t.strictEqual(err.message, `Unexpected error. Expecting 'InvalidUsage' but received Error: { foo: 'foo', message: '' }`)
+  t.strictEqual(err.message, `Unexpected error. Expecting 'AssertionError' but received Error: { foo: 'foo', message: '' }`)
 })
 
 test('validate () => Promise using Error constructor', async () => {
@@ -117,8 +146,8 @@ test('validate () => Promise using Error constructor', async () => {
   t.strictEqual(err.foo, 'foo')
 })
 
-test('validate () => Promise using anothert Error constructor will throw', async () => {
-  return assertAsyncThrows(a.throws(() => Promise.reject(new FakeError()), InvalidUsage))
+test('validate () => Promise using another Error constructor will throw', () => {
+  return assertAsyncThrows(() => a.throws(() => Promise.reject(new FakeError()), AssertionError))
 })
 
 test('validate () => throw using Error constructor', async () => {
@@ -127,5 +156,5 @@ test('validate () => throw using Error constructor', async () => {
 })
 
 test('validate () => throw using another Error constructor will throw', async () => {
-  return t.throws(() => a.throws((() => { throw new FakeError() }) as any, InvalidUsage))
+  return t.throws(() => a.throws((() => { throw new FakeError() }) as any, AssertionError))
 })

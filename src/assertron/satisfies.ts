@@ -1,5 +1,6 @@
+import AssertionError from 'assertion-error';
 import { createSatisfier } from 'satisfier';
-import { NotSatisfied } from '../errors';
+import { notSatisfiedMessage } from '../errors';
 
 /**
  * Check if `actual` satisfies criteria in `expected`.
@@ -8,6 +9,10 @@ import { NotSatisfied } from '../errors';
 export function satisfies<Actual extends any>(actual: Actual, expected: any) {
   const diff = createSatisfier(expected).exec(actual);
   if (diff) {
-    throw new NotSatisfied(diff)
+    throw new AssertionError(
+      notSatisfiedMessage(diff),
+      { diff },
+      satisfies
+    )
   }
 }

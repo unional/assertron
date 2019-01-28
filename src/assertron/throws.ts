@@ -1,5 +1,6 @@
+import AssertionError from 'assertion-error';
 import isPromise from 'is-promise';
-import { ErrorConstructor, ErrorValidator, InvalidUsage, NotRejected, NotThrown, ReturnNotRejected, UnexpectedError } from '../errors';
+import { ErrorConstructor, ErrorValidator, notRejectedMessage, notThrownMessage, returnNotRejectedMessage, unexpectedErrorMessage } from '../errors';
 import { isErrorConstructor } from '../errors/util';
 
 export function throws<E extends Error>(value: PromiseLike<any>, error?: ErrorValidator | ErrorConstructor<E>): Promise<E>
@@ -7,12 +8,21 @@ export function throws<E extends Error, R = any>(value: (...args: any[]) => R, e
 export function throws<T, R = any>(value: (...args: any[]) => R, validator?: ErrorValidator): R extends Promise<any> ? Promise<T> : T
 export function throws(value: PromiseLike<any> | (() => any | PromiseLike<any>), validator?: ErrorValidator | ErrorConstructor<any>): any {
   if (typeof value !== 'function' && !isPromise(value)) {
-    throw new InvalidUsage('`assertron.throws()` must be called with a function or promise.')
+    throw new AssertionError(
+      '`assertron.throws()` must be called with a functio n or promise.',
+      undefined,
+      throws
+      )
   }
 
   if (isPromise(value)) {
     return value.then(
-      val => { throw new NotRejected(val) },
+      value => {
+        throw new AssertionError(
+          notRejectedMessage(value),
+          { value },
+          throws)
+      },
       err => {
         validateError(validator, err)
         return err
@@ -26,7 +36,12 @@ export function throws(value: PromiseLike<any> | (() => any | PromiseLike<any>),
   }
   if (isPromise(result)) {
     return result.then(
-      val => { throw new ReturnNotRejected(val) },
+      value => {
+        throw new AssertionError(
+          returnNotRejectedMessage(value),
+          { value },
+          throws)
+      },
       err => {
         validateError(validator, err)
         return err
@@ -34,7 +49,11 @@ export function throws(value: PromiseLike<any> | (() => any | PromiseLike<any>),
     )
   }
 
-  throw new NotThrown(result)
+  throw new AssertionError(
+    notThrownMessage(result),
+    { value: result },
+    throws
+  )
 }
 
 function tryCatch(fn) {
@@ -51,13 +70,21 @@ function tryCatch(fn) {
   return { threw, err, result }
 }
 
-function validateError(validator, err) {
+function validateError(validator, error) {
   if (validator) {
     if (isErrorConstructor(validator)) {
-      if (!(err instanceof validator))
-        throw new UnexpectedError(validator, err)
+      if (!(error instanceof validator))
+        throw new AssertionError(
+          unexpectedErrorMessage(error, validator),
+          { actual: error, expected: validator },
+          throws
+        )
     }
-    else if (!validator(err))
-      throw new UnexpectedError(validator, err)
+    else if (!validator(error))
+      throw new AssertionError(
+        unexpectedErrorMessage(error, validator),
+        { actual: error, expected: validator },
+        throws
+      )
   }
 }

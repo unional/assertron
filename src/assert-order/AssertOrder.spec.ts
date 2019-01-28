@@ -1,6 +1,7 @@
 
-import t from 'assert'
-import a, { AssertOrder, InvalidOrder, State } from '..'
+import t from 'assert';
+import AssertionError from 'assertion-error';
+import a, { AssertOrder, State } from '..';
 
 test('is() expecting 1', () => {
   const order = new AssertOrder()
@@ -255,7 +256,7 @@ test(`onAny() throws if all assert functions throws`, () => {
 test('AssertOrder(0) accepts no step >= 1', () => {
   const order = new AssertOrder(0)
 
-  const err = a.throws(() => order.once(1), InvalidOrder)
+  const err = a.throws(() => order.once(1)) as AssertionError<{ state: any }>
 
   t.strictEqual(err.state.maxStep, 0)
 })
@@ -265,7 +266,7 @@ test('AssertOrder(1) accepts step 1 but not 2', () => {
 
   order.once(1)
 
-  const err = a.throws(() => order.once(2), InvalidOrder)
+  const err = a.throws(() => order.once(2)) as AssertionError<{ state: any }>
 
   t.strictEqual(err.state.maxStep, 1)
 })
@@ -286,7 +287,7 @@ test('end() would mark to not accepting more steps if plan is not defined', () =
   let order = new AssertOrder()
   order.end()
 
-  let err = a.throws(() => order.once(1), InvalidOrder)
+  let err = a.throws(() => order.once(1)) as AssertionError<{ state: any }>
 
   t.strictEqual(err.state.maxStep, 0)
 
@@ -294,7 +295,7 @@ test('end() would mark to not accepting more steps if plan is not defined', () =
   order.once(1)
   order.end()
 
-  err = a.throws(() => order.once(2), InvalidOrder)
+  err = a.throws(() => order.once(2)) as AssertionError<{ state: any }>
 
   t.strictEqual(err.state.maxStep, 1)
 })
@@ -310,7 +311,7 @@ test('end() throws if planned step not met', () => {
   const order = new AssertOrder(2)
   order.once(1)
 
-  const err = a.throws(() => order.end(), InvalidOrder)
+  const err = a.throws(() => order.end()) as AssertionError<{ state: any }>
 
   t.strictEqual(err.state.maxStep, 2)
 })
@@ -331,7 +332,7 @@ test('end(n) waits n milliseconds and fail when step not met', async () => {
   setTimeout(() => {
     order.once(1)
   }, 10)
-  const err = await a.throws(order.end(1), InvalidOrder)
+  const err = await a.throws(order.end(1)) as AssertionError<{ state: any }>
 
   t.strictEqual(err.state.maxStep, 1)
 })
@@ -387,7 +388,7 @@ test('calling end() with planned step met will pass', () => {
 test('calling end() early will throw', () => {
   const order = new AssertOrder(2)
   order.once(1)
-  a.throws(() => order.end(), InvalidOrder)
+  a.throws(() => order.end())
 })
 
 test('calling end() without planned step will pass', () => {
@@ -435,7 +436,7 @@ test('wait(step, callback) will execute the async callback but not wait for it a
 })
 
 async function assertOrderThrows(fn, state: Partial<State>, method, ...args) {
-  const err = await a.throws(fn, InvalidOrder)
+  const err = await a.throws(fn) as AssertionError<{ state: any, method: string, args: any[] }>
   t.strictEqual(err.method, method)
   t.deepStrictEqual(err.args, args)
   if (state.step) {

@@ -1,16 +1,19 @@
 import { tersify } from 'tersify';
-import { FailedAssertion } from '../errors';
+import AssertionError from 'assertion-error';
 
 export function resolves(promise: Promise<any>) {
   return promise.then(
     () => { },
-    err => {
-      throw new FailedAssertion(undefined, err, `Expected promise to resolve, but it rejects with ${
-        typeof err === 'string' ?
-          `'${err}'` :
-          err instanceof Error ?
-            err :
-            tersify(err, { maxLength: Infinity })}`)
+    error => {
+      throw new AssertionError(`Expected promise to resolve, but it rejects with ${
+        typeof error === 'string' ?
+          `'${error}'` :
+          error instanceof Error ?
+            error :
+            tersify(error, { maxLength: Infinity })}`,
+        { error },
+        resolves
+      )
     }
   )
 }
