@@ -1,22 +1,15 @@
-import { BaseError } from 'make-error'
+import AssertionError from 'assertion-error';
+import { State } from './interfaces';
 
-import { State } from './interfaces'
-
-export class InvalidOrder extends BaseError {
+export class InvalidOrder extends AssertionError {
   method: string
   args: any[]
   state: State
-  constructor(state: State, method: string, ...args: any[]) {
+  constructor(state: State, method: string, ssf: Function, ...args: any[]) {
     const message = method === 'end' ? getEndMessage(state) : getExpectingMessage(state, method, args)
-    // istanbul ignore next
-    super(message)
-    Object.setPrototypeOf(this, InvalidOrder.prototype);
-    this.method = method
-    this.args = args
-    this.state = state
+    super(message, { method, state, args }, ssf)
   }
 }
-// util.inherits(InvalidOrder, Error)
 
 function getEndMessage(state: State) {
   return `Planned for ${state.maxStep} step but expecting step ${state.step} when 'end()' is called`

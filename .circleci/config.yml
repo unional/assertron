@@ -108,5 +108,5 @@ jobs:
       - checkout
       - attach_workspace:
           at: '.'
-      - run: npm run build
+      - run: npm run clean && npm run build
       - run: npx semantic-release

@@ -1,4 +1,6 @@
 import a from '..'
+import AssertionError from 'assertion-error';
+import { assertThrows, noStackTraceFor } from '../testUtils';
 
 test('primitive types will pass', () => {
   a.satisfies(1, 1)
@@ -106,4 +108,9 @@ test('Work with null in array', () => {
   }
   let action: Foo = { payload: [null, 3, 4] }
   a.satisfies(action, { payload: [null, 3, 4] })
+})
+
+test('does not contain internal stack trace', async () => {
+  const err = assertThrows(() => a.satisfies({ a: 1 }, { a: 2 }), AssertionError)
+  noStackTraceFor('satisfies.ts', err)
 })

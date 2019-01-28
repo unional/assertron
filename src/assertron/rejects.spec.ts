@@ -1,5 +1,7 @@
 import t from 'assert';
+import AssertionError from 'assertion-error';
 import a from '..';
+import { assertAsyncThrows, noStackTraceFor } from '../testUtils';
 
 test('pass on rejected promise', async () => {
   await a.rejects(Promise.reject(1))
@@ -23,4 +25,9 @@ test('throws on resovled object promise', async () => {
 test('throws on resovled object promise', async () => {
   const err = await a.throws(a.rejects(Promise.resolve({ a: 1 })))
   t.strictEqual(err.message, `Expected promise to reject, but it resolves with { a: 1 }`)
+})
+
+test('does not contain internal stack trace', async () => {
+  const err = await assertAsyncThrows(() => a.rejects(Promise.resolve({ a: 1 })), AssertionError)
+  noStackTraceFor('rejects.ts', err)
 })

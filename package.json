@@ -27,7 +27,7 @@
     "build": "npm run build-es5 && npm run build-es2015",
     "build-es2015": "tsc -p tsconfig.es2015.json",
     "build-es5": "tsc -p tsconfig.es5.json",
-    "clean": "rimraf dist dist-es5 && rimraf dist-es2015",
+    "clean": "rimraf dist dist-es5 dist-es2015",
     "coverage": "jest --coverage",
     "dependency-check": "dependency-check . --unused --no-dev && dependency-check . --missing --no-dev -i perf_hooks",
     "lint": "tslint -p tsconfig.json",
@@ -39,16 +39,16 @@
     "perf_hooks": false
   },
   "dependencies": {
+    "assertion-error": "^1.1.0",
     "is-node": "^1.0.2",
     "is-promise": "^2.1.0",
-    "make-error": "^1.3.5",
-    "path-equal": "^1.1.0",
-    "satisfier": "^4.5.0",
+    "path-equal": "^1.1.1",
+    "satisfier": "^4.5.1",
     "tersify": "^1.2.6"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.119",
-    "@unional/devpkg-node": "^1.1.2",
+    "@types/lodash": "^4.14.120",
+    "@unional/devpkg-node": "^1.2.2",
     "lodash": "^4.17.11"
   }
 }
