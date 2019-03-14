@@ -123,7 +123,7 @@ test('thrown error does not contain stack trace if function returns rejected pro
 
 class FakeError extends Error {
   constructor() {
-    super('')
+    super('some fake msg')
 
     Object.setPrototypeOf(this, new.target.prototype)
   }
@@ -138,7 +138,7 @@ test('validate Promise using Error constructor', async () => {
 test('validate Promise using another Error constructor will throw', async () => {
   const err = await assertAsyncThrows(() => a.throws(Promise.reject(new FakeError()), AssertionError), AssertionError)
 
-  t.strictEqual(err.message, `Unexpected error. Expecting 'AssertionError' but received Error: { foo: 'foo', message: '' }`)
+  t.strictEqual(err.message, `Unexpected error. Expecting 'AssertionError' but received FakeError('some fake msg')`)
 })
 
 test('validate () => Promise using Error constructor', async () => {
