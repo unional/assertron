@@ -43,7 +43,7 @@
     "is-node": "^1.0.2",
     "is-promise": "^2.1.0",
     "path-equal": "^1.1.1",
-    "satisfier": "^4.5.1",
+    "satisfier": "^5.0.0",
     "tersify": "^1.2.6"
   },
   "devDependencies": {
