@@ -32,7 +32,9 @@ assertron.pathEqual('dir/sub-dir/file.txt', 'dir\\sub-dir\\file.txt')
 ### assertron.satisfies(actual, expected)
 
 `assertron.satisfies()` checks if `actual` meets the requirements specified by `expected`.
-Each property in `expected` can be a value, a `RegExp`, or a predicate function (test pass if function returns true).
+Each property in `expected` can be a value, a `RegExp`, or a predicate function.
+It uses `satisfier` internally to check for validity.
+Check out [`sateisfier`](https://github.com/unional/satisfier) for more detail.
 
 ```ts
 import a from 'assertron' // assertron is also exported as default.

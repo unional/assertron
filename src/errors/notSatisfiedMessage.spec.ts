@@ -27,5 +27,5 @@ test(`root diff is displayed as 'actual'`, () => {
     path: ['[0]'],
     actual: 1,
     expected: 2
-  }]), `Expect actual[0] to satisfy 2, but received 1`)
+  }]), `Expect [0] to satisfy 2, but received 1`)
 })

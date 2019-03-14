@@ -43,12 +43,12 @@
     "is-node": "^1.0.2",
     "is-promise": "^2.1.0",
     "path-equal": "^1.1.1",
-    "satisfier": "^4.5.1",
-    "tersify": "^1.2.6"
+    "satisfier": "^5.0.0",
+    "tersify": "^2.0.3"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.120",
-    "@unional/devpkg-node": "^1.2.2",
+    "@types/lodash": "^4.14.123",
+    "@unional/devpkg-node": "^1.2.5",
     "lodash": "^4.17.11"
   }
 }

@@ -1,5 +1,6 @@
-import a from '..'
 import AssertionError from 'assertion-error';
+import { every } from 'satisfier';
+import a from '..';
 import { assertThrows, noStackTraceFor } from '../testUtils';
 
 test('primitive types will pass', () => {
@@ -25,14 +26,9 @@ test('empty object will fail against primitive types', () => {
   a.throws(() => a.satisfies(1, {} as any), e => e.message === 'Expect actual to satisfy {}, but received 1')
 })
 
-test(`actual is array while expected is single entry will check expected on each entry in the array`, () => {
-  a.satisfies([1], 1)
-  a.throws(() => a.satisfies([1, 2], 1), e => e.message === 'Expect actual[1] to satisfy 1, but received 2')
-})
-
-test(`expect with shorter array will only check matched indices in actual`, () => {
-  a.satisfies([1, 2], [1])
-  a.throws(() => a.satisfies([2, 1], [1]), e => e.message === 'Expect actual[0] to satisfy 1, but received 2')
+test(`can use satisfier util function such as has()/every()`, () => {
+  a.satisfies([1], every(1))
+  a.throws(() => a.satisfies([1, 2], every(1)), e => e.message === 'Expect actual[1] to satisfy 1, but received 2')
 })
 
 test(`array entries are checked`, () => {
@@ -78,12 +74,12 @@ test('function will use as predicate', () => {
 })
 
 test('predicate error should mention path', () => {
-  a.throws(() => /* istanbul ignore next */a.satisfies({ a: 1 }, { a: () => false }), e => e.message === `Expect a to satisfy function () { return false; }, but received 1`)
+  a.throws(() => a.satisfies({ a: 1 }, { a: () => false }), e => e.message === `Expect a to satisfy fn() { return false }, but received 1`)
 })
 
 test('deep predicate error should mention path', () => {
 
-  a.throws(() => /* istanbul ignore next */a.satisfies({ a: { b: 1 } }, { a: { b: b => b === 2 } }), e => e.message === `Expect a.b to satisfy function (b) { return b === 2; }, but received 1`)
+  a.throws(() => a.satisfies({ a: { b: 1 } }, { a: { b: b => b === 2 } }), e => e.message === `Expect a.b to satisfy fn(b) { return b === 2 }, but received 1`)
 })
 
 test('can check parent property', () => {
