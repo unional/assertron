@@ -18,7 +18,8 @@
   "files": [
     "dist",
     "dist-es5",
-    "dist-es2015"
+    "dist-es2015",
+    "src"
   ],
   "main": "dist-es5/index.js",
   "module": "dist-es2015/index.js",
