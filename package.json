@@ -45,7 +45,7 @@
     "is-promise": "^2.1.0",
     "path-equal": "^1.1.1",
     "satisfier": "^5.0.0",
-    "tersify": "^2.0.3"
+    "tersify": "^3.0.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.123",
