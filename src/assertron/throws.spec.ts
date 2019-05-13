@@ -122,8 +122,8 @@ test('thrown error does not contain stack trace if function returns rejected pro
 })
 
 class FakeError extends Error {
-  constructor() {
-    super('some fake msg')
+  constructor(msg?: string) {
+    super(msg || 'some fake msg')
 
     Object.setPrototypeOf(this, new.target.prototype)
   }
@@ -131,7 +131,7 @@ class FakeError extends Error {
 }
 
 test('validate Promise using Error constructor', async () => {
-  const err = await a.throws(Promise.reject(new FakeError()), FakeError)
+  const err = await a.throws(Promise.reject(new FakeError('abc')), FakeError)
   t.strictEqual(err.foo, 'foo')
 })
 
