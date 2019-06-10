@@ -29,6 +29,11 @@ assertron.throws(() => Promise.reject(new Error('foo')))
 assertron.pathEqual('dir/sub-dir/file.txt', 'dir\\sub-dir\\file.txt')
 ```
 
+### assertron.repeat(fn, times)
+
+Repeat the specified function n times and return the last result.
+If the result is a promise, it will run the function sequentially.
+
 ### assertron.satisfies(actual, expected)
 
 `assertron.satisfies()` checks if `actual` meets the requirements specified by `expected`.
