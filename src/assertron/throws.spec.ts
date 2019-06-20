@@ -158,3 +158,8 @@ test('validate () => throw using Error constructor', async () => {
 test('validate () => throw using another Error constructor will throw', async () => {
   return t.throws(() => a.throws((() => { throw new FakeError() }) as any, AssertionError))
 })
+
+test(`a.throws(() => never) returns error of type Error`, () => {
+  const err = a.throws(() => { throw new Error('failure') })
+  expect(err.message).toBe('failure')
+})

@@ -4,6 +4,7 @@ import { ErrorConstructor, ErrorValidator, notRejectedMessage, notThrownMessage,
 import { isErrorConstructor } from '../errors/util';
 
 export function throws<E extends Error>(value: PromiseLike<any>, error?: ErrorValidator | ErrorConstructor<E>): Promise<E>
+export function throws<E extends Error>(value: (...args: any[]) => never, error?: ErrorValidator | ErrorConstructor<E>): E
 export function throws<E extends Error, R = any>(value: (...args: any[]) => R, error?: ErrorValidator | ErrorConstructor<E>): R extends Promise<any> ? Promise<E> : E
 export function throws<T, R = any>(value: (...args: any[]) => R, validator?: ErrorValidator): R extends Promise<any> ? Promise<T> : T
 export function throws(value: PromiseLike<any> | (() => any | PromiseLike<any>), validator?: ErrorValidator | ErrorConstructor<any>): any {
@@ -12,7 +13,7 @@ export function throws(value: PromiseLike<any> | (() => any | PromiseLike<any>),
       '`assertron.throws()` must be called with a functio n or promise.',
       undefined,
       throws
-      )
+    )
   }
 
   if (isPromise(value)) {
