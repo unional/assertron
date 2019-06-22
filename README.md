@@ -58,7 +58,7 @@ a.satisfies({ a: 1 }, { a: () => false })
 
 ## AssertOrder
 
-Enable tests to check if code are run in certain order.
+Assert code are executed in expected order.
 
 ### order.once(step: number)
 
