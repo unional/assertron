@@ -17,22 +17,32 @@ A supplementary assertion library that runs on both NodeJS and browser.
 
 ## assertron
 
-`assertron` provides additional or improved assertion functions of the `assert` module.
+`assertron` provides a collection of assertion methods.
 
-```ts
-import { assertron } from 'assertron'
+### assertron.false(value)
 
-assertron.throws(Promise.reject(new Error('foo')))
-assertron.throws(() => { throw new Error('foo') })
-assertron.throws(() => Promise.reject(new Error('foo')))
+Asserts the provided value is false.
 
-assertron.pathEqual('dir/sub-dir/file.txt', 'dir\\sub-dir\\file.txt')
-```
+### assertron.falsy(value)
+
+Asserts the provides value is falsy.
+
+### assertron.pathEqual(actual, expected)
+
+Asserts the two paths are equal regardless of operating system differences.
+
+### assertron.rejects(promise)
+
+Asserts the promise rejects.
 
 ### assertron.repeat(fn, times)
 
 Repeat the specified function n times and return the last result.
 If the result is a promise, it will run the function sequentially.
+
+### assertron.resolves(promise)
+
+Asserts the promise resolves.
 
 ### assertron.satisfies(actual, expected)
 
@@ -55,6 +65,30 @@ a.satisfies({ a: 1 }, { a: 1, b: 2 })
 a.satisfies({ a: 'foo' }, { a: /boo/ })
 a.satisfies({ a: 1 }, { a: () => false })
 ```
+
+### assertron.throws(...)
+
+Asserts the promise, function, or async function throws (or reject) an error.
+
+```ts
+import { assertron } from 'assertron'
+
+await assertron.throws(Promise.reject(new Error('foo')))
+assertron.throws(() => { throw new Error('foo') })
+await assertron.throws(() => Promise.reject(new Error('foo')))
+
+const e1 = await assertron.throws(Promise.reject(new SpecificError('foo')), SpecificError)
+const e2 = assertron.throws(() => { throw new SpecificError('foo') }, SpecificError)
+const e3 = await assertron.throws(() => Promise.reject(new SpecificError('foo')), SpecificError)
+```
+
+### assertron.true(value)
+
+Asserts the provided value is true.
+
+### assertron.truthy(value)
+
+Asserts the provided value is truthy.
 
 ## AssertOrder
 
