@@ -172,7 +172,7 @@ for (let i = 1; i <= 4; i++) {
 }
 ```
 
-There are more methods available. Use TypeScript to discover them!
+There are other methods available. Use TypeScript to discover them!
 
 ## Contribute
 
