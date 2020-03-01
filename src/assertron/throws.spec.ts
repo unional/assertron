@@ -78,16 +78,18 @@ test('passes with throwing function', () => {
 })
 
 test('throws if function does not', () => {
-  const err = assertThrows<AssertionError<{ value: string }>>(() => a.throws(
-    () => { return 'foo' }, AssertionError),
-    AssertionError)
+  const err = assertThrows<AssertionError<{ value: string }>>(
+    () => a.throws(() => { return 'foo' }, AssertionError),
+    AssertionError
+  )
   t.strictEqual(err.value, 'foo')
 })
 
 test('thrown error does not contain internal stack track if function does not', () => {
-  const err = assertThrows<AssertionError<{ value: string }>>(() => a.throws(
-    () => { return 'foo' }, AssertionError),
-    AssertionError)
+  const err = assertThrows<AssertionError<{ value: string }>>(
+    () => a.throws(() => { return 'foo' }, AssertionError),
+    AssertionError
+  )
   noStackTraceFor('throws.ts', err)
 })
 
@@ -162,4 +164,10 @@ test('validate () => throw using another Error constructor will throw', async ()
 test(`a.throws(() => never) returns error of type Error`, () => {
   const err = a.throws(() => { throw new Error('failure') })
   expect(err.message).toBe('failure')
+})
+
+test('throw if function returns an object', () => {
+  class Dummy { a = 1; foo() { } }
+  const err = assertThrows(() => a.throws(() => new Dummy()), AssertionError)
+  expect(err.message).toBe(`Expect function to throw, but it returned 'Dummy { a: 1 }' instead.`)
 })

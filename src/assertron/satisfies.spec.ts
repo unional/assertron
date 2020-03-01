@@ -74,12 +74,11 @@ test('function will use as predicate', () => {
 })
 
 test('predicate error should mention path', () => {
-  a.throws(() => a.satisfies({ a: 1 }, { a: () => false }), e => e.message === `Expect a to satisfy fn() { return false }, but received 1`)
+  a.throws(() => a.satisfies({ a: 1 }, { a: () => false }), e => e.message === `Expect a to satisfy () => false, but received 1`)
 })
 
 test('deep predicate error should mention path', () => {
-
-  a.throws(() => a.satisfies({ a: { b: 1 } }, { a: { b: b => b === 2 } }), e => e.message === `Expect a.b to satisfy fn(b) { return b === 2 }, but received 1`)
+  a.throws(() => a.satisfies({ a: { b: 1 } }, { a: { b: b => b === 2 } }), e => e.message === `Expect a.b to satisfy b => b === 2, but received 1`)
 })
 
 test('can check parent property', () => {
@@ -94,7 +93,7 @@ test('can check parent property', () => {
 })
 
 test('actual of type any should not have type checking error', () => {
-  let actual: any = { a: 1 }
+  const actual: any = { a: 1 }
   a.satisfies(actual, { a: 1 })
 })
 
@@ -102,7 +101,7 @@ test('Work with null in array', () => {
   interface Foo {
     payload: any;
   }
-  let action: Foo = { payload: [null, 3, 4] }
+  const action: Foo = { payload: [null, 3, 4] }
   a.satisfies(action, { payload: [null, 3, 4] })
 })
 

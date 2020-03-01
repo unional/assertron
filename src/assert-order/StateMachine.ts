@@ -46,10 +46,10 @@ else {
 
 export class StateMachine {
   listeners = {}
-  step: number = 1
+  step = 1
   maxStep?: number
 
-  subStep: number = 0
+  subStep = 0
   minSubStep?: number
   maxSubStep?: number
   private startTick: [number, number] | number

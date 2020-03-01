@@ -1,4 +1,3 @@
-
 import t from 'assert';
 import AssertionError from 'assertion-error';
 import a, { AssertOrder, State } from '..';

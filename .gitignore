@@ -1,3 +1,6 @@
+# OSX
+.DS_Store
+
 # Logs
 logs
 *.log
@@ -14,6 +17,7 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 .nyc_output
+.progress
 
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
@@ -25,8 +29,8 @@ coverage
 build/Release
 
 # Dependency directory
-jspm_packages
-node_modules
+/jspm_packages
+/node_modules
 
 # Optional npm cache directory
 .npm
@@ -37,11 +41,6 @@ node_modules
 # webstorm
 .idea
 
-# typings
-typings
-
 # project folders
-dist
-dist-es5
-dist-es2015
-.progress
+.ts
+lib*
