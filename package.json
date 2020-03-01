@@ -57,13 +57,14 @@
     "is-promise": "^2.1.0",
     "path-equal": "^1.1.1",
     "satisfier": "^5.1.0",
-    "tersify": "^3.6.0"
+    "tersify": "^3.7.0",
+    "tslib": "^1.11.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
+    "@babel/core": "^7.8.6",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
     "@babel/plugin-proposal-optional-chaining": "^7.8.3",
-    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-env": "^7.8.6",
     "@babel/preset-typescript": "^7.8.3",
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
@@ -73,6 +74,6 @@
     "commitlint-circle": "^1.0.0",
     "husky": "^4.2.3",
     "lodash": "^4.17.15",
-    "semantic-release": "^17.0.3"
+    "semantic-release": "^17.0.4"
   }
 }

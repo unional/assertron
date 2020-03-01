@@ -2,9 +2,6 @@ import AssertionError from 'assertion-error';
 import { State } from './interfaces';
 
 export class InvalidOrder extends AssertionError {
-  method: string
-  args: any[]
-  state: State
   constructor(state: State, method: string, ssf: Function, ...args: any[]) {
     const message = method === 'end' ? getEndMessage(state) : getExpectingMessage(state, method, args)
     super(message, { method, state, args }, ssf)
@@ -15,7 +12,7 @@ function getEndMessage(state: State) {
   return `Planned for ${state.maxStep} step but expecting step ${state.step} when 'end()' is called`
 }
 
-function getExpectingMessage(state, method, args) {
+function getExpectingMessage(state: State, method: string, args: any[]) {
   return `Expecting ${getExpectingCalls(state)}, but received '${method}(${getMethodArgs(args)})'`
 }
 

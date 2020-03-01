@@ -57,7 +57,7 @@ export function throws(value: PromiseLike<any> | (() => any | PromiseLike<any>),
   )
 }
 
-function tryCatch(fn) {
+function tryCatch(fn: () => any) {
   let result
   let err
   let threw = false
@@ -71,7 +71,7 @@ function tryCatch(fn) {
   return { threw, err, result }
 }
 
-function validateError(validator, error) {
+function validateError(validator: ErrorValidator | ErrorConstructor<any> | undefined, error: any) {
   if (validator) {
     if (isErrorConstructor(validator)) {
       if (!(error instanceof validator))

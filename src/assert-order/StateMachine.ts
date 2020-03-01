@@ -16,46 +16,44 @@ function nodeVersionIsOrAbove(major: number, minor = 0, patch = 0) {
 // istanbul ignore next
 const performance = isNode && nodeVersionIsOrAbove(8, 5) ? require('perf_hooks').performance : undefined
 
-let startTick
-let timeTaken
+let timeTracker: { start(): void, taken(): number }
 // istanbul ignore else
-// tslint:disable-next-line
 if (process && typeof process.hrtime === 'function') {
-  startTick = process.hrtime
-  timeTaken = function (startTick) {
-    const [second, nanoSecond] = process.hrtime(startTick)
-    return second * 1000 + nanoSecond / 1e6
+  let tick: [number, number]
+  timeTracker = {
+    start() { tick = process.hrtime() },
+    taken() {
+      const [second, nanoSecond] = process.hrtime(tick)
+      return second * 1000 + nanoSecond / 1e6
+    }
   }
 }
-// tslint:disable-next-line
 else if (performance && typeof performance.now === 'function') {
-  startTick = performance.now
-  timeTaken = function (startTick) {
-    const end = performance.now()
-    return end - startTick
+  let tick: number
+  timeTracker = {
+    start() { tick = performance.now() },
+    taken() { return performance.now() - tick }
   }
 }
 else {
-  startTick = function () {
-    return new Date().valueOf()
-  }
-  timeTaken = function (startTick) {
-    return new Date().valueOf() - startTick
+  let tick: number
+  timeTracker = {
+    start() { tick = new Date().valueOf() },
+    taken() { return new Date().valueOf() - tick }
   }
 }
 
 export class StateMachine {
-  listeners = {}
+  listeners: Record<number, Array<() => void>> = {}
   step = 1
   maxStep?: number
 
   subStep = 0
   minSubStep?: number
   maxSubStep?: number
-  private startTick: [number, number] | number
   constructor(maxStep?: number) {
     this.maxStep = maxStep
-    this.startTick = this.getStartTick()
+    timeTracker.start()
   }
   jump(step: number) {
     this.step = step
@@ -87,7 +85,7 @@ export class StateMachine {
       maxSubStep
     }
   }
-  on(step: number, listener) {
+  on(step: number, listener: () => void) {
     this.listeners[step] = [listener]
   }
   isNotValid(step: number) {
@@ -107,9 +105,6 @@ export class StateMachine {
     return this.maxStep ? this.maxStep >= this.step : true
   }
   getTimeTaken() {
-    return timeTaken(this.startTick)
-  }
-  private getStartTick() {
-    return startTick()
+    return timeTracker.taken()
   }
 }

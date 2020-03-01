@@ -22,6 +22,6 @@ function isIndice(node: string | number): node is number {
   return typeof node === 'number'
 }
 
-function formatValue(value) {
+function formatValue(value: any) {
   return tersify(value)
 }
