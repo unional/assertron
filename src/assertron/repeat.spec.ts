@@ -11,7 +11,7 @@ test('repeat function n times', () => {
 test('repeat async function n times sequentially', async () => {
   let count = 0
   let actual = ''
-  let aa = await a.repeat(() => new Promise<string>(a => {
+  const aa = await a.repeat(() => new Promise<string>(a => {
     setTimeout(() => {
       ++count
       actual += String(count)
@@ -36,7 +36,7 @@ test('error is captured as inner error and indicate which call failed', () => {
 
 test('rejected error is captured as inner error and indicate which call failed', async () => {
   let count = 0
-  let err = await a.throws(a.repeat(() => new Promise((a, r) => {
+  const err = await a.throws(a.repeat(() => new Promise((a, r) => {
     setTimeout(() => {
       ++count
       if (count === 5) r(new Error('failed'))

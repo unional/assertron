@@ -1,19 +1,7 @@
 {
-  "extends": "./tsconfig.es5.json",
-  "atom": {
-    "rewriteTsconfig": false
-  },
-  "buildOnSave": false,
-  "compileOnSave": false,
-  "compilerOptions": {
-    "plugins": [
-      {
-        "name": "tslint-language-service"
-      }
-    ]
-  },
+  "extends": "./tsconfig.libm.json",
   "include": [
-    "custom-typings",
-    "src"
+    "src",
+    "typings"
   ]
 }

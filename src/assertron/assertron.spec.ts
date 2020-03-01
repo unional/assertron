@@ -21,7 +21,6 @@ describe('false()', () => {
   })
 })
 
-
 describe('true()', () => {
   test('non-true statement throws', () => {
     assertThrows(() => a.true(false), AssertionError)
