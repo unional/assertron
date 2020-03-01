@@ -87,7 +87,7 @@ export class AssertOrder {
   onAny(steps: number[], ...asserts: Function[]) {
     steps.forEach(step => {
       this.state.on(step, () => {
-        let firstError
+        let firstError: any
         let hasPass = false
         asserts.forEach(assert => {
           try {
@@ -145,7 +145,7 @@ export class AssertOrder {
   }
   private assert(method: string, step: number) {
     if (this.state.isNotValid(step)) {
-      throw new InvalidOrder(this.state.get(), method, this[method], step)
+      throw new InvalidOrder(this.state.get(), method, (this as any)[method], step)
     }
   }
 }
