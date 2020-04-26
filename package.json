@@ -54,7 +54,7 @@
   "dependencies": {
     "assertion-error": "^1.1.0",
     "is-node": "^1.0.2",
-    "is-promise": "^2.1.0",
+    "is-promise": "^3.0.0",
     "path-equal": "^1.1.1",
     "satisfier": "^5.1.0",
     "tersify": "^3.7.0",
