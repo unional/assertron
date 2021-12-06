@@ -1,6 +1,6 @@
-import AssertionError from 'assertion-error';
-import a from '..';
-import { assertThrows, noStackTraceFor } from '../testUtils';
+import AssertionError from 'assertion-error'
+import a from '..'
+import { assertThrows, noStackTraceFor } from '../testUtils'
 
 describe('false()', () => {
   test('non-false statement throws', () => {

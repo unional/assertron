@@ -1,7 +1,7 @@
-import t from 'assert';
-import a from '..';
-import AssertionError from 'assertion-error';
-import { assertAsyncThrows, noStackTraceFor } from '../testUtils';
+import t from 'assert'
+import a from '..'
+import AssertionError from 'assertion-error'
+import { assertAsyncThrows, noStackTraceFor } from '../testUtils'
 
 
 test('pass on resolved promise', async () => {

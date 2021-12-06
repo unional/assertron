@@ -1,8 +1,8 @@
-import AssertionError from 'assertion-error';
-import { State } from './interfaces';
+import AssertionError from 'assertion-error'
+import { State } from './interfaces'
 
-export class InvalidOrder extends AssertionError {
-  constructor(state: State, method: string, ssf: Function, ...args: any[]) {
+export class InvalidOrder extends AssertionError<{ method: string, state: State, args: any[] }> {
+  constructor(state: State, method: string, ssf: (...args: any[]) => any, ...args: any[]) {
     const message = method === 'end' ? getEndMessage(state) : getExpectingMessage(state, method, args)
     super(message, { method, state, args }, ssf)
   }

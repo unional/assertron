@@ -1,6 +1,6 @@
-import AssertionError from 'assertion-error';
-import { pathEqual as isPathEqual } from 'path-equal';
-import { notEqualMessage } from '../errors';
+import AssertionError from 'assertion-error'
+import { pathEqual as isPathEqual } from 'path-equal'
+import { notEqualMessage } from '../errors'
 
 export function pathEqual(actual: string, expected: string) {
   if (!isPathEqual(actual, expected))

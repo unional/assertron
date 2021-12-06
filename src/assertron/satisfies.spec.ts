@@ -1,7 +1,7 @@
-import AssertionError from 'assertion-error';
-import { every } from 'satisfier';
-import a from '..';
-import { assertThrows, noStackTraceFor } from '../testUtils';
+import AssertionError from 'assertion-error'
+import { every } from 'satisfier'
+import a from '..'
+import { assertThrows, noStackTraceFor } from '../testUtils'
 
 test('primitive types will pass', () => {
   a.satisfies(1, 1)

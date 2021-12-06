@@ -4,8 +4,8 @@
     "declaration": true,
     "declarationMap": true,
     "module": "commonjs",
-    "outDir": "lib",
+    "outDir": "cjs",
     "target": "es5",
-    "tsBuildInfoFile": ".ts/lib.tsbuildinfo"
+    "tsBuildInfoFile": ".ts/cjs.tsbuildinfo"
   }
 }

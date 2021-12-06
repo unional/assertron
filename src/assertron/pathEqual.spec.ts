@@ -1,6 +1,6 @@
-import AssertionError from 'assertion-error';
-import assertron from '..';
-import { assertThrows, noStackTraceFor } from '../testUtils';
+import AssertionError from 'assertion-error'
+import assertron from '..'
+import { assertThrows, noStackTraceFor } from '../testUtils'
 
 test('path with same style passes', () => {
   assertron.pathEqual('a', 'a')
