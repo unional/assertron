@@ -10,7 +10,7 @@ export function throws<T, R = any>(value: (...args: any[]) => R, validator?: Err
 export function throws(value: PromiseLike<any> | (() => any | PromiseLike<any>), validator?: ErrorValidator | ErrorConstructor<any>): any {
   if (typeof value !== 'function' && !isPromise(value)) {
     throw new AssertionError(
-      '`assertron.throws()` must be called with a functio n or promise.',
+      '`assertron.throws()` must be called with a function or promise.',
       undefined,
       throws
     )
@@ -81,11 +81,13 @@ function validateError(validator: ErrorValidator | ErrorConstructor<any> | undef
           throws
         )
     }
-    else if (!validator(error))
+    else if (!validator(error)) {
+      // console.log('msg:', unexpectedErrorMessage(error, validator))
       throw new AssertionError(
         unexpectedErrorMessage(error, validator),
         { actual: error, expected: validator },
         throws
       )
+    }
   }
 }

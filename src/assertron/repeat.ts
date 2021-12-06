@@ -17,7 +17,7 @@ function repeatRecur<R>(fn: () => R | (() => Promise<R>), i: number, times: numb
     if (isPromise(result)) {
       return result.then(
         () => repeatRecur(fn, i + 1, times),
-        (e) => { throw new FailOnOccurance(i, e) }
+        (e) => { throw new FailOnOccurrence(i, e) }
       ) as any
     }
     else {
@@ -25,13 +25,13 @@ function repeatRecur<R>(fn: () => R | (() => Promise<R>), i: number, times: numb
     }
   }
   catch (e) {
-    if (e instanceof FailOnOccurance) throw e
-    throw new FailOnOccurance(i, e)
+    if (e instanceof FailOnOccurrence) throw e
+    throw new FailOnOccurrence(i, e)
   }
 }
 
-export class FailOnOccurance extends AssertionError {
-  constructor(public occurance: number, public error: any) {
-    super(`Failed on ${occurance} occurance`)
+export class FailOnOccurrence extends AssertionError<{ occurrence: number }> {
+  constructor(public occurrence: number, public error: any) {
+    super(`Failed on ${occurrence} occurrence`)
   }
 }

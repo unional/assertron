@@ -1,5 +1,5 @@
-import { tersify } from 'tersify';
-import AssertionError from 'assertion-error';
+import { tersify } from 'tersify'
+import AssertionError from 'assertion-error'
 
 export function rejects(promise: Promise<any>) {
   return promise.then(

@@ -3,7 +3,7 @@ import { State } from './interfaces'
 
 // istanbul ignore next
 function nodeVersionIsOrAbove(major: number, minor = 0, patch = 0) {
-  // without this, systemjs will complain `process is not defined`
+  // without this, systemJS will complain `process is not defined`
   if (!global.process)
     return false
   const versionString = process.version.startsWith('v') ? process.version.slice(1) : process.version
@@ -14,6 +14,7 @@ function nodeVersionIsOrAbove(major: number, minor = 0, patch = 0) {
 }
 
 // istanbul ignore next
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const performance = isNode && nodeVersionIsOrAbove(8, 5) ? require('perf_hooks').performance : undefined
 
 let timeTracker: { start(): void, taken(): number }

@@ -42,5 +42,8 @@ build/Release
 .idea
 
 # project folders
+.reports
 .ts
+cjs
+esm
 lib*

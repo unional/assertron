@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.libm.json",
+  "extends": "./tsconfig.esm.json",
   "include": [
     "src",
     "typings"

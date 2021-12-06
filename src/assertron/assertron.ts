@@ -1,12 +1,12 @@
-import AssertionError from 'assertion-error';
-import { falsy } from './falsy';
-import { pathEqual } from './pathEqual';
-import { rejects } from './rejects';
-import { repeat } from './repeat';
-import { resolves } from './resolves';
-import { satisfies } from './satisfies';
-import { throws } from './throws';
-import { truthy } from './truthy';
+import AssertionError from 'assertion-error'
+import { falsy } from './falsy'
+import { pathEqual } from './pathEqual'
+import { rejects } from './rejects'
+import { repeat } from './repeat'
+import { resolves } from './resolves'
+import { satisfies } from './satisfies'
+import { throws } from './throws'
+import { truthy } from './truthy'
 
 export const assertron = {
   false(value: any) {

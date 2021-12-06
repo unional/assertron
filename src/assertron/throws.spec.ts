@@ -1,7 +1,7 @@
-import t from 'assert';
-import AssertionError from 'assertion-error';
-import a from '..';
-import { assertAsyncThrows, assertIsError, assertIsPromise, assertThrows, noStackTraceFor } from '../testUtils';
+import t from 'assert'
+import AssertionError from 'assertion-error'
+import a from '..'
+import { assertAsyncThrows, assertIsError, assertIsPromise, assertThrows, noStackTraceFor } from '../testUtils'
 
 test('when value is PromiseLike returns Promise', async () => {
   let actual = a.throws(Promise.reject(new Error()), Error)
@@ -94,12 +94,16 @@ test('thrown error does not contain internal stack track if function does not', 
 })
 
 test('throws if function returns resolved promise', async () => {
-  const err = await assertAsyncThrows<AssertionError<{ value: string }>>(() => a.throws(() => Promise.resolve('ok')), AssertionError)
+  const err = await assertAsyncThrows<AssertionError<{ value: string }>>(
+    () => a.throws(() => Promise.resolve('ok')),
+    AssertionError)
   t.strictEqual(err.value, 'ok')
 })
 
 test('thrown error does not contain internal stack trace if function returns resolved promise', async () => {
-  const err = await assertAsyncThrows<AssertionError<{ value: string }>>(() => a.throws(() => Promise.resolve('ok')), AssertionError)
+  const err = await assertAsyncThrows<AssertionError<{ value: string }>>(
+    () => a.throws(() => Promise.resolve('ok')),
+    AssertionError)
   noStackTraceFor('throws.ts', err)
 })
 
@@ -119,7 +123,10 @@ test('throws if function returns rejected promise not passing valdation', async 
 })
 
 test('thrown error does not contain stack trace if function returns rejected promise not passing valdation', async () => {
-  const err = await assertAsyncThrows<AssertionError<{ actual: any }>>(() => a.throws(() => Promise.reject('ok'), err => err !== 'ok'))
+  const err = await assertAsyncThrows<
+    AssertionError<{ actual: any }>
+  >(() => a.throws(() => Promise.reject('ok'), err => err !== 'ok'))
+  // console.log('got err', err)
   noStackTraceFor('throws.ts', err)
 })
 
