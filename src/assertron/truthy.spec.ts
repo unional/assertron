@@ -1,5 +1,4 @@
-import AssertionError from 'assertion-error'
-import a from '..'
+import a, { AssertionError } from '..'
 import { assertThrows, noStackTraceFor } from '../testUtils'
 
 test('falsy statement throws', () => {

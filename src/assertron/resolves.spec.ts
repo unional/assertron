@@ -1,6 +1,5 @@
 import t from 'assert'
-import a from '..'
-import AssertionError from 'assertion-error'
+import a, { AssertionError } from '..'
 import { assertAsyncThrows, noStackTraceFor } from '../testUtils'
 
 

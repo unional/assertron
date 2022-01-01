@@ -31,7 +31,7 @@ export class AssertOrder {
    */
   not(step: number) {
     if (this.state.isValid(step)) {
-      throw new InvalidOrder(this.state.get(), 'not', this.not, step)
+      throw new InvalidOrder(this.state.get(), 'not', [step], { ssf: this.not })
     }
   }
 
@@ -73,13 +73,13 @@ export class AssertOrder {
       return this.state.moveSubStep()
     }
     else
-      throw new InvalidOrder(this.state.get(), 'atLeastOnce', this.atLeastOnce, step)
+      throw new InvalidOrder(this.state.get(), 'atLeastOnce', [step], { ssf: this.atLeastOnce })
   }
 
   any(steps: number[]) {
     const index = steps.indexOf(this.state.step)
     if (index === -1)
-      throw new InvalidOrder(this.state.get(), 'any', this.any, steps)
+      throw new InvalidOrder(this.state.get(), 'any', [steps], { ssf: this.any })
 
     this.state.move()
     return steps[index]
@@ -121,12 +121,12 @@ export class AssertOrder {
     }
 
     if (this.state.isAccepting()) {
-      throw new InvalidOrder(this.state.get(), 'end', this.end)
+      throw new InvalidOrder(this.state.get(), 'end', [], { ssf: this.end })
     }
   }
   exactly(step: number, times: number) {
     if (this.state.isNotValid(step))
-      throw new InvalidOrder(this.state.get(), 'exactly', this.exactly, step, times)
+      throw new InvalidOrder(this.state.get(), 'exactly', [step, times], { ssf: this.exactly })
 
     if (this.state.maxSubStep === undefined) {
       this.state.maxSubStep = times
@@ -145,7 +145,7 @@ export class AssertOrder {
   }
   private assert(method: string, step: number) {
     if (this.state.isNotValid(step)) {
-      throw new InvalidOrder(this.state.get(), method, (this as any)[method], step)
+      throw new InvalidOrder(this.state.get(), method, [step], { ssf: (this as any)[method] })
     }
   }
 }

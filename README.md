@@ -9,7 +9,6 @@
 [![Codecov][codecov-image]][codecov-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
 
-[![Greenkeeper][greenkeeper-image]][greenkeeper-url]
 [![Semantic Release][semantic-release-image]][semantic-release-url]
 
 [![Visual Studio Code][vscode-image]][vscode-url]
@@ -26,7 +25,7 @@ Asserts the provided value is false.
 
 ### assertron.falsy(value)
 
-Asserts the provides value is falsy.
+Asserts the provided value is falsy.
 
 ### assertron.pathEqual(actual, expected)
 
@@ -50,7 +49,7 @@ Asserts the promise resolves.
 `assertron.satisfies()` checks if `actual` meets the requirements specified by `expected`.
 Each property in `expected` can be a value, a `RegExp`, or a predicate function.
 It uses `satisfier` internally to check for validity.
-Check out [`sateisfier`](https://github.com/unional/satisfier) for more detail.
+Check out [`satisfier`](https://github.com/unional/satisfier) for more detail.
 
 ```ts
 import a from 'assertron' // assertron is also exported as default.
@@ -69,7 +68,7 @@ a.satisfies({ a: 1 }, { a: () => false })
 
 ### assertron.throws(...)
 
-Asserts the promise, function, or async function throws (or reject) an error.
+Asserts the promise, function, or async function throws (or rejects) an error.
 
 ```ts
 import { assertron } from 'assertron'
@@ -93,7 +92,7 @@ Asserts the provided value is truthy.
 
 ## AssertOrder
 
-Assert code are executed in expected order.
+Assert the code is executed in the expected order.
 
 ### order.once(step: number)
 
@@ -129,7 +128,7 @@ boo()
 
 ### order.atLeastOnce(step: number)
 
-Assert step `step` have executed at least once.
+Assert the `step` executed at least once.
 
 ```ts
 import { AssertOrder } from 'assertron'
@@ -178,14 +177,11 @@ There are other methods available. Use TypeScript to discover them!
 ## Contribute
 
 ```sh
-# right after fork
-npm install
+yarn
 
-# begin making changes
+# start making changes
 git checkout -b <branch>
-npm run watch
-
-# edit `webpack.config.dev.js` to exclude dependencies for the global build.
+yarn watch
 
 # after making change(s)
 git commit -m "<commit message>"
@@ -199,23 +195,11 @@ git push
 There are a few useful commands you can use during development.
 
 ```sh
-# Run tests (and lint) automatically whenever you save a file.
-npm run watch
+yarn test
 
-# Run tests with coverage stats (but won't fail you if coverage does not meet criteria)
-npm run test
+yarn watch
 
-# Manually verify the project.
-# This will be ran during 'npm preversion' so you normally don't need to run this yourself.
-npm run verify
-
-# Build the project.
-# You normally don't need to do this.
-npm run build
-
-# Run tslint
-# You normally don't need to do this as `npm run watch` and `npm version` will automatically run lint for you.
-npm run lint
+yarn verify
 ```
 
 [npm-image]: https://img.shields.io/npm/v/assertron.svg?style=flat
@@ -230,8 +214,6 @@ npm run lint
 [coveralls-image]: https://coveralls.io/repos/github/unional/assertron/badge.svg
 [coveralls-url]: https://coveralls.io/github/unional/assertron
 
-[greenkeeper-image]: https://badges.greenkeeper.io/unional/assertron.svg
-[greenkeeper-url]: https://greenkeeper.io/
 [semantic-release-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-url]: https://github.com/semantic-release/semantic-release
 

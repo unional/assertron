@@ -1,9 +1,8 @@
 // istanbul ignore file
 import t from 'assert'
-import AssertionError from 'assertion-error'
 import isPromise from 'is-promise'
 import { isError } from 'lodash'
-import { ErrorConstructor } from './errors'
+import { ErrorConstructor } from './types'
 
 export type AnyFunction = (...args: any[]) => any
 
@@ -79,7 +78,7 @@ export async function assertAsyncThrows<E extends Error>(fn: AnyFunction, ErrorT
 }
 
 
-export function noStackTraceFor(filename: string, err: AssertionError<any>) {
+export function noStackTraceFor(filename: string, err: Error) {
   if (err.stack && RegExp(filename).test(err.stack))
     throw new Error(`contains internal stack: \n${err.stack}`)
 }
