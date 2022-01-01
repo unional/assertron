@@ -1,7 +1,7 @@
-import AssertionError from 'assertion-error';
 import isPromise from 'is-promise';
-import { ErrorConstructor, ErrorValidator, notRejectedMessage, notThrownMessage, returnNotRejectedMessage, unexpectedErrorMessage } from '../errors';
-import { isErrorConstructor } from '../errors/util';
+import { AssertionError } from '../errors';
+import { ErrorConstructor, ErrorValidator } from '../types';
+import { isErrorConstructor, notRejectedMessage, notThrownMessage, unexpectedErrorMessage } from '../utils';
 
 export function throws<E extends Error>(value: PromiseLike<any>, error?: ErrorValidator | ErrorConstructor<E>): Promise<E>
 export function throws<E extends Error>(value: (...args: any[]) => never, error?: ErrorValidator | ErrorConstructor<E>): E
@@ -11,50 +11,34 @@ export function throws(value: PromiseLike<any> | (() => any | PromiseLike<any>),
   if (typeof value !== 'function' && !isPromise(value)) {
     throw new AssertionError(
       '`assertron.throws()` must be called with a function or promise.',
-      undefined,
-      throws
+      { ssf: throws }
     )
+  }
+
+  if (!isPromise(value)) {
+    const { threw, err, result } = tryCatch(value)
+    if (threw) {
+      if (failValidation(validator, err)) {
+        throw new AssertionError(unexpectedErrorMessage(err, validator), { ssf: throws })
+      }
+      return err
+    }
+    value = result;
   }
 
   if (isPromise(value)) {
     return value.then(
-      value => {
-        throw new AssertionError(
-          notRejectedMessage(value),
-          { value },
-          throws)
-      },
+      value => { throw new AssertionError(notRejectedMessage(value), { ssf: throws }) },
       err => {
-        validateError(validator, err)
-        return err
-      }
-    )
-  }
-  const { threw, err, result } = tryCatch(value)
-  if (threw) {
-    validateError(validator, err)
-    return err
-  }
-  if (isPromise(result)) {
-    return result.then(
-      value => {
-        throw new AssertionError(
-          returnNotRejectedMessage(value),
-          { value },
-          throws)
-      },
-      err => {
-        validateError(validator, err)
+        if (failValidation(validator, err)) {
+          throw new AssertionError(unexpectedErrorMessage(err, validator), { ssf: throws })
+        }
         return err
       }
     )
   }
 
-  throw new AssertionError(
-    notThrownMessage(result),
-    { value: result },
-    throws
-  )
+  throw new AssertionError(notThrownMessage(value), { ssf: throws })
 }
 
 function tryCatch(fn: () => any) {
@@ -70,24 +54,14 @@ function tryCatch(fn: () => any) {
   }
   return { threw, err, result }
 }
+function failValidation(validator: ErrorValidator | ErrorConstructor<any> | undefined, error: any): validator is ErrorValidator | ErrorConstructor<any> {
+  if (!validator) return false
 
-function validateError(validator: ErrorValidator | ErrorConstructor<any> | undefined, error: any) {
-  if (validator) {
-    if (isErrorConstructor(validator)) {
-      if (!(error instanceof validator))
-        throw new AssertionError(
-          unexpectedErrorMessage(error, validator),
-          { actual: error, expected: validator },
-          throws
-        )
-    }
-    else if (!validator(error)) {
-      // console.log('msg:', unexpectedErrorMessage(error, validator))
-      throw new AssertionError(
-        unexpectedErrorMessage(error, validator),
-        { actual: error, expected: validator },
-        throws
-      )
-    }
+  if (isErrorConstructor(validator)) {
+    return !(error instanceof validator)
+  }
+  else {
+    return !validator(error)
   }
 }
+

@@ -1,10 +1,9 @@
-import AssertionError from 'assertion-error'
-import { State } from './interfaces'
+import { AssertionError } from '../errors'
+import { State } from './types'
 
-export class InvalidOrder extends AssertionError<{ method: string, state: State, args: any[] }> {
-  constructor(state: State, method: string, ssf: (...args: any[]) => any, ...args: any[]) {
-    const message = method === 'end' ? getEndMessage(state) : getExpectingMessage(state, method, args)
-    super(message, { method, state, args }, ssf)
+export class InvalidOrder extends AssertionError {
+  constructor(public state: State, public method: string, public args: any[], options: AssertionError.Options) {
+    super(method === 'end' ? getEndMessage(state) : getExpectingMessage(state, method, args), options)
   }
 }
 
@@ -20,9 +19,8 @@ function getExpectingCalls(state: State) {
   let message: string
   if (state.subStep === 0) {
     const methods = ['is', 'once', 'any']
-    message = methods.map(m => ['any'].indexOf(m) === -1 ?
-      `'${m}(${state.step})'` :
-      `'${m}([${state.step}])'`
+    message = methods.map(
+      m => `'${m}(${['any'].indexOf(m) === -1 ? state.step : `[${state.step}]`})'`
     ).join(', ')
   }
   else {

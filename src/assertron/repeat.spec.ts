@@ -1,5 +1,4 @@
-import a from '..'
-import { FailOnOccurrence } from './repeat'
+import a, { FailOnOccurrence } from '..'
 
 test('repeat function n times', () => {
   let count = 0
@@ -26,8 +25,7 @@ test('repeat async function n times sequentially', async () => {
 test('error is captured as inner error and indicate which call failed', () => {
   let count = 0
   const err = a.throws(() => a.repeat(() => {
-    ++count
-    if (count === 5) throw new Error('failed')
+    if (++count === 5) throw new Error('failed')
   }, 10), FailOnOccurrence)
 
   expect(err.occurrence).toBe(5)

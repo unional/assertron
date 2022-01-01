@@ -1,4 +1,5 @@
-import AssertionError from 'assertion-error'
+import { AssertionError } from '../errors'
+import { notEqualMessage } from '../utils'
 import { falsy } from './falsy'
 import { pathEqual } from './pathEqual'
 import { rejects } from './rejects'
@@ -11,10 +12,7 @@ import { truthy } from './truthy'
 export const assertron = {
   false(value: any) {
     if (value !== false)
-      throw new AssertionError(
-        `Expected value to equal false, but received ${value}`,
-        { value },
-        assertron.false)
+      throw new AssertionError(notEqualMessage(value, false), { ssf: assertron.false })
   },
   falsy,
   pathEqual,
@@ -24,7 +22,8 @@ export const assertron = {
   satisfies,
   throws,
   true(value: any) {
-    if (value !== true) throw new AssertionError(`Expected value to equal true, but received ${value}`, { value }, assertron.true)
+    if (value !== true)
+      throw new AssertionError(notEqualMessage(value, true), { ssf: assertron.true })
   },
   truthy
 }

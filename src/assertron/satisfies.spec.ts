@@ -1,20 +1,34 @@
-import AssertionError from 'assertion-error'
-import { every } from 'satisfier'
-import a from '..'
+// import { every } from 'satisfier'
+import { isType } from 'type-plus'
+import a, { AssertionError } from '..'
 import { assertThrows, noStackTraceFor } from '../testUtils'
 
-test('primitive types will pass', () => {
-  a.satisfies(1, 1)
-  a.satisfies('a', 'a')
-  a.satisfies(true, true)
-})
+describe('non-composable types', () => {
+  test('accept same type', () => {
+    a.satisfies(null, null)
+    a.satisfies(undefined, undefined)
+    a.satisfies(1, 1)
+    a.satisfies('a', 'a')
+    a.satisfies(true, true)
+  })
 
-test('primitive types shows value directly in error', () => {
-  a.throws(() => a.satisfies<number>(1, 2), e => e.message === 'Expect actual to satisfy 2, but received 1')
+  test('predicate parameter is the widen type', () => {
+    a.satisfies(null, (v) => isType<null>(v))
+    a.satisfies(undefined, (v) => isType<undefined>(v))
+    a.satisfies(1, (v) => isType<number>(v))
+    a.satisfies('a', (v) => isType<string>(v))
+    a.satisfies(true, (v) => isType<boolean>(v))
+  })
 
-  a.throws(() => a.satisfies<boolean>(true, false), e => e.message === 'Expect actual to satisfy false, but received true')
+  test('shows value directly in error', () => {
+    a.throws(() => a.satisfies(1, 2), e => e.message === 'Expect actual to satisfy 2, but received 1')
+    a.throws(() => a.satisfies(true, false), e => e.message === 'Expect actual to satisfy false, but received true')
+    a.throws(() => a.satisfies('a', 'b'), e => e.message === `Expect actual to satisfy 'b', but received 'a'`)
+  })
 
-  a.throws(() => a.satisfies<string>('a', 'b'), e => e.message === `Expect actual to satisfy 'b', but received 'a'`)
+  test('use regex to check against string', () => {
+    a.satisfies('abc', /a/)
+  })
 })
 
 test('empty object will pass any object', () => {
@@ -26,10 +40,10 @@ test('empty object will fail against primitive types', () => {
   a.throws(() => a.satisfies(1, {} as any), e => e.message === 'Expect actual to satisfy {}, but received 1')
 })
 
-test(`can use satisfier util function such as has()/every()`, () => {
-  a.satisfies([1], every(1))
-  a.throws(() => a.satisfies([1, 2], every(1)), e => e.message === 'Expect actual[1] to satisfy 1, but received 2')
-})
+// test(`can use satisfier util function such as has()/every()`, () => {
+//   a.satisfies([1], every(1))
+//   a.throws(() => a.satisfies([1, 2], every(1)), e => e.message === 'Expect actual[1] to satisfy 1, but received 2')
+// })
 
 test(`array entries are checked`, () => {
   a.throws(() => a.satisfies([1], [2]), e => e.message === `Expect actual[0] to satisfy 2, but received 1`)
@@ -108,4 +122,22 @@ test('Work with null in array', () => {
 test('does not contain internal stack trace', async () => {
   const err = assertThrows(() => a.satisfies({ a: 1 }, { a: 2 }), AssertionError)
   noStackTraceFor('satisfies.ts', err)
+})
+
+test('allow partial expectation on array entries', () => {
+  type U = { type: 'a', a: string } | { type: 'b', b: string }
+  const x: U[] = [{ type: 'a', a: 'abc' }]
+  a.satisfies(x, [{ type: 'a' }])
+})
+
+test('allow predicate on array', () => {
+  type U = { type: 'a', a: string } | { type: 'b', b: string }
+  const x: U[] = [{ type: 'a', a: 'abc' }]
+  a.satisfies(x, (v) => v[0].type == 'a')
+})
+
+test('allow predicate on array entries', () => {
+  type U = { type: 'a', a: string } | { type: 'b', b: string }
+  const x: U[] = [{ type: 'a', a: 'abc' }]
+  a.satisfies(x, [(v) => v.type == 'a'])
 })

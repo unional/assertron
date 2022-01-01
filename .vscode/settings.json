@@ -8,8 +8,15 @@
       "url": "http://json.schemastore.org/tsconfig"
     }
   ],
+  "markdownlint.ignore": [
+    "LICENSE"
+  ],
   "eslint.enable": true,
   "cSpell.words": [
+    "jsnext",
+    "Luka",
+    "Miku",
+    "tersified",
     "tersify"
   ]
 }

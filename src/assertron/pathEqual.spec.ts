@@ -1,5 +1,4 @@
-import AssertionError from 'assertion-error'
-import assertron from '..'
+import assertron, { AssertionError } from '..'
 import { assertThrows, noStackTraceFor } from '../testUtils'
 
 test('path with same style passes', () => {

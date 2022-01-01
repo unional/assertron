@@ -1,5 +1,5 @@
 import isPromise from 'is-promise';
-import AssertionError from 'assertion-error'
+import { FailOnOccurrence } from '../errors';
 
 /**
  * Repeat the specified function n times and return the last result.
@@ -17,7 +17,7 @@ function repeatRecur<R>(fn: () => R | (() => Promise<R>), i: number, times: numb
     if (isPromise(result)) {
       return result.then(
         () => repeatRecur(fn, i + 1, times),
-        (e) => { throw new FailOnOccurrence(i, e) }
+        (e) => { throw new FailOnOccurrence(i, e, { ssf: repeat }) }
       ) as any
     }
     else {
@@ -26,12 +26,7 @@ function repeatRecur<R>(fn: () => R | (() => Promise<R>), i: number, times: numb
   }
   catch (e) {
     if (e instanceof FailOnOccurrence) throw e
-    throw new FailOnOccurrence(i, e)
+    throw new FailOnOccurrence(i, e, { ssf: repeat })
   }
 }
 
-export class FailOnOccurrence extends AssertionError<{ occurrence: number }> {
-  constructor(public occurrence: number, public error: any) {
-    super(`Failed on ${occurrence} occurrence`)
-  }
-}
