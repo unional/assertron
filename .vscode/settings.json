@@ -14,10 +14,12 @@
   "eslint.enable": true,
   "cSpell.words": [
     "jsnext",
+    "libm",
     "Luka",
     "Miku",
     "sateisfier",
     "tersified",
-    "tersify"
+    "tersify",
+    "tsbuildinfo"
   ]
 }

@@ -33,7 +33,7 @@
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:esm": "tsc -p tsconfig.esm.json",
     "build:watch": "tsc --watch",
-    "clean": "rimraf .nyc_output .ts coverage cjs esm",
+    "clean": "rimraf .nyc_output .ts coverage cjs esm lib libm",
     "coverage": "jest --coverage",
     "depcheck": "yarn dependency-check",
     "dependency-check": "dependency-check . --unused --no-dev -i type-plus -i global-store -i @types/node -i standard-log-color && dependency-check . --missing --no-dev",
