@@ -57,7 +57,7 @@
     "satisfier": "^5.1.1",
     "tersify": "^3.7.9",
     "tslib": "^2.3.1",
-    "type-plus": "^3.14.0"
+    "type-plus": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.16.5",
