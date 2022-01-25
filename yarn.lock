@@ -5769,19 +5769,19 @@ terminal-link@^2.0.0:
     ansi-escapes "^4.2.1"
     supports-hyperlinks "^2.0.0"
 
-tersify@^3.7.8, tersify@^3.7.9:
-  version "3.7.9"
-  resolved "https://registry.yarnpkg.com/tersify/-/tersify-3.7.9.tgz#a5e9376252c7fac1a1b6a3105620deed18d4dd83"
-  integrity sha512-RpZaOa+hLvobkClgm0bH+wNeuJjzJkPuVLiIitKTPEMPtA4NDw/Op4V4tCMXzAHwPLHXjllRzObQlZ7PxUFB+A==
+tersify@^3.7.11, tersify@^3.8.0:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/tersify/-/tersify-3.8.2.tgz#6f05659036a7b1822eada1637918212f97a5cb6d"
+  integrity sha512-VtcyrO7pb/tQAPZNMkNzRtmkz3smQpUQiOQXuoxLoAfN7W+ag9YxVlfs6c9hOEGotCD1HZQ1D4eoSeOQxI8mJA==
   dependencies:
     acorn "^8.6.0"
     is-buffer "^2.0.5"
     unpartial "^0.6.4"
 
-tersify@^3.8.0:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/tersify/-/tersify-3.8.2.tgz#6f05659036a7b1822eada1637918212f97a5cb6d"
-  integrity sha512-VtcyrO7pb/tQAPZNMkNzRtmkz3smQpUQiOQXuoxLoAfN7W+ag9YxVlfs6c9hOEGotCD1HZQ1D4eoSeOQxI8mJA==
+tersify@^3.7.8, tersify@^3.7.9:
+  version "3.7.9"
+  resolved "https://registry.yarnpkg.com/tersify/-/tersify-3.7.9.tgz#a5e9376252c7fac1a1b6a3105620deed18d4dd83"
+  integrity sha512-RpZaOa+hLvobkClgm0bH+wNeuJjzJkPuVLiIitKTPEMPtA4NDw/Op4V4tCMXzAHwPLHXjllRzObQlZ7PxUFB+A==
   dependencies:
     acorn "^8.6.0"
     is-buffer "^2.0.5"
