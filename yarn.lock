@@ -3694,10 +3694,10 @@ iso-error@^3.2.5:
   resolved "https://registry.yarnpkg.com/iso-error/-/iso-error-3.2.5.tgz#fd3a36465adc363a20734d4cd0858e30e10f9d98"
   integrity sha512-kyDcXf+49c9MX3RNhGmz6JvaZWERLMicoCuuxP0oY8mJwmT8oGRIdFynrWNyLuMyFYZQiGWsJzaHwSJrauhuAQ==
 
-iso-error@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/iso-error/-/iso-error-4.1.0.tgz#5af84b9021d844e6fbf6974c257b90b639ff4902"
-  integrity sha512-lKyiHIxpZ7g2hKffg5TEXoSdSSyhgixFoBGYKdaXFjgeIll/ODLT65oC0BFVNzubBfHUo/mfODys434VyhF9/w==
+iso-error@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/iso-error/-/iso-error-4.1.2.tgz#dd27ae6e9b2bccde3b274dde93c537012b7834c9"
+  integrity sha512-DYRxxP+eZ7QzmMcptzBQF15NRP/44wgWyHSP3Wj+nK8W23Wb3ujRBhGH68T1Xudg9tlQH5PJvy7YKYK+u0ZqQw==
 
 isobject@^2.0.0:
   version "2.1.0"
