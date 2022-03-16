@@ -329,7 +329,7 @@ test('end(n) waits n milliseconds and fail when step not met', async () => {
 
   setTimeout(() => {
     order.once(1)
-  }, 10)
+  }, 100)
   const err = await a.throws(order.end(1), InvalidOrder)
 
   t.strictEqual(err.state.maxStep, 1)
