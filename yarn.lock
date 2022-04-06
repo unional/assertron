@@ -6288,12 +6288,12 @@ type-plus@^3.3.0:
     tersify "^3.8.0"
     unpartial "^0.6.4"
 
-type-plus@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/type-plus/-/type-plus-4.0.1.tgz#2b3055f475166361241261d423d1bc59850cc73d"
-  integrity sha512-gNvLvzx3KGarNkzqwY5XcxMhKv4Sp/I1tru3S68TSkHvALt4FfJ62nEcrdB64iCtKiyfEHC22FyacJWnN5fcjQ==
+type-plus@^4.0.2:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/type-plus/-/type-plus-4.7.0.tgz#dddd73100d0bb568d4344d7a2c545d9b359e8ff5"
+  integrity sha512-HCMlO6uV93MEwqxWUHAW1jewQCCd/r9PKiqyvQejm9LMz5FYxLOaiE+MD5x9V/3c6GMuoLfcnHZg4ltvOjlI/A==
   dependencies:
-    tersify "^3.8.0"
+    tersify "^3.8.2"
     unpartial "^0.6.4"
 
 typedarray-to-buffer@^3.1.5:
