@@ -1,4 +1,4 @@
-// import { every } from 'satisfier'
+import { every, has, isInRange, some } from 'satisfier'
 import { isType } from 'type-plus'
 import a, { AssertionError } from '..'
 import { assertThrows, noStackTraceFor } from '../testUtils'
@@ -113,7 +113,7 @@ test('actual of type any should not have type checking error', () => {
 
 test('Work with null in array', () => {
   interface Foo {
-    payload: any;
+    payload: any
   }
   const action: Foo = { payload: [null, 3, 4] }
   a.satisfies(action, { payload: [null, 3, 4] })
@@ -140,4 +140,20 @@ test('allow predicate on array entries', () => {
   type U = { type: 'a', a: string } | { type: 'b', b: string }
   const x: U[] = [{ type: 'a', a: 'abc' }]
   a.satisfies(x, [(v) => v.type == 'a'])
+})
+
+test('using has()', () => {
+  a.satisfies([1, 2, 3], has(2))
+})
+
+test('using every()', () => {
+  a.satisfies([1, 2, 3], every((x: number) => x > 0))
+})
+
+test('using isInRange()', () => {
+  a.satisfies(1, isInRange(1, 3))
+})
+
+test('using some()', () => {
+  a.satisfies([1, 2, 3], some((x: number) => x % 2))
 })
