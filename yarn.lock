@@ -5613,12 +5613,12 @@ safe-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-satisfier@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/satisfier/-/satisfier-5.1.2.tgz#04bc2c52fc93136ab0436568a61b04af38d9db3e"
-  integrity sha512-8AxdPu5cFQKG/AjkzkE4HLDPYah6zohW+qyZiOHzLQix+/q74JP9xyEVlmIu8WPy/1Vmtm8x99d5L3Y0MLPHjg==
+satisfier@^5.1.4:
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/satisfier/-/satisfier-5.1.4.tgz#310f450afeca6e1da93210089c25ef25d975c220"
+  integrity sha512-HceuhqZSEEU/9Zneoapsk6YHv/jMPDbYSOmu9Kvj0762uKxp6hzp4VQW4UCdNuc8hqyXrj2afqeGd74TH3UsVw==
   dependencies:
-    tersify "^3.7.11"
+    tersify "^3.8.3"
 
 saxes@^5.0.1:
   version "5.0.1"
@@ -6070,12 +6070,21 @@ terminal-link@^2.0.0:
     ansi-escapes "^4.2.1"
     supports-hyperlinks "^2.0.0"
 
-tersify@^3.7.11, tersify@^3.8.0, tersify@^3.8.2:
+tersify@^3.8.0, tersify@^3.8.2:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/tersify/-/tersify-3.8.2.tgz#6f05659036a7b1822eada1637918212f97a5cb6d"
   integrity sha512-VtcyrO7pb/tQAPZNMkNzRtmkz3smQpUQiOQXuoxLoAfN7W+ag9YxVlfs6c9hOEGotCD1HZQ1D4eoSeOQxI8mJA==
   dependencies:
     acorn "^8.6.0"
+    is-buffer "^2.0.5"
+    unpartial "^0.6.4"
+
+tersify@^3.8.3:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/tersify/-/tersify-3.8.3.tgz#8f49ffb24c83d92525e2c483f64273fd640cef19"
+  integrity sha512-PX0+OE4CNak6lqDnao/wJNH72CXGgz5OKMsfFx+OYRcDjZmz/quXD+TirM2/kEUrm4WC0q6B/ww5Ig2rccyjbg==
+  dependencies:
+    acorn "^8.7.0"
     is-buffer "^2.0.5"
     unpartial "^0.6.4"
 
