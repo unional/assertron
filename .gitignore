@@ -41,6 +41,15 @@ build/Release
 # webstorm
 .idea
 
+# yarn zero install
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # project folders
 .reports
 .ts
