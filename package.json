@@ -79,6 +79,7 @@
     "babel-jest": "^27.5.1",
     "dependency-check": "^4.1.0",
     "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-harmony": "^7.0.1",
     "husky": "^7.0.4",
     "jest": "^27.5.1",
