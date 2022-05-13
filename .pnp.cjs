@@ -65,6 +65,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["node-supported-releases", "npm:0.0.0"],\
             ["npm-run-all", "npm:4.1.5"],\
             ["path-equal", "npm:1.1.3"],\
+            ["pinst", "npm:3.0.0"],\
             ["rimraf", "npm:3.0.2"],\
             ["satisfier", "npm:5.1.4"],\
             ["tersify", "npm:3.8.3"],\
@@ -4106,6 +4107,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["node-supported-releases", "npm:0.0.0"],\
             ["npm-run-all", "npm:4.1.5"],\
             ["path-equal", "npm:1.1.3"],\
+            ["pinst", "npm:3.0.0"],\
             ["rimraf", "npm:3.0.2"],\
             ["satisfier", "npm:5.1.4"],\
             ["tersify", "npm:3.8.3"],\
@@ -9579,6 +9581,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/pify-npm-3.0.0-679ee405c8-6cdcbc3567.zip/node_modules/pify/",\
           "packageDependencies": [\
             ["pify", "npm:3.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["pinst", [\
+        ["npm:3.0.0", {\
+          "packageLocation": "./.yarn/cache/pinst-npm-3.0.0-5d2b6c1dda-4ae48a6a60.zip/node_modules/pinst/",\
+          "packageDependencies": [\
+            ["pinst", "npm:3.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\
