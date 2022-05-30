@@ -1,13 +1,10 @@
-<!-- markdownlint-disable MD024 -->
-
 # assertron
 
 [![NPM version][npm-image]][npm-url]
 [![NPM downloads][downloads-image]][downloads-url]
 
-[![Github NodeJS][github-nodejs]][github-action-url]
+[![GitHub NodeJS][github-nodejs]][github-action-url]
 [![Codecov][codecov-image]][codecov-url]
-[![Coverage Status][coveralls-image]][coveralls-url]
 
 [![Semantic Release][semantic-release-image]][semantic-release-url]
 
@@ -15,41 +12,37 @@
 
 A supplementary assertion library that runs on both NodeJS and browser.
 
-## assertron
+## Install
 
-`assertron` provides a collection of assertion methods.
+```sh
+# npm
+npm install assertron
 
-### assertron.false(value)
+# yarn
+yarn add assertron
 
-Asserts the provided value is false.
+# pnpm
+pnpm install assertron
 
-### assertron.falsy(value)
+#rush
+rush add -p assertron
+```
 
-Asserts the provided value is falsy.
+## Usage
 
-### assertron.pathEqual(actual, expected)
+`assertron` provides a collection of assertion methods:
 
-Asserts the two paths are equal regardless of operating system differences.
-
-### assertron.rejects(promise)
-
-Asserts the promise rejects.
-
-### assertron.repeat(fn, times)
-
-Repeat the specified function n times and return the last result.
-If the result is a promise, it will run the function sequentially.
-
-### assertron.resolves(promise)
-
-Asserts the promise resolves.
-
-### assertron.satisfies(actual, expected)
-
-`assertron.satisfies()` checks if `actual` meets the requirements specified by `expected`.
-Each property in `expected` can be a value, a `RegExp`, or a predicate function.
-It uses `satisfier` internally to check for validity.
-Check out [`satisfier`](https://github.com/unional/satisfier) for more detail.
+- `assertron.false(value)`: asserts the provided value is false.
+- `assertron.falsy(value)`: asserts the provided value is falsy.
+- `assertron.pathEqual(actual, expected)`: asserts the two paths are equal regardless of operating system differences.
+- `assertron.rejects(promise)`: asserts the promise rejects.
+- `assertron.repeat(fn, times)`: repeat the specified function n times and return the last result.\
+  If the result is a promise, it will run the function sequentially.
+- `assertron.resolves(promise)`: asserts the promise resolves.
+- `assertron.satisfies(actual, expected)`: checks if `actual` meets the requirements specified by `expected`.\
+  Each property in `expected` can be a value, a `RegExp`, or a predicate function.\
+  It uses `satisfier` internally to check for validity.\
+  Check out [`satisfier`](https://github.com/unional/satisfier) for more detail.
 
 ```ts
 import a from 'assertron' // assertron is also exported as default.
@@ -66,9 +59,7 @@ a.satisfies({ a: 'foo' }, { a: /boo/ })
 a.satisfies({ a: 1 }, { a: () => false })
 ```
 
-### assertron.throws(...)
-
-Asserts the promise, function, or async function throws (or rejects) an error.
+- `assertron.throws(...)`: asserts the promise, function, or async function throws (or rejects) an error.
 
 ```ts
 import { assertron } from 'assertron'
@@ -82,21 +73,14 @@ const e2 = assertron.throws(() => { throw new SpecificError('foo') }, SpecificEr
 const e3 = await assertron.throws(() => Promise.reject(new SpecificError('foo')), SpecificError)
 ```
 
-### assertron.true(value)
-
-Asserts the provided value is true.
-
-### assertron.truthy(value)
-
-Asserts the provided value is truthy.
+- `assertron.true(value)`: asserts the provided value is true.
+- `assertron.truthy(value)`: asserts the provided value is truthy.
 
 ## AssertOrder
 
 Assert the code is executed in the expected order.
 
-### order.once(step: number)
-
-Asserts the step `step` executed once.
+- `order.once(step: number)`: asserts the step `step` executed once.
 
 ```ts
 import { AssertOrder } from 'assertron'
@@ -126,9 +110,7 @@ foo()
 boo()
 ```
 
-### order.atLeastOnce(step: number)
-
-Assert the `step` executed at least once.
+- `order.atLeastOnce(step: number)`: assert the `step` executed at least once.
 
 ```ts
 import { AssertOrder } from 'assertron'
@@ -142,9 +124,7 @@ for (let i = 0; i < 10; i++)
 o.once(2)
 ```
 
-### order.exactly(step: number, times: number)
-
-Asserts the step `step` executed exactly n times
+- `order.exactly(step: number, times: number)`: asserts the step `step` executed exactly n times
 
 ```ts
 import { AssertOrder } from 'assertron'
@@ -155,9 +135,7 @@ for (let i = 0; i < 4; i++)
   o.exactly(1, 3) // throws at i === 3
 ```
 
-### order.any(steps: number[])
-
-Asserts any of the steps `steps` executed.
+- `order.any(steps: number[])`: asserts any of the steps `steps` executed.
 
 ```ts
 import { AssertOrder } from 'assertron'
@@ -190,7 +168,7 @@ git push
 # create PR
 ```
 
-## Npm Commands
+## NPM Commands
 
 There are a few useful commands you can use during development.
 
@@ -211,8 +189,6 @@ yarn verify
 [github-action-url]: https://github.com/unional/assertron/actions
 [codecov-image]: https://codecov.io/gh/unional/assertron/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/unional/assertron
-[coveralls-image]: https://coveralls.io/repos/github/unional/assertron/badge.svg
-[coveralls-url]: https://coveralls.io/github/unional/assertron
 
 [semantic-release-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-release-url]: https://github.com/semantic-release/semantic-release
