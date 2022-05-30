@@ -6,6 +6,9 @@
     "node": true,
     "jest": true
   },
+  "parserOptions": {
+    "sourceType": "module"
+  },
   "overrides": [
     {
       "extends": "plugin:harmony/ts-recommended",

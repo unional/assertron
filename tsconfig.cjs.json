@@ -1,9 +1,8 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
     "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "cjs",
     "target": "es5"
   }

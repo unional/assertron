@@ -1,25 +1,23 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "importHelpers": true,
-    "incremental": true,
-    "inlineSourceMap": true,
     "lib": [
-      "es2015"
+      "ES2015",
+      "ES2021.Promise"
     ],
-    "moduleResolution": "node",
     "newLine": "LF",
     "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "removeComments": false,
-    "skipLibCheck": true,
-    "strict": true
+    "rootDir": "ts",
+    "sourceMap": true,
+    "strict": true,
+    "useDefineForClassFields": true
   },
   "include": [
     "typings"
   ],
   "files": [
-    "src/index.ts"
+    "ts/index.ts"
   ]
 }
