@@ -52,7 +52,6 @@ build/Release
 
 # project folders
 .reports
-.ts
-cjs
-esm
-lib*
+/cjs
+/esm
+/lib

@@ -6,6 +6,10 @@ test('pass on rejected promise', async () => {
   await a.rejects(Promise.reject(1))
 })
 
+it('returns the rejected value', async () => {
+  expect(await a.rejects(Promise.reject(2))).toBe(2)
+})
+
 test('throws on resolved string promise', async () => {
   const err = await a.throws(a.rejects(Promise.resolve('abc')))
   t.strictEqual(err.message, `Expected promise to reject, but it resolves with 'abc'`)
