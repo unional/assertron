@@ -1,4 +1,5 @@
 import t from 'assert'
+import { isType } from 'type-plus'
 import a from '../index.js'
 import { assertAsyncThrows, noStackTraceFor } from '../testUtils.js'
 
@@ -8,6 +9,11 @@ test('pass on rejected promise', async () => {
 
 it('returns the rejected value', async () => {
   expect(await a.rejects(Promise.reject(2))).toBe(2)
+})
+
+it('can specify the return value type', async () => {
+  const value = await a.rejects<string>(Promise.reject<any>('123'))
+  isType.equal<true, string, typeof value>()
 })
 
 test('throws on resolved string promise', async () => {
