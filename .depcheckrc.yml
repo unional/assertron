@@ -8,3 +8,4 @@ ignores:
   - pnpapi
   - semantic-release
   - ts-jest
+  - tslib

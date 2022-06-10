@@ -33,9 +33,10 @@
     "!ts/**/*.spec.ts"
   ],
   "scripts": {
-    "build": "run-p build:cjs build:esm",
+    "build": "run-p build:cjs build:esm build:tslib",
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:esm": "tsc -p tsconfig.esm.json",
+    "build:tslib": "tsc -p tsconfig.tslib.json",
     "build:watch": "tsc --watch",
     "clean": "rimraf cjs esm coverage lib libm",
     "coverage": "jest --coverage",
@@ -55,11 +56,11 @@
   "dependencies": {
     "is-node": "^1.0.2",
     "is-promise": "^4.0.0",
-    "iso-error": "^4.3.3",
+    "iso-error": "^4.3.5",
     "path-equal": "^1.2.1",
-    "satisfier": "^5.2.0",
-    "tersify": "^3.10.0",
-    "type-plus": "^4.9.1"
+    "satisfier": "^5.2.1",
+    "tersify": "^3.10.1",
+    "type-plus": "^4.10.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
@@ -70,15 +71,15 @@
     "@size-limit/preset-small-lib": "^7.0.8",
     "@types/jest": "^28.1.1",
     "@types/lodash": "^4.14.182",
-    "@types/node": "^17.0.39",
-    "@typescript-eslint/eslint-plugin": "^5.27.0",
+    "@types/node": "^14.18.21",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
     "depcheck": "^1.4.3",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-harmony": "^7.1.0",
     "husky": "^8.0.1",
-    "jest": "^28.1.0",
-    "jest-validate": "^28.1.0",
+    "jest": "^28.1.1",
+    "jest-validate": "^28.1.1",
     "jest-watch-suspend": "^1.1.2",
     "jest-watch-toggle-config": "^2.0.1",
     "jest-watch-typeahead": "^1.1.0",
@@ -86,9 +87,10 @@
     "npm-run-all": "^4.1.5",
     "pinst": "^3.0.0",
     "rimraf": "^3.0.2",
-    "semantic-release": "^19.0.2",
+    "semantic-release": "^19.0.3",
     "size-limit": "^7.0.8",
     "ts-jest": "^28.0.4",
+    "tslib": "^2.4.0",
     "typescript": "^4.7.3"
   },
   "packageManager": "yarn@3.2.1",
@@ -100,6 +102,10 @@
     {
       "path": "./esm/index.js",
       "limit": "10 KB"
+    },
+    {
+      "path": "./tslib/index.js",
+      "limit": "15 KB"
     }
   ]
 }
