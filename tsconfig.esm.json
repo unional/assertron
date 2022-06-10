@@ -4,6 +4,6 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "esm",
-    "target": "es2021"
+    "target": "ES2020"
   }
 }

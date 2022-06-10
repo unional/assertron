@@ -155,5 +155,5 @@ test('using isInRange()', () => {
 })
 
 test('using some()', () => {
-  a.satisfies([1, 2, 3], some((x: number) => x % 2 === 0))
+  a.satisfies([1, 2, 3], some(x => x % 2 === 0))
 })

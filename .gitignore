@@ -55,3 +55,4 @@ build/Release
 /cjs
 /esm
 /lib
+/tslib
