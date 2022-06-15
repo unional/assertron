@@ -57,10 +57,10 @@
     "is-node": "^1.0.2",
     "is-promise": "^4.0.0",
     "iso-error": "^4.3.5",
-    "path-equal": "^1.2.1",
-    "satisfier": "^5.2.1",
-    "tersify": "^3.10.1",
-    "type-plus": "^4.10.0"
+    "path-equal": "^1.2.2",
+    "satisfier": "^5.2.2",
+    "tersify": "^3.10.2",
+    "type-plus": "^4.10.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",

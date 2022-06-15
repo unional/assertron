@@ -2332,16 +2332,16 @@ __metadata:
     jest-watch-typeahead: ^1.1.0
     lodash: ^4.17.21
     npm-run-all: ^4.1.5
-    path-equal: ^1.2.1
+    path-equal: ^1.2.2
     pinst: ^3.0.0
     rimraf: ^3.0.2
-    satisfier: ^5.2.1
+    satisfier: ^5.2.2
     semantic-release: ^19.0.3
     size-limit: ^7.0.8
-    tersify: ^3.10.1
+    tersify: ^3.10.2
     ts-jest: ^28.0.4
     tslib: ^2.4.0
-    type-plus: ^4.10.0
+    type-plus: ^4.10.1
     typescript: ^4.7.3
   languageName: unknown
   linkType: soft
@@ -7087,10 +7087,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-equal@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "path-equal@npm:1.2.1"
-  checksum: 3273d38ebbe6324b640791f91058297ac9df1cb1c610e37e71f8737a66060d72da5d16e385ea6f36de8bdbc99694bc65bb5a7a6393254ccc07be0e6adad88d71
+"path-equal@npm:^1.2.2":
+  version: 1.2.2
+  resolution: "path-equal@npm:1.2.2"
+  checksum: 948930eb6bbb5ddcc724f7a4339e2a98fe35269b5f46d88f85c588ed4713e7ec1c71da1629608606c6687216ba3afae710a77cfb5146b735a84d6199f06f247d
   languageName: node
   linkType: hard
 
@@ -7736,12 +7736,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"satisfier@npm:^5.2.1":
-  version: 5.2.1
-  resolution: "satisfier@npm:5.2.1"
+"satisfier@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "satisfier@npm:5.2.2"
   dependencies:
-    tersify: ^3.10.0
-  checksum: d0ecbf61ca27f28200de144c492494e71ddc567262fae22afac862c790b9271ac16098b8c4041ddc376bc1fe89703942c0acabe228d5814fe56086b85849e4a1
+    tersify: ^3.10.2
+  checksum: fb97b2189321b7867d79c7f838171115674df1a6f80b479c9dde88ca58ea4132d91e80aa7e5ebf8c65c16af9ff68f6d3a9b0c548b76ea9f4712933b3b1eb3027
   languageName: node
   linkType: hard
 
@@ -8383,14 +8383,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tersify@npm:^3.10.1":
-  version: 3.10.1
-  resolution: "tersify@npm:3.10.1"
+"tersify@npm:^3.10.2":
+  version: 3.10.2
+  resolution: "tersify@npm:3.10.2"
   dependencies:
     acorn: ^8.7.1
     is-buffer: ^2.0.5
-    unpartial: ^0.7.3
-  checksum: f5e4cc4ba6c1a21665cfae4809f6c3c827cea854ccb0a03c7855ecf2a5ce60e5bce7e331f12721a8bed3517a5846a8f8da243d0e6e5f60861fe1d51ef373eb57
+    unpartial: ^0.7.4
+  checksum: 979ddea534a8b5c72549104b7651a9a3cf0f8b8f2b077090a8f7ae545c7d95ca350d43be820e640f27170d56ff2eed778c3c8b64b5556f5c9c15fd707cab5c5e
   languageName: node
   linkType: hard
 
@@ -8668,13 +8668,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-plus@npm:^4.10.0":
-  version: 4.10.0
-  resolution: "type-plus@npm:4.10.0"
+"type-plus@npm:^4.10.1":
+  version: 4.10.1
+  resolution: "type-plus@npm:4.10.1"
   dependencies:
     tersify: ^3.10.0
     unpartial: ^0.7.4
-  checksum: 6807f58459c76a51ff4ab5580a5964dad540a5c21e9db94eb3bdcdea009988a896a40d581384663c7a2cf82d839fc24260c290181f087a70389d3533a04ffe3d
+  checksum: 12da096c634892b1906b76c6107e6a30c573eaac61b0028767639425ccf59ffd7efdc745f7cf764078442e6fb870b9335fc30cc4ba195e077a3231c2037769cb
   languageName: node
   linkType: hard
 
