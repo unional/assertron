@@ -54,7 +54,6 @@
     "watch": "yarn test:watch"
   },
   "dependencies": {
-    "is-node": "^1.0.2",
     "is-promise": "^4.0.0",
     "iso-error": "^4.3.5",
     "path-equal": "^1.2.2",
@@ -107,5 +106,8 @@
       "path": "./tslib/index.js",
       "limit": "15 KB"
     }
-  ]
+  ],
+  "engines": {
+    "node": ">= 10"
+  }
 }

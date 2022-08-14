@@ -2322,7 +2322,6 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     eslint-plugin-harmony: ^7.1.0
     husky: ^8.0.1
-    is-node: ^1.0.2
     is-promise: ^4.0.0
     iso-error: ^4.3.5
     jest: ^28.1.1
@@ -4807,13 +4806,6 @@ __metadata:
   version: 2.0.2
   resolution: "is-negative-zero@npm:2.0.2"
   checksum: f3232194c47a549da60c3d509c9a09be442507616b69454716692e37ae9f37c4dea264fb208ad0c9f3efd15a796a46b79df07c7e53c6227c32170608b809149a
-  languageName: node
-  linkType: hard
-
-"is-node@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "is-node@npm:1.0.2"
-  checksum: 94234415e5690a485aae4cd7ad9645673bac34c819e219c947f2261d2c2b03991e9c89017f804b5eac10a3c33da681e6fbaaffff65aa545b873a5dab347026ed
   languageName: node
   linkType: hard
 
