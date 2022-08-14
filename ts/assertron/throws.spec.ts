@@ -5,29 +5,29 @@ import { assertAsyncThrows, assertIsError, assertIsPromise, assertThrows, noStac
 test('when value is PromiseLike returns a promise with the rejected value', async () => {
   let actual = a.throws(Promise.reject(new Error('Miku')), Error)
   assertIsPromise(actual)
-  t.equal((await actual).message, 'Miku')
+  t.strictEqual((await actual).message, 'Miku')
 
   actual = a.throws(Promise.reject(new Error('Ren')), () => true)
   assertIsPromise(actual)
-  t.equal((await actual).message, 'Ren')
+  t.strictEqual((await actual).message, 'Ren')
 
   actual = a.throws(Promise.reject(new Error('Luka')))
   assertIsPromise(actual)
-  t.equal((await actual).message, 'Luka')
+  t.strictEqual((await actual).message, 'Luka')
 })
 
 test('when value is function returning a promise, will return a promise with the rejected value', async () => {
   let actual = a.throws(() => Promise.reject(new Error('Miku')), Error)
   assertIsPromise(actual)
-  t.equal((await actual).message, 'Miku')
+  t.strictEqual((await actual).message, 'Miku')
 
   actual = a.throws(() => Promise.reject(new Error('Luka')), () => true)
   assertIsPromise(actual)
-  t.equal((await actual).message, 'Luka')
+  t.strictEqual((await actual).message, 'Luka')
 
   actual = a.throws(() => Promise.reject('Ren'))
   assertIsPromise(actual)
-  t.equal((await actual), 'Ren')
+  t.strictEqual((await actual), 'Ren')
 })
 
 test('when value is function returns error', () => {
