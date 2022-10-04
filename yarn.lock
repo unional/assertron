@@ -1730,10 +1730,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^14.18.21":
-  version: 14.18.21
-  resolution: "@types/node@npm:14.18.21"
-  checksum: 4ed35b76609647a4e36a194702e31cdda9ed42174ddaf7937bc5498984e98a99e8a42ea895ea17dd9c5ec18080112c29ab670c34f90eb9f7a4703b85b31e34fa
+"@types/node@npm:^16.0.0":
+  version: 16.11.39
+  resolution: "@types/node@npm:16.11.39"
+  checksum: bc97b9773ac6b3194800f990b349fad7f66c6126dacef59291b10a2c8b6813d6f67f947b7e12a6c9952790f7065d576fe38355b8fe034a6af60f317cfc570f69
   languageName: node
   linkType: hard
 
@@ -2315,7 +2315,7 @@ __metadata:
     "@size-limit/preset-small-lib": ^7.0.8
     "@types/jest": ^28.1.1
     "@types/lodash": ^4.14.182
-    "@types/node": ^14.18.21
+    "@types/node": ^16.0.0
     "@typescript-eslint/eslint-plugin": ^5.27.1
     depcheck: ^1.4.3
     eslint: ^8.17.0
