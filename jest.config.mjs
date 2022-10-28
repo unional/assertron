@@ -1,11 +1,5 @@
 export default {
-  preset: 'ts-jest/presets/default-esm',
-  globals: {
-    'ts-jest': {
-      isolatedModule: true,
-      useESM: true,
-    },
-  },
+  extensionsToTreatAsEsm: ['.ts'],
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
@@ -15,6 +9,13 @@ export default {
   roots: [
     '<rootDir>/ts',
   ],
+  transform: {
+    // '^.+\\.(js|jsx|mjs)$': 'babel-jest',
+    '^.+\\.(ts|tsx|mts|cts)$': ['ts-jest', {
+      isolatedModules: true,
+      useESM: true,
+    }]
+  },
   testMatch: ['**/?(*.)+(spec|test|integrate|accept|system|unit).[jt]s?(x)'],
   watchPlugins: [
     'jest-watch-suspend',
