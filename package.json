@@ -36,7 +36,7 @@
     "build": "run-p build:cjs build:esm build:tslib",
     "build:cjs": "tsc -p tsconfig.cjs.json && ncp package.cjs.json cjs/package.json",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "build:tslib": "tsc -p tsconfig.tslib.json",
+    "build:tslib": "tsc -p tsconfig.tslib.json && ncp package.cjs.json tslib/package.json",
     "build:watch": "tsc --watch",
     "clean": "rimraf cjs esm coverage lib libm",
     "coverage": "jest --coverage",
