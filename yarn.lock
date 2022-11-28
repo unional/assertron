@@ -2391,7 +2391,7 @@ __metadata:
     eslint-plugin-harmony: ^7.1.0
     husky: ^8.0.1
     is-promise: ^4.0.0
-    iso-error: ^4.3.5
+    iso-error: ^5.0.0
     jest: ^29.0.0
     jest-validate: ^29.0.0
     jest-watch-suspend: ^1.1.2
@@ -5011,10 +5011,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iso-error@npm:^4.3.5":
-  version: 4.3.5
-  resolution: "iso-error@npm:4.3.5"
-  checksum: 5079bac3c5a0897ab7d095a58c4c17606e03b5f35265b6bc77317ea1c82466959edca716ea3faffbe330803eba5e2a30e47489da27b2cf299aed671d0d5598b1
+"iso-error@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "iso-error@npm:5.0.0"
+  checksum: d501276921aa561ebfa198fcb778726ac4bf573e0e3852bd70f0b243a3fc8bc88e3fbae6bd426ef2b0efd6c467d79e0673147b447b617b2f26f44ad69f915b7b
   languageName: node
   linkType: hard
 
