@@ -21,7 +21,8 @@ export type SatisfyExpectation<T> = If<
 
 /**
  * Check if `actual` satisfies criteria in `expected`.
- * @param expected All properties can be a value which will be compared to the same property in `actual`, RegExp, or a predicate function that will be used to check against the property.
+ * @param expected All properties can be a value which will be compared to the same property in `actual`,
+ * RegExp, or a predicate function that will be used to check against the property.
  */
 export function satisfies<Actual, Expected extends Actual>(actual: Actual, expected: SatisfyExpectation<Expected>) {
   const diff = createSatisfier(expected as any).exec(actual)
