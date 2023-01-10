@@ -34,6 +34,7 @@ rush add -p assertron
 
 - `assertron.false(value)`: asserts the provided value is false.
 - `assertron.falsy(value)`: asserts the provided value is falsy.
+- `assertron.isInstanceof(value, ClassType)`: asserts `value instanceof ClassType`.
 - `assertron.pathEqual(actual, expected)`: asserts the two paths are equal regardless of operating system differences.
 - `assertron.rejects(promise)`: asserts the promise rejects.
 - `assertron.repeat(fn, times)`: repeat the specified function n times and return the last result.\
