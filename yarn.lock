@@ -2410,7 +2410,7 @@ __metadata:
     eslint-plugin-harmony: ^7.1.0
     husky: ^8.0.1
     is-promise: ^4.0.0
-    iso-error: ^4.3.5
+    iso-error: ^5.0.2
     jest: ^29.0.0
     jest-validate: ^29.0.0
     jest-watch-suspend: ^1.1.2
@@ -2419,16 +2419,16 @@ __metadata:
     lodash: ^4.17.21
     ncp: ^2.0.0
     npm-run-all: ^4.1.5
-    path-equal: ^1.2.2
+    path-equal: ^1.2.5
     pinst: ^3.0.0
     rimraf: ^3.0.2
-    satisfier: ^5.2.2
+    satisfier: ^5.4.2
     semantic-release: ^20.0.2
     size-limit: ^8.0.0
-    tersify: ^3.10.2
+    tersify: ^3.11.1
     ts-jest: ^29.0.0
     tslib: ^2.4.0
-    type-plus: ^5.0.0
+    type-plus: ^5.1.0
     typescript: ^4.7.3
   languageName: unknown
   linkType: soft
@@ -5126,10 +5126,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"iso-error@npm:^4.3.5":
-  version: 4.3.5
-  resolution: "iso-error@npm:4.3.5"
-  checksum: 5079bac3c5a0897ab7d095a58c4c17606e03b5f35265b6bc77317ea1c82466959edca716ea3faffbe330803eba5e2a30e47489da27b2cf299aed671d0d5598b1
+"iso-error@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "iso-error@npm:5.0.2"
+  checksum: 7a0a06ff31ab11e5dfd2f97a56c9a00ccf81d7db204f786c87530ca49579c1a3c5d074a71075cc0dd4398f1bc872576079c735093e3b783fe69605875e1777f4
   languageName: node
   linkType: hard
 
@@ -7314,10 +7314,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-equal@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "path-equal@npm:1.2.2"
-  checksum: 948930eb6bbb5ddcc724f7a4339e2a98fe35269b5f46d88f85c588ed4713e7ec1c71da1629608606c6687216ba3afae710a77cfb5146b735a84d6199f06f247d
+"path-equal@npm:^1.2.5":
+  version: 1.2.5
+  resolution: "path-equal@npm:1.2.5"
+  checksum: 2bef7bcb98c7ae371c52c1562b2fc515bfd03bc1a5571df9a8591038db8d742ba2d1ff39aa5130853e6afb69e773ccba5095f54d2e6d17422ca03ef9047992d7
   languageName: node
   linkType: hard
 
@@ -7981,12 +7981,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"satisfier@npm:^5.2.2":
-  version: 5.2.2
-  resolution: "satisfier@npm:5.2.2"
+"satisfier@npm:^5.4.2":
+  version: 5.4.2
+  resolution: "satisfier@npm:5.4.2"
   dependencies:
     tersify: ^3.10.2
-  checksum: fb97b2189321b7867d79c7f838171115674df1a6f80b479c9dde88ca58ea4132d91e80aa7e5ebf8c65c16af9ff68f6d3a9b0c548b76ea9f4712933b3b1eb3027
+  checksum: 60f3e0f9e7f2a538e3160d8866f7fa494611b284c7e708f38b4ddd0f0ef1699fc3f8a514e2a6d6e01d784cdc09bd49532c8d4892c6186db9900b4f357ceb3739
   languageName: node
   linkType: hard
 
@@ -8912,13 +8912,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-plus@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "type-plus@npm:5.0.0"
+"type-plus@npm:^5.1.0":
+  version: 5.1.0
+  resolution: "type-plus@npm:5.1.0"
   dependencies:
     tersify: ^3.11.1
     unpartial: ^1.0.4
-  checksum: 732824f068f3bf5f6d96f235d37eb8e35aaed41c476d1c311863d3618566fd6f94150a254881cef4676b7ff6029c2144391ad5a339569f847509c19289b02d16
+  checksum: 02406819688395c7ea0edbc7480134965dca8d3b7e5172a8baaa97fa33ca2de1af9a9648678b7c6c98a793e99a61f0fa380e7dc48bc568d5495ef27d927aebc1
   languageName: node
   linkType: hard
 
