@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "is-promise": "^4.0.0",
-    "iso-error": "^5.0.2",
+    "iso-error": "^6.0.0",
     "path-equal": "^1.2.5",
     "satisfier": "^5.4.2",
     "tersify": "^3.11.1",
