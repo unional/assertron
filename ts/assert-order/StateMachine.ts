@@ -1,4 +1,4 @@
-import { performance } from 'perf_hooks'
+import * as perf from 'perf_hooks'
 import { State } from './types.js'
 
 let timeTracker: { start(): void, taken(): number }
@@ -13,11 +13,12 @@ if (process && typeof process.hrtime === 'function') {
     }
   }
 }
-else if (performance && typeof performance.now === 'function') {
+else if (perf.performance && typeof perf.performance.now === 'function') {
+  const now = perf.performance.now
   let tick: number
   timeTracker = {
-    start() { tick = performance.now() },
-    taken() { return performance.now() - tick }
+    start() { tick = now() },
+    taken() { return now() - tick }
   }
 }
 else {
