@@ -2428,7 +2428,7 @@ __metadata:
     tersify: ^3.11.1
     ts-jest: ^29.0.0
     tslib: ^2.4.0
-    type-plus: ^5.1.0
+    type-plus: ^6.0.0
     typescript: ^5.0.0
   languageName: unknown
   linkType: soft
@@ -8912,13 +8912,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-plus@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "type-plus@npm:5.1.0"
+"type-plus@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "type-plus@npm:6.0.0"
   dependencies:
     tersify: ^3.11.1
     unpartial: ^1.0.4
-  checksum: 02406819688395c7ea0edbc7480134965dca8d3b7e5172a8baaa97fa33ca2de1af9a9648678b7c6c98a793e99a61f0fa380e7dc48bc568d5495ef27d927aebc1
+  checksum: 7ba2b4ae1caf927d046d7ce2d0ce41128ce6cf5e4db3539542d9789dd93f95a970fa379cfdebd43d10e407c2a80eda362996c2771c752c39e13ef2b4536407c8
   languageName: node
   linkType: hard
 
