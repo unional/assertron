@@ -1,5 +1,5 @@
 import * as perf from 'perf_hooks'
-import { State } from './types.js'
+import type { State } from './types.js'
 
 let timeTracker: { start(): void, taken(): number }
 // istanbul ignore else

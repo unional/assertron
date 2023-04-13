@@ -1,5 +1,5 @@
 import { createSatisfier } from 'satisfier'
-import { If, IsExtend, NonComposableTypes } from 'type-plus'
+import type { If, IsExtend, NonComposableTypes } from 'type-plus'
 import { AssertionError } from '../errors.js'
 import { notSatisfiedMessage } from '../utils/index.js'
 

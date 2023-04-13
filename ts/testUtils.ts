@@ -2,7 +2,7 @@
 import t from 'assert'
 import isPromise from 'is-promise'
 import { escapeRegExp, isError } from 'lodash'
-import { ErrorConstructor } from './types.js'
+import type { ErrorConstructor } from './types.js'
 
 export type AnyFunction = (...args: any[]) => any
 

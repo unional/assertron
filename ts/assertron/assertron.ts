@@ -8,7 +8,7 @@ import { pathEqual } from './pathEqual.js'
 import { rejects } from './rejects.js'
 import { repeat } from './repeat.js'
 import { resolves } from './resolves.js'
-import { satisfies, SatisfyExpectation } from './satisfies.js'
+import { satisfies, type SatisfyExpectation } from './satisfies.js'
 import { throws } from './throws.js'
 import { truthy } from './truthy.js'
 

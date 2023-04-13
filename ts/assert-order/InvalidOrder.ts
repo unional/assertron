@@ -1,5 +1,5 @@
 import { AssertionError } from '../errors.js'
-import { State } from './types.js'
+import type { State } from './types.js'
 
 export class InvalidOrder extends AssertionError {
   constructor(public state: State, public method: string, public args: any[], options: AssertionError.Options) {

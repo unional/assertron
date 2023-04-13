@@ -1,4 +1,4 @@
-import { Diff } from 'satisfier'
+import type { Diff } from 'satisfier'
 import { tersify } from 'tersify'
 
 export function notSatisfiedMessage(entries: Diff[]) {

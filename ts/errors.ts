@@ -1,5 +1,5 @@
-import { IsoError, ModuleError } from 'iso-error'
-import { RequiredPick } from 'type-plus'
+import { ModuleError } from 'iso-error'
+import type { RequiredPick } from 'type-plus'
 import { failOnOccurrence } from './utils/index.js'
 
 /**
@@ -12,7 +12,7 @@ export class AssertionError extends ModuleError {
 }
 
 export namespace AssertionError {
-  export type Options = RequiredPick<IsoError.Options, 'ssf'>
+  export type Options = RequiredPick<ModuleError.Options, 'ssf'>
 }
 
 export class FailOnOccurrence extends AssertionError {

@@ -1,5 +1,5 @@
 import { tersify } from 'tersify'
-import { ErrorConstructor, ErrorValidator } from '../types.js'
+import type { ErrorConstructor, ErrorValidator } from '../types.js'
 import { isErrorConstructor } from './isErrorConstructor.js'
 
 export function unexpectedErrorMessage(actual: any, expected: ErrorValidator | ErrorConstructor<any>) {

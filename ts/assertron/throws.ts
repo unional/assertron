@@ -1,6 +1,6 @@
 import isPromise from 'is-promise'
 import { AssertionError } from '../errors.js'
-import { ErrorConstructor, ErrorValidator } from '../types.js'
+import type { ErrorConstructor, ErrorValidator } from '../types.js'
 import { isErrorConstructor, notRejectedMessage, notThrownMessage, unexpectedErrorMessage } from '../utils/index.js'
 
 export function throws<E extends Error>(value: PromiseLike<any>, error?: ErrorValidator | ErrorConstructor<E>): Promise<E>
