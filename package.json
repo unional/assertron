@@ -60,7 +60,7 @@
     "path-equal": "^1.2.5",
     "satisfier": "^5.4.2",
     "tersify": "^3.11.1",
-    "type-plus": "^6.0.0"
+    "type-plus": "^6.5.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
