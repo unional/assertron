@@ -6,6 +6,7 @@ ignores:
   - '@typescript-eslint/parser'
   - jest-*
   - pnpapi
+  - rimraf # https://github.com/depcheck/depcheck/issues/776
   - semantic-release
   - ts-jest
   - tslib
