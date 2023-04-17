@@ -1,33 +1,29 @@
 {
-  "json.schemas": [
-    {
-      "fileMatch": [
-        "tsconfig.*.json"
-      ],
-      "url": "http://json.schemastore.org/tsconfig"
-    }
-  ],
-  "markdownlint.ignore": [
-    "LICENSE"
-  ],
-  "eslint.enable": true,
-  "cSpell.words": [
-    "jsnext",
-    "libm",
-    "Luka",
-    "Miku",
-    "pinst",
-    "pnpm",
-    "sateisfier",
-    "snyk",
-    "tersified",
-    "tersify",
-    "tsbuildinfo"
-  ],
-  "search.exclude": {
-    "**/.yarn": true,
-    "**/.pnp.*": true
-  },
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+	"json.schemas": [
+		{
+			"fileMatch": ["tsconfig.*.json"],
+			"url": "http://json.schemastore.org/tsconfig"
+		}
+	],
+	"markdownlint.ignore": ["LICENSE"],
+	"eslint.enable": true,
+	"cSpell.words": [
+		"jsnext",
+		"libm",
+		"Luka",
+		"Miku",
+		"pinst",
+		"pnpm",
+		"sateisfier",
+		"snyk",
+		"tersified",
+		"tersify",
+		"tsbuildinfo"
+	],
+	"search.exclude": {
+		"**/.yarn": true,
+		"**/.pnp.*": true
+	},
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.tsdk": "node_modules/typescript/lib"
 }

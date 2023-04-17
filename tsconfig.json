@@ -1,10 +1,7 @@
 {
-  "extends": "./tsconfig.esm.json",
-  "compilerOptions": {
-    "noEmit": true
-  },
-  "include": [
-    "ts",
-    "typings"
-  ]
+	"extends": "./tsconfig.esm.json",
+	"compilerOptions": {
+		"noEmit": true
+	},
+	"include": ["ts", "typings"]
 }

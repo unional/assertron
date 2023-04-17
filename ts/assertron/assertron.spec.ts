@@ -2,47 +2,46 @@ import a, { AssertionError } from '../index.js'
 import { assertThrows, noStackTraceFor } from '../testUtils.js'
 
 describe('false()', () => {
-  test('non-false statement throws', () => {
-    assertThrows(() => a.false(true), AssertionError)
-    assertThrows(() => a.false(0), AssertionError)
-    assertThrows(() => a.false(''), AssertionError)
-    assertThrows(() => a.false({}), AssertionError)
-    assertThrows(() => a.false(() => false), AssertionError)
-  })
+	test('non-false statement throws', () => {
+		assertThrows(() => a.false(true), AssertionError)
+		assertThrows(() => a.false(0), AssertionError)
+		assertThrows(() => a.false(''), AssertionError)
+		assertThrows(() => a.false({}), AssertionError)
+		assertThrows(() => a.false(() => false), AssertionError)
+	})
 
-  test('false statement pass', () => {
-    a.false(false)
-  })
+	test('false statement pass', () => {
+		a.false(false)
+	})
 
-  test('does not contain internal stack trace', () => {
-    // const err = assertThrows(() => a.false(true), AssertionError)
-    // noStackTraceFor('assertron.ts', err)
+	test('does not contain internal stack trace', () => {
+		// const err = assertThrows(() => a.false(true), AssertionError)
+		// noStackTraceFor('assertron.ts', err)
 
-    try {
-      a.false(true)
-    }
-    catch (err: any) {
-      noStackTraceFor('assertron.ts', err)
-      console.info(err)
-    }
-  })
+		try {
+			a.false(true)
+		} catch (err: any) {
+			noStackTraceFor('assertron.ts', err)
+			console.info(err)
+		}
+	})
 })
 
 describe('true()', () => {
-  test('non-true statement throws', () => {
-    assertThrows(() => a.true(false), AssertionError)
-    assertThrows(() => a.true(1), AssertionError)
-    assertThrows(() => a.true('a'), AssertionError)
-    assertThrows(() => a.true({}), AssertionError)
-    assertThrows(() => a.true(() => true), AssertionError)
-  })
+	test('non-true statement throws', () => {
+		assertThrows(() => a.true(false), AssertionError)
+		assertThrows(() => a.true(1), AssertionError)
+		assertThrows(() => a.true('a'), AssertionError)
+		assertThrows(() => a.true({}), AssertionError)
+		assertThrows(() => a.true(() => true), AssertionError)
+	})
 
-  test('true statement pass', () => {
-    a.true(true)
-  })
+	test('true statement pass', () => {
+		a.true(true)
+	})
 
-  test('does not contain internal stack trace', () => {
-    const err = assertThrows(() => a.true(false), AssertionError)
-    noStackTraceFor('assertron.ts', err)
-  })
+	test('does not contain internal stack trace', () => {
+		const err = assertThrows(() => a.true(false), AssertionError)
+		noStackTraceFor('assertron.ts', err)
+	})
 })

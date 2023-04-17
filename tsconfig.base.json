@@ -1,26 +1,19 @@
 {
-  "compilerOptions": {
-    "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "isolatedModules": true,
-    "lib": [
-      "ES2020",
-      "ES2021.Promise"
-    ],
-    "newLine": "LF",
-    "noUnusedLocals": true,
-    "noUnusedParameters": false,
-    "removeComments": false,
-    "rootDir": "ts",
-    "sourceMap": true,
-    "strict": true,
-    "useDefineForClassFields": true
-  },
-  "include": [
-    "typings"
-  ],
-  "files": [
-    "ts/index.ts"
-  ]
+	"compilerOptions": {
+		"declaration": true,
+		"declarationMap": true,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"lib": ["ES2020", "ES2021.Promise"],
+		"newLine": "LF",
+		"noUnusedLocals": true,
+		"noUnusedParameters": false,
+		"removeComments": false,
+		"rootDir": "ts",
+		"sourceMap": true,
+		"strict": true,
+		"useDefineForClassFields": true
+	},
+	"include": ["typings"],
+	"files": ["ts/index.ts"]
 }

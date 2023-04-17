@@ -8,5 +8,5 @@ export * from './promiseMessages.js'
 export * from './unexpectedErrorMessage.js'
 
 export function failOnOccurrence(occurrence: number, error: any) {
-  return `Failed on ${occurrence} occurrence: ${tersify(error, { maxLength: Infinity })}`
+	return `Failed on ${occurrence} occurrence: ${tersify(error, { maxLength: Infinity })}`
 }
