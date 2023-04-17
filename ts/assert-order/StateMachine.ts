@@ -3,14 +3,14 @@ import type { State } from './types.js'
 
 let timeTracker: { start(): void; taken(): number }
 
-if (process && typeof process.hrtime === 'function') {
+if (global['process'] && typeof global['process'].hrtime === 'function') {
 	let tick: [number, number]
 	timeTracker = {
 		start() {
-			tick = process.hrtime()
+			tick = global['process'].hrtime()
 		},
 		taken() {
-			const [second, nanoSecond] = process.hrtime(tick)
+			const [second, nanoSecond] = global['process'].hrtime(tick)
 			return second * 1000 + nanoSecond / 1e6
 		}
 	}
