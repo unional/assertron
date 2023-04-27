@@ -2500,7 +2500,7 @@ __metadata:
     jest: ^29.0.0
     jest-validate: ^29.0.0
     jest-watch-suspend: ^1.1.2
-    jest-watch-toggle-config: ^2.0.1
+    jest-watch-toggle-config: ^3.0.0
     jest-watch-typeahead: ^2.0.0
     lodash: ^4.17.21
     ncp: ^2.0.0
@@ -2876,6 +2876,13 @@ __metadata:
   version: 5.0.1
   resolution: "chalk@npm:5.0.1"
   checksum: 7b45300372b908f0471fbf7389ce2f5de8d85bb949026fd51a1b95b10d0ed32c7ed5aab36dd5e9d2bf3191867909b4404cef75c5f4d2d1daeeacd301dd280b76
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^5.2.0":
+  version: 5.2.0
+  resolution: "chalk@npm:5.2.0"
+  checksum: 03d8060277de6cf2fd567dc25fcf770593eb5bb85f460ce443e49255a30ff1242edd0c90a06a03803b0466ff0687a939b41db1757bec987113e83de89a003caa
   languageName: node
   linkType: hard
 
@@ -5839,15 +5846,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-watch-toggle-config@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "jest-watch-toggle-config@npm:2.0.1"
+"jest-watch-toggle-config@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "jest-watch-toggle-config@npm:3.0.0"
   dependencies:
-    chalk: ^4.1.0
+    chalk: ^5.2.0
   peerDependencies:
     jest: ">= 23.4.1"
-    jest-validate: ">= 23.4.0"
-  checksum: 619897199baa40ec85ceba3916b2f9c4caad9e41c4edd06072ede7100901cba59523c2535588d09b08ce6ab84213eec4cad04906a689e27bad50bfd1fe40c212
+  checksum: c541fc9bdfbf8b7255c7be1ebc735f629028528552f88f668648c503ed1240ca99267f00aab1a8d139aca6dd5c041f99fd4538eb2073249199d08dc92ad2df79
   languageName: node
   linkType: hard
 
