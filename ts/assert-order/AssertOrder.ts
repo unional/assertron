@@ -73,9 +73,10 @@ export class AssertOrder {
 		} else throw new InvalidOrder(this.state.get(), 'atLeastOnce', [step], { ssf: this.atLeastOnce })
 	}
 
-	any(steps: number[]) {
+	any(steps: number[], handler?: (step: number) => void) {
 		const index = steps.indexOf(this.state.step)
 		if (index === -1) throw new InvalidOrder(this.state.get(), 'any', [steps], { ssf: this.any })
+		if (handler) handler(steps[index])
 
 		this.state.move()
 		return steps[index]

@@ -22,7 +22,7 @@ describe('false()', () => {
 			a.false(true)
 		} catch (err: any) {
 			noStackTraceFor('assertron.ts', err)
-			console.info(err)
+			// console.info(err)
 		}
 	})
 })

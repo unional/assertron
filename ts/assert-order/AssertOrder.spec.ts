@@ -153,7 +153,7 @@ test('any(2) should throws', async () => {
 	await assertOrderThrows(() => order.any([2]), { step: 1 }, 'any', [2])
 })
 
-test('any(2, 3) should throws', async () => {
+test('any([2, 3]) should throws', async () => {
 	const order = new AssertOrder()
 
 	await assertOrderThrows(() => order.any([2, 3]), { step: 1 }, 'any', [2, 3])
@@ -167,7 +167,7 @@ test('any(1) should move to next step', () => {
 	order.once(2)
 })
 
-test('any(1, 2) should pass with once(1) and move to step 3', () => {
+test('any([1, 2]) should pass with once(1) and move to step 3', () => {
 	const order = new AssertOrder()
 	order.once(1)
 
@@ -182,6 +182,21 @@ test(`any() should returns the step it encountered`, () => {
 	t.strictEqual(order.any([1, 2, 3]), 1)
 	t.strictEqual(order.any([1, 2, 3]), 2)
 	t.strictEqual(order.any([1, 2, 3]), 3)
+})
+
+it('invokes handler for any([1, 2], handler)', () => {
+	const o = new AssertOrder(2)
+	const order = new AssertOrder()
+	function foo() {
+		order.any([1, 2], step => {
+			o.once(step)
+		})
+	}
+
+	foo()
+	foo()
+
+	o.end
 })
 
 test(`onAny(1, fn) will not be invoked immediately`, () => {

@@ -136,7 +136,7 @@ for (let i = 0; i < 4; i++)
   o.exactly(1, 3) // throws at i === 3
 ```
 
-- `order.any(steps: number[])`: asserts any of the steps `steps` executed.
+- `order.any(steps: number[], handler?: (step: number) => void)`: asserts any of the steps `steps` executed.
 
 ```ts
 import { AssertOrder } from 'assertron'
