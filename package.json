@@ -101,7 +101,7 @@
     "tslib": "^2.4.0",
     "typescript": "^5.0.0"
   },
-  "packageManager": "yarn@3.6.0",
+  "packageManager": "yarn@3.6.1",
   "engines": {
     "node": ">= 10"
   },
