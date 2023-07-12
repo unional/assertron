@@ -45,3 +45,15 @@ describe('true()', () => {
 		noStackTraceFor('assertron.ts', err)
 	})
 })
+
+describe(`uuid()`, () => {
+	it('throws if input is not a string', () => {
+		assertThrows(() => a.uuid(1), AssertionError)
+	})
+	it('throws if input is not uuid', () => {
+		assertThrows(() => a.uuid('a'), AssertionError)
+	})
+	it('passes if input is uuid', () => {
+		a.uuid('11e9b365-a558-54aa-a824-c60aca166f6a')
+	})
+})

@@ -36,6 +36,7 @@ export type Assertron = {
 	): R extends Promise<any> ? Promise<T> : T
 	true(value: unknown): asserts value is true
 	truthy(value: unknown): void
+	uuid(value: unknown): void
 }
 
 export const assertron: Assertron = {
@@ -53,5 +54,14 @@ export const assertron: Assertron = {
 	true(value: unknown): void {
 		if (value !== true) throw new AssertionError(notEqualMessage(value, true), { ssf: assertron.true })
 	},
-	truthy
+	truthy,
+	uuid(value: unknown) {
+		if (typeof value !== 'string')
+			throw new AssertionError(`Expected ${value} to be a string`, { ssf: assertron.uuid })
+
+		if (/^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/.test(value))
+			return
+
+		throw new AssertionError(`Expected ${value} to be a valid UUID`, { ssf: assertron.uuid })
+	}
 }

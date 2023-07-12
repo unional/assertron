@@ -46,6 +46,7 @@
 		"build:tslib": "tsc -p tsconfig.tslib.json && ncp package.cjs.json tslib/package.json",
 		"build:watch": "tsc --watch",
 		"clean": "rimraf cjs esm coverage lib libm",
+    "cs": "changeset",
 		"coverage": "jest --coverage",
 		"depcheck": "depcheck",
 		"lint": "eslint --ext=js,ts .",
@@ -69,7 +70,7 @@
 		"type-plus": "^7.6.0"
 	},
 	"devDependencies": {
-		"@changesets/cli": "^2.25.2",
+		"@changesets/cli": "^2.26.2",
 		"@commitlint/cli": "^17.0.2",
 		"@commitlint/config-conventional": "^17.0.2",
 		"@size-limit/preset-small-lib": "^8.0.0",

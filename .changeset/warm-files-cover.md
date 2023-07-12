@@ -1,0 +1,5 @@
+---
+'assertron': minor
+---
+
+Add `uuid()`
