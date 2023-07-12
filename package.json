@@ -52,13 +52,13 @@
     "postinstall": "husky install",
     "prepack": "pinst --disable",
     "postpack": "pinst --enable",
-    "nuke": "yarn clean && rimraf node_modules",
+    "nuke": "pnpm clean && rimraf node_modules",
     "size": "size-limit",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:type": "tsc",
     "verify": "npm-run-all clean -p build test:type depcheck lint coverage -p size",
-    "watch": "yarn test:watch"
+    "watch": "pnpm test:watch"
   },
   "dependencies": {
     "is-promise": "^4.0.0",
@@ -66,14 +66,12 @@
     "path-equal": "^1.2.5",
     "satisfier": "^5.4.2",
     "tersify": "^3.11.1",
-    "type-plus": "^7.0.0"
+    "type-plus": "^7.6.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.25.2",
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^9.0.0",
     "@size-limit/preset-small-lib": "^8.0.0",
     "@types/jest": "^29.0.0",
     "@types/lodash": "^4.14.182",
@@ -95,13 +93,12 @@
     "npm-run-all": "^4.1.5",
     "pinst": "^3.0.0",
     "rimraf": "^5.0.0",
-    "semantic-release": "^21.0.0",
     "size-limit": "^8.0.0",
     "ts-jest": "^29.0.0",
     "tslib": "^2.4.0",
     "typescript": "^5.0.0"
   },
-  "packageManager": "yarn@3.6.1",
+  "packageManager": "pnpm@8.6.7",
   "engines": {
     "node": ">= 10"
   },

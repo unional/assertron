@@ -1,4 +1,5 @@
 ignores:
+  - '@changesets/cli'
   - '@commitlint/*'
   - '@semantic-release/*'
   - '@size-limit/*'
