@@ -34,12 +34,12 @@ export type Assertron = {
 		value: (...args: any[]) => R,
 		validator?: ErrorValidator
 	): R extends Promise<any> ? Promise<T> : T
-	true(value: any): asserts value is true
+	true(value: unknown): asserts value is true
 	truthy(value: unknown): void
 }
 
 export const assertron: Assertron = {
-	false(value: any) {
+	false(value: unknown): void {
 		if (value !== false) throw new AssertionError(notEqualMessage(value, false), { ssf: assertron.false })
 	},
 	falsy,
@@ -50,7 +50,7 @@ export const assertron: Assertron = {
 	resolves,
 	satisfies,
 	throws,
-	true(value: any) {
+	true(value: unknown): void {
 		if (value !== true) throw new AssertionError(notEqualMessage(value, true), { ssf: assertron.true })
 	},
 	truthy

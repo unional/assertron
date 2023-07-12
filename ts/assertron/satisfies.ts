@@ -31,7 +31,7 @@ export type SatisfyExpectation<T> =
 export function satisfies<Actual, Expected extends Actual>(
 	actual: Actual,
 	expected: SatisfyExpectation<Expected>
-) {
+): void {
 	const diff = createSatisfier(expected as any).exec(actual)
 	if (diff) {
 		throw new AssertionError(notSatisfiedMessage(diff), { ssf: satisfies })
