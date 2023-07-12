@@ -1,5 +1,0 @@
----
-'assertron': minor
----
-
-Add `uuid()`
