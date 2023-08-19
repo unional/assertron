@@ -25,6 +25,10 @@ describe('false()', () => {
 			// console.info(err)
 		}
 	})
+	it('can supply a custom message', () => {
+		const err = assertThrows(() => a.false(true, 'custom message'), AssertionError)
+		a.true(err.message === 'custom message')
+	})
 })
 
 describe('true()', () => {
@@ -43,6 +47,10 @@ describe('true()', () => {
 	test('does not contain internal stack trace', () => {
 		const err = assertThrows(() => a.true(false), AssertionError)
 		noStackTraceFor('assertron.ts', err)
+	})
+	it('can supply a custom message', () => {
+		const err = assertThrows(() => a.true(false, 'custom message'), AssertionError)
+		a.true(err.message === 'custom message')
 	})
 })
 

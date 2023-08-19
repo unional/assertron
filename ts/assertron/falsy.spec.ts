@@ -18,3 +18,8 @@ test('false statement pass', () => {
 	a.falsy(false)
 	a.falsy(1 === (2 as any))
 })
+
+it('can supply a custom message', () => {
+	const err = assertThrows(() => a.falsy(true, 'custom message'), AssertionError)
+	a.true(err.message === 'custom message')
+})

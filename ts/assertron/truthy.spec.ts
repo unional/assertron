@@ -21,3 +21,8 @@ test('does not contain internal stack trace', () => {
 	const err = assertThrows(() => a.truthy(false), AssertionError)
 	noStackTraceFor('truthy.ts', err)
 })
+
+it('can supply a custom message', () => {
+	const err = assertThrows(() => a.truthy(false, 'custom message'), AssertionError)
+	a.true(err.message === 'custom message')
+})

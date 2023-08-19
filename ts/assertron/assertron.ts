@@ -13,8 +13,8 @@ import { throws } from './throws.js'
 import { truthy } from './truthy.js'
 
 export type Assertron = {
-	false(value: unknown): asserts value is false
-	falsy(value: any): asserts value is false | 0 | '' | null | undefined
+	false(value: unknown, message?: string | undefined): asserts value is false
+	falsy(value: any, message?: string | undefined): asserts value is false | 0 | '' | null | undefined
 	isInstanceof<T extends AnyConstructor>(value: unknown, type: T): asserts value is InstanceType<T>
 	pathEqual(actual: string, expected: string): void
 	rejects<R = any>(promise: Promise<any>): Promise<R>
@@ -34,14 +34,15 @@ export type Assertron = {
 		value: (...args: any[]) => R,
 		validator?: ErrorValidator
 	): R extends Promise<any> ? Promise<T> : T
-	true(value: unknown): asserts value is true
-	truthy(value: unknown): void
+	true(value: unknown, message?: string | undefined): asserts value is true
+	truthy(value: unknown, message?: string | undefined): void
 	uuid(value: unknown): void
 }
 
 export const assertron: Assertron = {
-	false(value: unknown): void {
-		if (value !== false) throw new AssertionError(notEqualMessage(value, false), { ssf: assertron.false })
+	false(value: unknown, message?: string): void {
+		if (value !== false)
+			throw new AssertionError(message ?? notEqualMessage(value, false), { ssf: assertron.false })
 	},
 	falsy,
 	isInstanceof,
@@ -51,8 +52,9 @@ export const assertron: Assertron = {
 	resolves,
 	satisfies,
 	throws,
-	true(value: unknown): void {
-		if (value !== true) throw new AssertionError(notEqualMessage(value, true), { ssf: assertron.true })
+	true(value: unknown, message?: string): void {
+		if (value !== true)
+			throw new AssertionError(message ?? notEqualMessage(value, true), { ssf: assertron.true })
 	},
 	truthy,
 	uuid(value: unknown) {
