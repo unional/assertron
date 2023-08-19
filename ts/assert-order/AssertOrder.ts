@@ -81,7 +81,7 @@ export class AssertOrder {
 		this.state.move()
 		return steps[index]
 	}
-	onAny(steps: number[], ...asserts: Array<(...args: any[]) => any>) {
+	onAny(steps: number[], ...asserts: Array<(step: number) => unknown>) {
 		steps.forEach(step => {
 			this.state.on(step, () => {
 				let firstError: any
