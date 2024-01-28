@@ -93,7 +93,7 @@
     "jest-watch-typeahead": "^2.0.0",
     "lodash": "^4.17.21",
     "ncp": "^2.0.0",
-    "npm-run-all2": "^5.0.0",
+    "npm-run-all2": "^6.0.0",
     "pinst": "^3.0.0",
     "rimraf": "^5.0.0",
     "size-limit": "^9.0.0",
