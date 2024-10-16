@@ -1,5 +1,11 @@
 # assertron
 
+## 11.5.1
+
+### Patch Changes
+
+- 49aaed5: fix global is not defined in browser.
+
 ## 11.5.0
 
 ### Minor Changes
