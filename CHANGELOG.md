@@ -1,5 +1,11 @@
 # assertron
 
+## 11.5.2
+
+### Patch Changes
+
+- 7b46ba0: Fix process is not defined in browser
+
 ## 11.5.1
 
 ### Patch Changes
