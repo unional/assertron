@@ -81,6 +81,8 @@ export class AssertOrder {
 		this.state.move()
 		return steps[index]
 	}
+	// false positive on `step: number`
+	// eslint-disable-next-line
 	onAny(steps: number[], ...asserts: Array<(step: number) => unknown>) {
 		steps.forEach(step => {
 			this.state.on(step, () => {
