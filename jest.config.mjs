@@ -1,17 +1,15 @@
 export default {
-	extensionsToTreatAsEsm: ['.ts'],
 	moduleNameMapper: {
 		'^(\\.{1,2}/.*)\\.js$': '$1'
 	},
 	collectCoverageFrom: ['<rootDir>/ts/**/*.[jt]s'],
 	roots: ['<rootDir>/ts'],
 	transform: {
-		// '^.+\\.(js|jsx|mjs)$': 'babel-jest',
 		'^.+\\.(ts|tsx|mts|cts)$': [
 			'ts-jest',
 			{
 				isolatedModules: true,
-				useESM: true
+				tsconfig: 'tsconfig.cjs.json'
 			}
 		]
 	},
