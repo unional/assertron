@@ -21,8 +21,8 @@ importers:
         specifier: ^5.4.2
         version: 5.4.2
       tersify:
-        specifier: ^3.11.1
-        version: 3.12.1
+        specifier: ^4.0.0
+        version: 4.0.1
       type-plus:
         specifier: ^7.6.0
         version: 7.6.2
@@ -2505,6 +2505,9 @@ packages:
 
   tersify@3.12.1:
     resolution: {integrity: sha512-VwzXGHZSOB4T27s4uvh9v8FYrNXyfVz0nBQi28TDwrZoQwT8ZJUp1W2Ff73ekN07stJSb0D+pr6iXeNeFqTI6Q==}
+
+  tersify@4.0.1:
+    resolution: {integrity: sha512-RCEpggzR2eA73+9/s6wpRYletjPZoRSwujnCuhyXfhaNTRay2zrrelgAnI/fub4E/YPYen9VNRWhWqcgc3zeog==}
 
   test-exclude@6.0.0:
     resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
@@ -5576,6 +5579,12 @@ snapshots:
   term-size@2.2.1: {}
 
   tersify@3.12.1:
+    dependencies:
+      acorn: 8.16.0
+      is-buffer: 2.0.5
+      unpartial: 1.0.5
+
+  tersify@4.0.1:
     dependencies:
       acorn: 8.16.0
       is-buffer: 2.0.5
