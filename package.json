@@ -99,7 +99,7 @@
     "size-limit": "^9.0.0",
     "ts-jest": "^29.0.0",
     "tslib": "^2.4.0",
-    "typescript": "^5.0.0"
+    "typescript": "^6.0.0"
   },
   "packageManager": "pnpm@11.9.0",
   "engines": {
