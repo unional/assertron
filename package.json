@@ -68,7 +68,7 @@
     "iso-error": "^6.0.0",
     "path-equal": "^1.2.5",
     "satisfier": "^5.4.2",
-    "tersify": "^3.11.1",
+    "tersify": "^4.0.0",
     "type-plus": "^7.6.0"
   },
   "devDependencies": {
