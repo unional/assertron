@@ -6,7 +6,7 @@
 [![GitHub NodeJS][github-nodejs]][github-action-url]
 [![Codecov][codecov-image]][codecov-url]
 
-[![Semantic Release][semantic-release-image]][semantic-release-url]
+[![Changesets][changesets-image]][changesets-url]
 
 [![Visual Studio Code][vscode-image]][vscode-url]
 
@@ -186,13 +186,13 @@ yarn verify
 [downloads-image]: https://img.shields.io/npm/dm/assertron.svg?style=flat
 [downloads-url]: https://npmjs.org/package/assertron
 
-[github-nodejs]: https://github.com/unional/assertron/workflows/nodejs/badge.svg
-[github-action-url]: https://github.com/unional/assertron/actions
-[codecov-image]: https://codecov.io/gh/unional/assertron/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/unional/assertron
+[github-nodejs]: https://github.com/cyberuni/assertron/actions/workflows/release.yml/badge.svg
+[github-action-url]: https://github.com/cyberuni/assertron/actions
+[codecov-image]: https://codecov.io/gh/cyberuni/assertron/branch/main/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/cyberuni/assertron
 
-[semantic-release-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
-[semantic-release-url]: https://github.com/semantic-release/semantic-release
+[changesets-image]: https://img.shields.io/badge/maintained%20with-changesets-176de3.svg
+[changesets-url]: https://github.com/changesets/changesets
 
 [vscode-image]: https://img.shields.io/badge/vscode-ready-green.svg
 [vscode-url]: https://code.visualstudio.com/
