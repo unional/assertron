@@ -1,5 +1,5 @@
-import t from 'assert'
-import a, { AssertOrder, InvalidOrder, State } from '../index.js'
+import t from 'node:assert'
+import a, { AssertOrder, InvalidOrder, type State } from '../index.js'
 
 test('is() expecting 1', () => {
 	const order = new AssertOrder()
@@ -17,7 +17,7 @@ test('is() with wrong step should throw', async () => {
 	await assertOrderThrows(() => order.is(0), { step: 1 }, 'is', 0)
 })
 
-test(`not() with right step should throw`, async () => {
+test('not() with right step should throw', async () => {
 	const order = new AssertOrder()
 
 	await assertOrderThrows(() => order.not(1), { step: 1 }, 'not', 1)
@@ -144,8 +144,8 @@ test('atLeastOnce() returns sub step', () => {
 })
 
 test.skip(`atLeast(n, m) where m <= 0 doesn't make sense`, () => {})
-test.skip(`atLeast(n, 2) pass`, () => {})
-test.skip(`atLeast(n, 2) fail`, () => {})
+test.skip('atLeast(n, 2) pass', () => {})
+test.skip('atLeast(n, 2) fail', () => {})
 
 test('any(2) should throws', async () => {
 	const order = new AssertOrder()
@@ -176,7 +176,7 @@ test('any([1, 2]) should pass with once(1) and move to step 3', () => {
 	order.once(3)
 })
 
-test(`any() should returns the step it encountered`, () => {
+test('any() should returns the step it encountered', () => {
 	const order = new AssertOrder()
 
 	t.strictEqual(order.any([1, 2, 3]), 1)
@@ -188,7 +188,7 @@ it('invokes handler for any([1, 2], handler)', () => {
 	const o = new AssertOrder(2)
 	const order = new AssertOrder()
 	function foo() {
-		order.any([1, 2], step => {
+		order.any([1, 2], (step) => {
 			o.once(step)
 		})
 	}
@@ -199,24 +199,24 @@ it('invokes handler for any([1, 2], handler)', () => {
 	o.end
 })
 
-test(`onAny(1, fn) will not be invoked immediately`, () => {
+test('onAny(1, fn) will not be invoked immediately', () => {
 	const order = new AssertOrder()
 
 	order.onAny([1], () => t.fail('should be be invoked'))
 })
 
-test(`onAny(2, fn) invokes after move()`, () => {
+test('onAny(2, fn) invokes after move()', () => {
 	const order = new AssertOrder()
 
-	order.onAny([2], step => t.strictEqual(step, 2))
+	order.onAny([2], (step) => t.strictEqual(step, 2))
 	order.move()
 })
 
-test(`onAny() should not move step`, () => {
+test('onAny() should not move step', () => {
 	const order = new AssertOrder()
 	const o = new AssertOrder()
 
-	order.onAny([1], step => {
+	order.onAny([1], (step) => {
 		t.strictEqual(step, 1)
 		o.once(2)
 	})
@@ -227,11 +227,11 @@ test(`onAny() should not move step`, () => {
 	o.once(3)
 })
 
-test(`onAny([2,3], fn) invoke with the specific step`, () => {
+test('onAny([2,3], fn) invoke with the specific step', () => {
 	const order = new AssertOrder()
 
 	const steps: number[] = []
-	order.onAny([1, 2], step => steps.push(step))
+	order.onAny([1, 2], (step) => steps.push(step))
 
 	order.move()
 	order.move()
@@ -243,15 +243,15 @@ test('onAny() passes if one of the assert functions passes ', () => {
 	let steps = ''
 	a.onAny(
 		[1, 2],
-		step => {
+		(step) => {
 			steps += step
 			t([1, 2].indexOf(step) >= 0)
 			throw new Error('some error')
 		},
-		step => {
+		(step) => {
 			steps += step
 			t([1, 2].indexOf(step) >= 0)
-		}
+		},
 	)
 	a.move()
 	a.move()
@@ -259,7 +259,7 @@ test('onAny() passes if one of the assert functions passes ', () => {
 	t.strictEqual(steps, '1122')
 })
 
-test(`onAny() throws if all assert functions throws`, () => {
+test('onAny() throws if all assert functions throws', () => {
 	const o = new AssertOrder(2)
 	o.onAny(
 		[1],
@@ -268,7 +268,7 @@ test(`onAny() throws if all assert functions throws`, () => {
 		},
 		() => {
 			throw new Error('second error')
-		}
+		},
 	)
 	const err = a.throws(() => o.move())
 	t.strictEqual(err.message, 'first error')
@@ -360,20 +360,20 @@ test('end(n) waits n milliseconds and fail when step not met', async () => {
 
 test.skip(`exactly(n, 0) doesn't make sense`, () => {})
 
-test(`exactly(n, 1) is the same as once(n)`, () => {
+test('exactly(n, 1) is the same as once(n)', () => {
 	const order = new AssertOrder()
 	order.exactly(1, 1)
 	order.once(2)
 })
 
-test(`exactly(n, 2) moves to next step at sub step 2`, () => {
+test('exactly(n, 2) moves to next step at sub step 2', () => {
 	const order = new AssertOrder()
 	order.exactly(1, 2)
 	order.exactly(1, 2)
 	order.once(2)
 })
 
-test(`exactly() returns the sub step`, () => {
+test('exactly() returns the sub step', () => {
 	const order = new AssertOrder()
 	t.strictEqual(order.exactly(1, 2), 1)
 	t.strictEqual(order.exactly(1, 2), 2)
@@ -443,7 +443,7 @@ test('wait(step, callback) will execute the async callback but not wait for it a
 	const o2 = new AssertOrder(1)
 
 	order.wait(1, () => {
-		return new Promise<void>(a => {
+		return new Promise<void>((a) => {
 			setImmediate(() => {
 				o2.once(1)
 				a()

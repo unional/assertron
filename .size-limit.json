@@ -1,0 +1,10 @@
+[
+	{
+		"path": "./esm/index.js",
+		"limit": "10 kB"
+	},
+	{
+		"path": "./cjs/index.js",
+		"limit": "15 kB"
+	}
+]

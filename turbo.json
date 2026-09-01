@@ -1,0 +1,32 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"tasks": {
+		"build": {
+			"inputs": ["ts", "tsdown.config.*", "tsconfig.*", "package.json"],
+			"outputs": ["cjs/**", "esm/**"]
+		},
+		"clean": {
+			"cache": false
+		},
+		"coverage": {
+			"inputs": ["ts", "vitest.config.*", "tsconfig.*", "package.json"],
+			"outputs": ["coverage/**"]
+		},
+		"knip": {
+			"dependsOn": ["build"]
+		},
+		"nuke": {
+			"cache": false
+		},
+		"size": {
+			"dependsOn": ["build"],
+			"inputs": [".size-limit.json", "package.json"]
+		},
+		"test": {
+			"inputs": ["ts", "vitest.config.*", "tsconfig.*", "package.json"]
+		},
+		"typecheck": {
+			"inputs": ["ts", "tsconfig.*", "tsdown.config.*", "vitest.config.*", "package.json"]
+		}
+	}
+}

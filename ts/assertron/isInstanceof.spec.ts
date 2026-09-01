@@ -1,5 +1,5 @@
 import { isType } from 'type-plus'
-import { a, AssertionError } from '../index.js'
+import { AssertionError, a } from '../index.js'
 
 it('accepts a class', () => {
 	a.isInstanceof(new Number(1), Number)

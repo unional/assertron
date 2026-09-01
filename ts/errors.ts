@@ -16,7 +16,11 @@ export namespace AssertionError {
 }
 
 export class FailOnOccurrence extends AssertionError {
-	constructor(public occurrence: number, public error: any, options: AssertionError.Options) {
+	constructor(
+		public occurrence: number,
+		public error: any,
+		options: AssertionError.Options,
+	) {
 		super(failOnOccurrence(occurrence, error), options)
 	}
 }

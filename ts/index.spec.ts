@@ -1,5 +1,4 @@
 import {
-	SatisfyExpectation,
 	anything,
 	every,
 	has,
@@ -10,8 +9,9 @@ import {
 	isInRange,
 	isInRightClosedInterval,
 	none,
+	type SatisfyExpectation,
 	some,
-	startsWith
+	startsWith,
 } from './index.js'
 
 it('expose SatifyExpression type', () => {

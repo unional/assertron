@@ -1,4 +1,4 @@
-import t from 'assert'
+import t from 'node:assert'
 import { AssertOrder } from '../index.js'
 import { assertThrows } from '../testUtils.js'
 
@@ -29,7 +29,7 @@ test('error message for is()', () => {
 	t.strictEqual(err.message, `Expecting 'is(1)', 'once(1)', 'any([1])', but received 'is(0)'`)
 })
 
-test(`error message for not()`, () => {
+test('error message for not()', () => {
 	const order = new AssertOrder()
 	const err = assertThrows(() => order.not(1))
 	t.strictEqual(err.message, `Expecting 'is(1)', 'once(1)', 'any([1])', but received 'not(1)'`)

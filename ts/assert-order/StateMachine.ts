@@ -1,3 +1,7 @@
+// Deliberately the bare specifier, not `node:perf_hooks`: package.json's `browser`
+// field maps `perf_hooks` to `false` for bundlers, and that mapping does not apply to
+// the `node:` prefixed form.
+// biome-ignore lint/style/useNodejsImportProtocol: see above
 import * as perf from 'perf_hooks'
 import type { State } from './types.js'
 
@@ -12,7 +16,7 @@ if (typeof globalThis.process?.hrtime === 'function') {
 		taken() {
 			const [second, nanoSecond] = globalThis.process.hrtime(tick)
 			return second * 1000 + nanoSecond / 1e6
-		}
+		},
 	}
 } else if (perf.performance && typeof perf.performance.now === 'function') {
 	const now = perf.performance.now
@@ -23,17 +27,17 @@ if (typeof globalThis.process?.hrtime === 'function') {
 		},
 		taken() {
 			return now() - tick
-		}
+		},
 	}
 } else {
 	let tick: number
 	timeTracker = {
 		start() {
-			tick = new Date().valueOf()
+			tick = Date.now()
 		},
 		taken() {
-			return new Date().valueOf() - tick
-		}
+			return Date.now() - tick
+		},
 	}
 }
 
@@ -59,7 +63,7 @@ export class StateMachine {
 		this.step = this.step + 1
 		this.subStep = 0
 		if (listeners) {
-			listeners.forEach(l => l())
+			for (const l of listeners) l()
 		}
 		return this.step
 	}
@@ -75,7 +79,7 @@ export class StateMachine {
 			maxStep,
 			subStep,
 			minSubStep,
-			maxSubStep
+			maxSubStep,
 		}
 	}
 	on(step: number, listener: () => void) {

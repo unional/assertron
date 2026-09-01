@@ -54,7 +54,7 @@ describe('true()', () => {
 	})
 })
 
-describe(`uuid()`, () => {
+describe('uuid()', () => {
 	it('throws if input is not a string', () => {
 		assertThrows(() => a.uuid(1), AssertionError)
 	})

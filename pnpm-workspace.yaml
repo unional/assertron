@@ -1,3 +1,29 @@
 allowBuilds:
+  # size-limit's estimator, and vitest/rolldown's optional deps.
   esbuild: true
+  # macOS-only optional native watcher, via vite/rollup.
   fsevents: true
+
+# The 24h supply-chain soak, moved here from `.npmrc` so the whole policy reads in one
+# place (pnpm 11 takes these settings from the workspace file, and npm warns on the
+# `.npmrc` spelling because it is not an npm config key).
+#
+# `minimumReleaseAgeStrict` is the important half. pnpm 11's DEFAULT mode is loose: when
+# it meets a package younger than the window it does not fail — it silently appends that
+# package to `minimumReleaseAgeExclude` and carries on. Under that default the soak
+# enforces nothing and the exclusion list grows on its own. Strict mode turns a too-young
+# package into ERR_PNPM_MINIMUM_RELEASE_AGE_VIOLATION instead, so every entry below has to
+# be a deliberate, reviewed pin.
+minimumReleaseAge: 1440
+minimumReleaseAgeStrict: true
+minimumReleaseAgeExclude:
+  # This package's own upstreams, all republished today by the same modernization sweep
+  # and all carrying npm provenance. Pinned to exact versions so the soak keeps governing
+  # everything else; remove each line once it ages past the window.
+  - iso-error@6.0.5
+  - path-equal@1.2.7
+  - satisfier@5.4.4
+  - tersify@4.0.6
+  # tersify@4.0.6's own runtime dependency, released in the same sweep. Excluding tersify
+  # alone is not enough — the soak is evaluated per resolved version, transitives included.
+  - unpartial@1.0.7

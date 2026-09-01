@@ -1,7 +1,24 @@
 {
-	"extends": "./tsconfig.esm.json",
 	"compilerOptions": {
-		"noEmit": true
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"isolatedModules": true,
+		// An explicit `lib` REPLACES the default set, so every ES lib this code needs has
+		// to be named here — `DOM` alone would drop `Promise`, `AggregateError` and
+		// `Error.cause`.
+		"lib": ["DOM", "ES2020", "ES2021.Promise"],
+		"module": "node16",
+		"moduleResolution": "node16",
+		"newLine": "LF",
+		"noEmit": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": false,
+		"skipLibCheck": true,
+		"strict": true,
+		"stripInternal": true,
+		"target": "ES2020",
+		"types": ["node", "vitest/globals"],
+		"useDefineForClassFields": true
 	},
-	"include": ["ts", "typings"]
+	"include": ["ts", "typings", "tsdown.config.ts", "vitest.config.ts"]
 }
