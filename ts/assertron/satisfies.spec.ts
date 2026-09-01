@@ -13,25 +13,25 @@ describe('non-composable types', () => {
 	})
 
 	test('predicate parameter is the widen type', () => {
-		a.satisfies(null, v => isType<null>(v))
-		a.satisfies(undefined, v => isType<undefined>(v))
-		a.satisfies(1, v => isType<number>(v))
-		a.satisfies('a', v => isType<string>(v))
-		a.satisfies(true, v => isType<boolean>(v))
+		a.satisfies(null, (v) => isType<null>(v))
+		a.satisfies(undefined, (v) => isType<undefined>(v))
+		a.satisfies(1, (v) => isType<number>(v))
+		a.satisfies('a', (v) => isType<string>(v))
+		a.satisfies(true, (v) => isType<boolean>(v))
 	})
 
 	test('shows value directly in error', () => {
 		a.throws(
 			() => a.satisfies(1, 2),
-			e => e.message === 'Expect actual to satisfy 2, but received 1'
+			(e) => e.message === 'Expect actual to satisfy 2, but received 1',
 		)
 		a.throws(
 			() => a.satisfies(true, false),
-			e => e.message === 'Expect actual to satisfy false, but received true'
+			(e) => e.message === 'Expect actual to satisfy false, but received true',
 		)
 		a.throws(
 			() => a.satisfies('a', 'b'),
-			e => e.message === `Expect actual to satisfy 'b', but received 'a'`
+			(e) => e.message === `Expect actual to satisfy 'b', but received 'a'`,
 		)
 	})
 
@@ -48,7 +48,7 @@ test('empty object will pass any object', () => {
 test('empty object will fail against primitive types', () => {
 	a.throws(
 		() => a.satisfies(1, {} as any),
-		e => e.message === 'Expect actual to satisfy {}, but received 1'
+		(e) => e.message === 'Expect actual to satisfy {}, but received 1',
 	)
 })
 
@@ -57,10 +57,10 @@ test('empty object will fail against primitive types', () => {
 //   a.throws(() => a.satisfies([1, 2], every(1)), e => e.message === 'Expect actual[1] to satisfy 1, but received 2')
 // })
 
-test(`array entries are checked`, () => {
+test('array entries are checked', () => {
 	a.throws(
 		() => a.satisfies([1], [2]),
-		e => e.message === `Expect actual[0] to satisfy 2, but received 1`
+		(e) => e.message === 'Expect actual[0] to satisfy 2, but received 1',
 	)
 })
 
@@ -70,24 +70,24 @@ test('work with primitive array', () => {
 	a.satisfies(['a', 'b'], ['a', 'b'])
 })
 
-test(`check deep entry in array`, () => {
+test('check deep entry in array', () => {
 	a.throws(
 		() => a.satisfies([1, { a: { b: 1 } }], [1, { a: { b: 2 } }]),
-		e => e.message === `Expect actual[1].a.b to satisfy 2, but received 1`
+		(e) => e.message === 'Expect actual[1].a.b to satisfy 2, but received 1',
 	)
 })
 
 test('missing property will fail', () => {
 	a.throws(
 		() => a.satisfies({}, { a: 1 }),
-		e => e.message === `Expect a to satisfy 1, but received undefined`
+		(e) => e.message === 'Expect a to satisfy 1, but received undefined',
 	)
 })
 
 test('missing property at deeper level', () => {
 	a.throws(
 		() => a.satisfies({ a: {} }, { a: { b: 1 } }),
-		e => e.message === `Expect a.b to satisfy 1, but received undefined`
+		(e) => e.message === 'Expect a.b to satisfy 1, but received undefined',
 	)
 })
 
@@ -98,7 +98,7 @@ test('extra property will pass', () => {
 test('property not match will fail', () => {
 	a.throws(
 		() => a.satisfies({ a: 1 }, { a: 2 }),
-		e => e.message === `Expect a to satisfy 2, but received 1`
+		(e) => e.message === 'Expect a to satisfy 2, but received 1',
 	)
 })
 
@@ -111,20 +111,20 @@ test('regex will be used to match', () => {
 })
 
 test('function will use as predicate', () => {
-	a.satisfies({ a: 1 }, { a: a => a === 1 })
+	a.satisfies({ a: 1 }, { a: (a) => a === 1 })
 })
 
 test('predicate error should mention path', () => {
 	a.throws(
 		() => a.satisfies({ a: 1 }, { a: () => false }),
-		e => e.message === `Expect a to satisfy () => false, but received 1`
+		(e) => e.message === 'Expect a to satisfy () => false, but received 1',
 	)
 })
 
 test('deep predicate error should mention path', () => {
 	a.throws(
-		() => a.satisfies({ a: { b: 1 } }, { a: { b: b => b === 2 } }),
-		e => e.message === `Expect a.b to satisfy b => b === 2, but received 1`
+		() => a.satisfies({ a: { b: 1 } }, { a: { b: (b) => b === 2 } }),
+		(e) => e.message === 'Expect a.b to satisfy b => b === 2, but received 1',
 	)
 })
 
@@ -166,13 +166,15 @@ test('allow partial expectation on array entries', () => {
 test('allow predicate on array', () => {
 	type U = { type: 'a'; a: string } | { type: 'b'; b: string }
 	const x: U[] = [{ type: 'a', a: 'abc' }]
-	a.satisfies(x, v => v[0].type == 'a')
+	// biome-ignore lint/suspicious/noDoubleEquals: exercising a loose predicate on purpose
+	a.satisfies(x, (v) => v[0].type == 'a')
 })
 
 test('allow predicate on array entries', () => {
 	type U = { type: 'a'; a: string } | { type: 'b'; b: string }
 	const x: U[] = [{ type: 'a', a: 'abc' }]
-	a.satisfies(x, [v => v.type == 'a'])
+	// biome-ignore lint/suspicious/noDoubleEquals: exercising a loose predicate on purpose
+	a.satisfies(x, [(v) => v.type == 'a'])
 })
 
 test('using has()', () => {
@@ -182,7 +184,7 @@ test('using has()', () => {
 test('using every()', () => {
 	a.satisfies(
 		[1, 2, 3],
-		every((x: number) => x > 0)
+		every((x: number) => x > 0),
 	)
 })
 
@@ -193,6 +195,6 @@ test('using isInRange()', () => {
 test('using some()', () => {
 	a.satisfies(
 		[1, 2, 3],
-		some(x => x % 2 === 0)
+		some((x) => x % 2 === 0),
 	)
 })

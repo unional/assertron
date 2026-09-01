@@ -3,9 +3,9 @@ import { notRejectedMessage } from '../utils/index.js'
 
 export function rejects<R = any>(promise: Promise<unknown>): Promise<R> {
 	return promise.then(
-		value => {
+		(value) => {
 			throw new AssertionError(notRejectedMessage(value), { ssf: rejects })
 		},
-		err => err
+		(err) => err,
 	)
 }

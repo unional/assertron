@@ -6,7 +6,7 @@ export class InvalidOrder extends AssertionError {
 		public state: State,
 		public method: string,
 		public args: any[],
-		options: AssertionError.Options
+		options: AssertionError.Options,
 	) {
 		super(method === 'end' ? getEndMessage(state) : getExpectingMessage(state, method, args), options)
 	}
@@ -24,16 +24,14 @@ function getExpectingCalls(state: State) {
 	let message: string
 	if (state.subStep === 0) {
 		const methods = ['is', 'once', 'any']
-		message = methods
-			.map(m => `'${m}(${['any'].indexOf(m) === -1 ? state.step : `[${state.step}]`})'`)
-			.join(', ')
+		message = methods.map((m) => `'${m}(${['any'].indexOf(m) === -1 ? state.step : `[${state.step}]`})'`).join(', ')
 	} else {
 		const methods = ['exactly']
-		message = methods.map(m => `'${m}(${state.step}, ${state.maxSubStep})'`).join(', ')
+		message = methods.map((m) => `'${m}(${state.step}, ${state.maxSubStep})'`).join(', ')
 	}
 	return message
 }
 
 function getMethodArgs(args: any[]) {
-	return args.map(a => (Array.isArray(a) ? `[${a.join(', ')}]` : a)).join(', ')
+	return args.map((a) => (Array.isArray(a) ? `[${a.join(', ')}]` : a)).join(', ')
 }

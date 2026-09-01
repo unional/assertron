@@ -14,9 +14,7 @@ export type SatisfyExpectation<T> =
 					IsExtend<T, Array<any>>,
 					T extends Array<infer E> ? Array<SatisfyExpectation<E>> : never,
 					{
-						[P in keyof T]?: T[P] extends string
-							? SatisfyExpectation<T[P]> | RegExp
-							: SatisfyExpectation<T[P]>
+						[P in keyof T]?: T[P] extends string ? SatisfyExpectation<T[P]> | RegExp : SatisfyExpectation<T[P]>
 					}
 				>
 			>
@@ -30,7 +28,7 @@ export type SatisfyExpectation<T> =
  */
 export function satisfies<Actual, Expected extends Actual>(
 	actual: Actual,
-	expected: SatisfyExpectation<Expected>
+	expected: SatisfyExpectation<Expected>,
 ): void {
 	const diff = createSatisfier(expected as any).exec(actual)
 	if (diff) {

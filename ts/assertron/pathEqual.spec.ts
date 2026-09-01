@@ -18,7 +18,7 @@ test('UNIX style matches Windows style', () => {
 	assertron.pathEqual('a\\b\\c', 'a/b/c')
 })
 
-test(`/d/foo should match d:\\foo`, () => {
+test('/d/foo should match d:\\foo', () => {
 	assertron.pathEqual('/d/foo', 'd:\\foo')
 })
 

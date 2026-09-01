@@ -2,8 +2,8 @@ import { assertron } from './assertron/index.js'
 
 export {
 	anything,
-	has,
 	every,
+	has,
 	hasAll,
 	isInClosedInterval,
 	isInLeftClosedInterval,
@@ -13,7 +13,7 @@ export {
 	isTypeOf,
 	none,
 	some,
-	startsWith
+	startsWith,
 } from 'satisfier'
 export * from './assert-order/index.js'
 export * from './assertron/index.js'

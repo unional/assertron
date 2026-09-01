@@ -68,9 +68,11 @@ export class AssertOrder {
 		if (this.state.step === step) {
 			this.state.move()
 			return this.state.moveSubStep()
-		} else if (this.state.step === nextStep && this.state.subStep > 0) {
+		}
+		if (this.state.step === nextStep && this.state.subStep > 0) {
 			return this.state.moveSubStep()
-		} else throw new InvalidOrder(this.state.get(), 'atLeastOnce', [step], { ssf: this.atLeastOnce })
+		}
+		throw new InvalidOrder(this.state.get(), 'atLeastOnce', [step], { ssf: this.atLeastOnce })
 	}
 
 	any(steps: number[], handler?: (step: number) => void) {
@@ -84,11 +86,11 @@ export class AssertOrder {
 	// false positive on `step: number`
 	// eslint-disable-next-line
 	onAny(steps: number[], ...asserts: Array<(step: number) => unknown>) {
-		steps.forEach(step => {
+		steps.forEach((step) => {
 			this.state.on(step, () => {
 				let firstError: any
 				let hasPass = false
-				asserts.forEach(assert => {
+				asserts.forEach((assert) => {
 					try {
 						assert(step)
 						hasPass = true
@@ -105,7 +107,7 @@ export class AssertOrder {
 	end(): number
 	end(timeout?: number) {
 		if (timeout) {
-			return new Promise(r => {
+			return new Promise((r) => {
 				setTimeout(r, timeout)
 			}).then(() => {
 				return this.end()
@@ -137,7 +139,7 @@ export class AssertOrder {
 	wait(step: number, callback?: () => void) {
 		if (callback) this.on(step, callback)
 		else
-			return new Promise<any>(a => {
+			return new Promise<any>((a) => {
 				this.on(step, a)
 			})
 	}

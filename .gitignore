@@ -41,6 +41,9 @@ build/Release
 # webstorm
 .idea
 
+# turborepo
+.turbo
+
 # yarn
 .pnp.*
 .yarn/*

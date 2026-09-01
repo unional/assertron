@@ -1,42 +1,10 @@
 // istanbul ignore file
-import t from 'assert'
+import t from 'node:assert'
 import isPromise from 'is-promise'
 import { escapeRegExp, isError } from 'lodash'
 import type { ErrorConstructor } from './types.js'
 
 export type AnyFunction = (...args: any[]) => any
-
-export function runAsync(fn: AnyFunction) {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			try {
-				resolve(fn())
-			} catch (err) {
-				reject(err)
-			}
-		}, 1)
-	})
-}
-
-export function runSequentialAsync(...fns: AnyFunction[]) {
-	return new Promise((resolve, reject) => {
-		setTimeout(() => {
-			try {
-				let i = 0
-				for (; i < fns.length - 1; i++) {
-					fns[i]()
-				}
-				resolve(fns[i]())
-			} catch (err) {
-				reject(err)
-			}
-		}, 1)
-	})
-}
-
-export function runParallelAsync(...fns: AnyFunction[]) {
-	return Promise.all(fns.map(fn => runAsync(fn)))
-}
 
 export function assertIsPromise(promiseError: Promise<any>) {
 	t(isPromise(promiseError))
@@ -58,10 +26,7 @@ export function assertThrows<E extends Error>(fn: AnyFunction, ErrorType?: Error
 	throw new Error(`${fn} does not throw as expected`)
 }
 
-export async function assertAsyncThrows<E extends Error>(
-	fn: AnyFunction,
-	ErrorType?: ErrorConstructor<E>
-): Promise<E> {
+export async function assertAsyncThrows<E extends Error>(fn: AnyFunction, ErrorType?: ErrorConstructor<E>): Promise<E> {
 	try {
 		await fn()
 	} catch (e: any) {

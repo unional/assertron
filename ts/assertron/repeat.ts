@@ -7,7 +7,7 @@ import { FailOnOccurrence } from '../errors.js'
  */
 export function repeat<R>(
 	fn: () => R | (() => Promise<R>),
-	times: number
+	times: number,
 ): ReturnType<typeof fn> extends Promise<R> ? Promise<R> : R {
 	return repeatRecur(fn, 1, times)
 }
@@ -15,7 +15,7 @@ export function repeat<R>(
 function repeatRecur<R>(
 	fn: () => R | (() => Promise<R>),
 	i: number,
-	times: number
+	times: number,
 ): ReturnType<typeof fn> extends Promise<R> ? Promise<R> : R {
 	try {
 		const result = fn()
@@ -24,13 +24,12 @@ function repeatRecur<R>(
 		if (isPromise(result)) {
 			return result.then(
 				() => repeatRecur(fn, i + 1, times),
-				e => {
+				(e) => {
 					throw new FailOnOccurrence(i, e, { ssf: repeat })
-				}
+				},
 			) as any
-		} else {
-			return repeatRecur(fn, i + 1, times)
 		}
+		return repeatRecur(fn, i + 1, times)
 	} catch (e) {
 		if (e instanceof FailOnOccurrence) throw e
 		throw new FailOnOccurrence(i, e, { ssf: repeat })

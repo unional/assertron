@@ -12,14 +12,14 @@ test('repeat async function n times sequentially', async () => {
 	let actual = ''
 	const aa = await a.repeat(
 		() =>
-			new Promise<string>(a => {
+			new Promise<string>((a) => {
 				setTimeout(() => {
 					++count
 					actual += String(count)
 					a(actual)
 				}, Math.random() * 10)
 			}),
-		10
+		10,
 	)
 
 	expect(actual).toBe('12345678910')
@@ -33,7 +33,7 @@ test('error is captured as inner error and indicate which call failed', () => {
 			a.repeat(() => {
 				if (++count === 5) throw new Error('failed')
 			}, 10),
-		FailOnOccurrence
+		FailOnOccurrence,
 	)
 
 	expect(err.occurrence).toBe(5)
@@ -52,9 +52,9 @@ test('rejected error is captured as inner error and indicate which call failed',
 						else a()
 					}, Math.random() * 10)
 				}),
-			10
+			10,
 		),
-		FailOnOccurrence
+		FailOnOccurrence,
 	)
 
 	expect(err.occurrence).toBe(5)

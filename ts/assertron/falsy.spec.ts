@@ -3,6 +3,7 @@ import { assertThrows, noStackTraceFor } from '../testUtils.js'
 
 test('non-false statement throws', () => {
 	assertThrows(() => a.falsy(true), AssertionError)
+	// biome-ignore lint/suspicious/noSelfCompare: the literal comparison is the subject under test
 	assertThrows(() => a.falsy(1 === 1), AssertionError)
 	assertThrows(() => a.falsy(1), AssertionError)
 	assertThrows(() => a.falsy({}), AssertionError)

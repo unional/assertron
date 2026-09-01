@@ -1,4 +1,4 @@
-import t from 'assert'
+import t from 'node:assert'
 import a, { AssertionError } from '../index.js'
 import { assertAsyncThrows, noStackTraceFor } from '../testUtils.js'
 
@@ -13,12 +13,12 @@ test('throws on rejected string promise', async () => {
 
 test('throws on rejected error promise', async () => {
 	const err = await a.throws(a.resolves(Promise.reject(new Error('foo'))), AssertionError)
-	t.strictEqual(err.message, `Expected promise to resolve, but it rejects with Error: foo`)
+	t.strictEqual(err.message, 'Expected promise to resolve, but it rejects with Error: foo')
 })
 
 test('throws on rejected object promise', async () => {
 	const err = await a.throws(a.resolves(Promise.reject({ a: 1 })), AssertionError)
-	t.strictEqual(err.message, `Expected promise to resolve, but it rejects with { a: 1 }`)
+	t.strictEqual(err.message, 'Expected promise to resolve, but it rejects with { a: 1 }')
 })
 
 test('does not contain internal stack trace', async () => {
