@@ -1,21 +1,17 @@
 import type { State } from './types.js'
 
 // `performance.now()` is the one high-resolution clock every target runtime agrees on:
-// it is a global in Node (>=16), Bun, Deno and browsers. Reaching for `node:perf_hooks`
-// or `process.hrtime` instead would make this module depend on a Node builtin for a
-// clock the platform already provides. `Date.now()` remains the fallback for an exotic
-// host that exposes neither.
-const now: () => number =
-	typeof globalThis.performance?.now === 'function' ? () => globalThis.performance.now() : () => Date.now()
-
+// a global in Node (this package requires >= 20), Bun, Deno and the browser. There is no
+// fallback arm because there is no supported host that lacks it, and an arm no test can
+// reach is not a safety net.
 const timeTracker = (() => {
 	let tick = 0
 	return {
 		start() {
-			tick = now()
+			tick = performance.now()
 		},
 		taken() {
-			return now() - tick
+			return performance.now() - tick
 		},
 	}
 })()

@@ -5,10 +5,9 @@
 Drop the last Node builtin from the shipped code.
 
 `AssertOrder`'s clock imported the bare `perf_hooks` specifier and preferred
-`process.hrtime`. It now uses `performance.now()`, which every target runtime provides as
-a global, falling back to `Date.now()`. The published `esm/` and `cjs/` output no longer
-references any Node builtin, so it loads unchanged on Bun, Deno, browsers and edge
-runtimes.
+`process.hrtime`. It now uses `performance.now()`, which every runtime this package
+supports provides as a global. The published `esm/` and `cjs/` output no longer references
+any Node builtin, so it loads unchanged on Bun, Deno, browsers and edge runtimes.
 
 Elapsed times from `AssertOrder#end()` and `getTimeTaken()` are still high-resolution
 milliseconds; only the clock behind them changed. The `browser` field's
