@@ -10,3 +10,8 @@ jobs:
     with:
       os: '["ubuntu-latest"]'
       skip-playwright: true
+
+  # Cross-runtime loadability of the built package. A separate job id (not `code`) so the
+  # required `code / all-checks` context is untouched.
+  runtimes:
+    uses: ./.github/workflows/runtimes.yml

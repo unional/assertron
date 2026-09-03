@@ -1,0 +1,46 @@
+# Proves the *published* output loads and works on every runtime the package claims to
+# support, rather than asserting it in a README table that nothing executes.
+#
+# It deliberately runs the build output (`esm/` and `cjs/`) and not `ts/`: the build
+# output is all a consumer ever sees, and a portability regression (a bare `fs`
+# specifier, a Node-only builtin) shows up there and nowhere else. The vitest suite
+# covers behaviour on Node; this covers loadability everywhere.
+name: runtimes
+on:
+  workflow_call:
+
+jobs:
+  runtimes:
+    name: ${{ matrix.runtime }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        runtime: [node, bun, deno]
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      # The build itself stays on Node + pnpm on every leg, so all three runtimes are
+      # handed byte-for-byte the same artifact.
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      - if: matrix.runtime == 'bun'
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - if: matrix.runtime == 'deno'
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: smoke test on ${{ matrix.runtime }}
+        run: pnpm run ${{ matrix.runtime == 'node' && 'smoke' || format('smoke:{0}', matrix.runtime) }}

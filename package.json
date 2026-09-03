@@ -29,9 +29,6 @@
 	},
 	"main": "./cjs/index.js",
 	"module": "./esm/index.js",
-	"browser": {
-		"perf_hooks": false
-	},
 	"types": "./esm/index.d.ts",
 	"files": [
 		"cjs",
@@ -55,10 +52,13 @@
 		"prepare": "husky",
 		"release": "changeset publish",
 		"size": "size-limit",
+		"smoke": "node scripts/smoke.mjs && node scripts/smoke.cjs",
+		"smoke:bun": "bun run scripts/smoke.mjs && bun run scripts/smoke.cjs",
+		"smoke:deno": "deno run --allow-read scripts/smoke.mjs && deno run --allow-read scripts/smoke.cjs",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"typecheck": "tsc",
-		"verify": "biome ci . && turbo run build typecheck coverage knip size",
+		"verify": "biome ci . && turbo run build typecheck coverage knip size smoke",
 		"version": "changeset version"
 	},
 	"dependencies": {

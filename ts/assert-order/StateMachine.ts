@@ -1,45 +1,20 @@
-// Deliberately the bare specifier, not `node:perf_hooks`: package.json's `browser`
-// field maps `perf_hooks` to `false` for bundlers, and that mapping does not apply to
-// the `node:` prefixed form.
-// biome-ignore lint/style/useNodejsImportProtocol: see above
-import * as perf from 'perf_hooks'
 import type { State } from './types.js'
 
-let timeTracker: { start(): void; taken(): number }
-
-if (typeof globalThis.process?.hrtime === 'function') {
-	let tick: [number, number]
-	timeTracker = {
+// `performance.now()` is the one high-resolution clock every target runtime agrees on:
+// a global in Node (this package requires >= 20), Bun, Deno and the browser. There is no
+// fallback arm because there is no supported host that lacks it, and an arm no test can
+// reach is not a safety net.
+const timeTracker = (() => {
+	let tick = 0
+	return {
 		start() {
-			tick = globalThis.process.hrtime()
+			tick = performance.now()
 		},
 		taken() {
-			const [second, nanoSecond] = globalThis.process.hrtime(tick)
-			return second * 1000 + nanoSecond / 1e6
+			return performance.now() - tick
 		},
 	}
-} else if (perf.performance && typeof perf.performance.now === 'function') {
-	const now = perf.performance.now
-	let tick: number
-	timeTracker = {
-		start() {
-			tick = now()
-		},
-		taken() {
-			return now() - tick
-		},
-	}
-} else {
-	let tick: number
-	timeTracker = {
-		start() {
-			tick = Date.now()
-		},
-		taken() {
-			return Date.now() - tick
-		},
-	}
-}
+})()
 
 export class StateMachine {
 	listeners: Record<number, Array<() => void>> = {}

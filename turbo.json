@@ -18,6 +18,10 @@
 		"nuke": {
 			"cache": false
 		},
+		"smoke": {
+			"dependsOn": ["build"],
+			"inputs": ["scripts/**", "package.json"]
+		},
 		"size": {
 			"dependsOn": ["build"],
 			"inputs": [".size-limit.json", "package.json"]
