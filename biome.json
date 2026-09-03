@@ -6,6 +6,25 @@
 		"clientKind": "git",
 		"useIgnoreFile": true
 	},
+	"linter": {
+		"rules": {
+			"style": {
+				"useNodejsImportProtocol": "error"
+			}
+		}
+	},
+	"overrides": [
+		{
+			"includes": ["scripts/**"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noConsole": "off"
+					}
+				}
+			}
+		}
+	],
 	"files": {
 		"includes": ["!cjs", "!esm", "!tslib", "!coverage", "!.turbo", "!skills-lock.json", "!CHANGELOG.md"]
 	}

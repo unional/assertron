@@ -10,6 +10,9 @@ jobs:
       os: '["ubuntu-latest"]'
       skip-playwright: true
 
+  runtimes:
+    uses: ./.github/workflows/runtimes.yml
+
   # Runs on the default branch immediately before `changeset publish`, so a tarball that
   # trips the gate blocks the release. It used to sit on the changesets "Version
   # Packages" PR instead, where it could never fire: a PR opened with the built-in
@@ -25,7 +28,7 @@ jobs:
 
   release:
     uses: cyberuni/.github/.github/workflows/pnpm-release-changeset-oidc.yml@main
-    needs: [code, publish-gate]
+    needs: [code, runtimes, publish-gate]
     permissions:
       id-token: write
       contents: write

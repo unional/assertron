@@ -1,27 +1,16 @@
-// Deliberately the bare specifier, not `node:perf_hooks`: package.json's `browser`
-// field maps `perf_hooks` to `false` for bundlers, and that mapping does not apply to
-// the `node:` prefixed form.
-// biome-ignore lint/style/useNodejsImportProtocol: see above
-import * as perf from 'perf_hooks'
 import type { State } from './types.js'
 
-let timeTracker: { start(): void; taken(): number }
+// `performance.now()` is the one high-resolution clock every target runtime agrees on:
+// it is a global in Node (>=16), Bun, Deno and browsers. Reaching for `node:perf_hooks`
+// or `process.hrtime` instead would make this module depend on a Node builtin for a
+// clock the platform already provides. `Date.now()` remains the fallback for an exotic
+// host that exposes neither.
+const now: () => number =
+	typeof globalThis.performance?.now === 'function' ? () => globalThis.performance.now() : () => Date.now()
 
-if (typeof globalThis.process?.hrtime === 'function') {
-	let tick: [number, number]
-	timeTracker = {
-		start() {
-			tick = globalThis.process.hrtime()
-		},
-		taken() {
-			const [second, nanoSecond] = globalThis.process.hrtime(tick)
-			return second * 1000 + nanoSecond / 1e6
-		},
-	}
-} else if (perf.performance && typeof perf.performance.now === 'function') {
-	const now = perf.performance.now
-	let tick: number
-	timeTracker = {
+const timeTracker = (() => {
+	let tick = 0
+	return {
 		start() {
 			tick = now()
 		},
@@ -29,17 +18,7 @@ if (typeof globalThis.process?.hrtime === 'function') {
 			return now() - tick
 		},
 	}
-} else {
-	let tick: number
-	timeTracker = {
-		start() {
-			tick = Date.now()
-		},
-		taken() {
-			return Date.now() - tick
-		},
-	}
-}
+})()
 
 export class StateMachine {
 	listeners: Record<number, Array<() => void>> = {}

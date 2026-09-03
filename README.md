@@ -10,7 +10,11 @@
 
 [![Visual Studio Code][vscode-image]][vscode-url]
 
-A supplementary assertion library that runs on both NodeJS and browser.
+A supplementary assertion library that runs on Node.js, Bun, Deno and the browser.
+
+The shipped code imports no platform builtins, so the same `esm/` and `cjs/` output loads
+everywhere. CI runs a smoke test against the build output on Node, Bun and Deno on every
+pull request, so that claim is executed rather than asserted.
 
 ## Install
 
